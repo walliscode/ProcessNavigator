@@ -1,10 +1,14 @@
+import logging
+import eralchemy2
+
+
 # get bp object and use as decorator
 from process_navigator.home import bp
 from process_navigator.models import db
 
 # import flask functionality
 from flask import render_template, current_app
-import logging, eralchemy2
+
 
 
 
