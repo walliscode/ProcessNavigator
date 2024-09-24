@@ -4,7 +4,7 @@ from process_navigator.extensions import db
 
 class Entity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-
+    entityID = db.Column(db.String(10), nullable=False)
     def __repr__(self):
         return f"<Entity {self.name}>"
 
