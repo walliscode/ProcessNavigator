@@ -1,0 +1,14 @@
+[project]
+name = "process_navigator"
+version = "0.1.0"
+description = "a database approach to quantifying physical processes"
+readme = "README.md"
+requires-python = ">=3.8"
+
+
+[build-system]
+requires = ["flit_core>=3.4"]
+build-backend = "flit_core.buildapi"
+
+
+
