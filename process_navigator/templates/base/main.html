@@ -7,34 +7,37 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
 </head>
 
-{% include 'base/navbar.html' %}
 
 
-<section class="content">
+<body>
 
-  <div class="form-container">
-    {% block form_1 %}
+  {% include 'base/navbar.html' %}
 
-    {% endblock %}
+  <section class="content">
+    <div class="form-container">
+      {% block form_1 %}
 
-  </div>
-  <div class="form-container">
+      {% endblock %}
 
-    {% block form_2 %}
+    </div>
+    <div class="form-container">
 
-    {% endblock %}
+      {% block form_2 %}
 
-  </div>
+      {% endblock %}
 
-  <div class="form-container">
+    </div>
 
-    {% block form_3 %}
+    <div class="form-container">
 
-    {% endblock %}
-  </div>
+      {% block form_3 %}
 
+      {% endblock %}
+    </div>
 
+  </section>
 
-</section>
+</body>
+
 
 </html>
