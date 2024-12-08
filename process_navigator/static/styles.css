@@ -74,11 +74,16 @@ nav {
   height: 15%;
 }
 
-a {
+nav a {
   background-color: var(--ctp-mocha-crust);
   color: var(--ctp-mocha-text);
   text-decoration: none;
   font-size: 30px;
+}
+
+nav a:hover {
+  color: var(--ctp-mocha-blue);
+  font-size: 32px;
 }
 
 .content {
@@ -96,14 +101,19 @@ a {
   border-radius: 10px;
 
   /*form box*/
-  margin: 3rem 7rem 3rem 7rem;
-
-  padding: 1rem;
+  margin: 30px 60px 30px 60px;
+  padding: 20px;
   background-color: var(--ctp-mocha-crust);
-  height: 80%;
+  /*height: 80%;*/
   width: 33%;
 
 
   /*text stuff*/
 
+}
+
+.text_link {
+  color: var(--ctp-mocha-sky);
+  text-decoration: none;
+  font-size: var(--font-size);
 }
