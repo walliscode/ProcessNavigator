@@ -1,4 +1,4 @@
-""" Contains sqlalchemy models for the process_navigator app. """
+"""Contains sqlalchemy models for the process_navigator app."""
 
 from process_navigator.extensions import db
 
@@ -38,10 +38,12 @@ class Process(db.Model):
 # each Step describes a way to combine Inputs, Parameters and Method Parts including any quantities associated. Each Step is unique thus any unique combination of Inputs, Parameters and Method Parts will be a new Step
 class Step(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    method_part_id = db.Column(
-        db.Integer, db.ForeignKey("method_part.id"), nullable=False
+    process_method_part_id = db.Column(
+        db.Integer, db.ForeignKey("process_method_part.id"), nullable=False
     )
-    method_part = db.relationship("MethodPart", backref=db.backref("step", lazy=True))
+    process_method_part = db.relationship(
+        "ProcessMethodPart", backref=db.backref("step", lazy=True)
+    )
 
     def __repr__(self):
         return f"<Step {self.id}>"
@@ -58,32 +60,36 @@ class ProcessSteps(db.Model):
     step = db.relationship("Step", backref=db.backref("process_steps", lazy=True))
 
     def __repr__(self):
-        return f"<ProcessSteps {self.id}>"
+        return f"<Process Steps {self.id}>"
 
 
 # Method describe how a Process is carried out,
 # such as using a piece of equipment or how to handle an Entity
 
 
-class Method(db.Model):
+class ProcessMethod(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
-        return f"<Method {self.name}>"
+        return f"< Process Method {self.name}>"
 
 
 # The Method is broken down into method parts to describe different steps in the process.
 # This is a one to many relationship as a Method can have many Method Parts
 # but a Method Part can only belong to one Method
-class MethodPart(db.Model):
+class ProcessMethodPart(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    method_id = db.Column(db.Integer, db.ForeignKey("method.id"), nullable=False)
-    method = db.relationship("Method", backref=db.backref("method_part", lazy=True))
+    process_method_id = db.Column(
+        db.Integer, db.ForeignKey("process_method.id"), nullable=False
+    )
+    processmethod = db.relationship(
+        "ProcessMethod", backref=db.backref("process_method_part", lazy=True)
+    )
 
     def __repr__(self):
-        return f"<MethodPart {self.name}>"
+        return f"<Process Method Part {self.name}>"
 
 
 class Param(db.Model):
