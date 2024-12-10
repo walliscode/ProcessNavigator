@@ -13,7 +13,7 @@ def create_app(test_config=None):
     )  # Create an instance of the Flask class and assign it to the variable app
     app.config["SECRET_KEY"] = "dev"  # Set the secret key of the app to 'dev'
     app.config["SQLALCHEMY_DATABASE_URI"] = (
-        "sqlite:///app.db"  # Set the database URI to a SQLite database named db.sqlite
+        "postgresql://processnavigator:test@localhost/processnavigator"
     )
 
     # register blueprints

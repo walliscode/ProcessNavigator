@@ -1,30 +1,26 @@
 import logging
+
 import eralchemy2
 
+# import flask functionality
+from flask import current_app, render_template
 
 # get bp object and use as decorator
 from process_navigator.home import bp
 from process_navigator.models import db
-
-# import flask functionality
-from flask import render_template, current_app
-
 
 # render_templates looks for templates in the templates folder
 
 
 @bp.route("/")
 def index():
-
     return render_template("home/index.html")
 
 
 @bp.route("/erdiagram")
 def erdiagram():
-
     try:
-
-        db_path = "sqlite:///instance/app.db"
+        db_path = "postgresql://postgres:test@localhost/processnavigator"
         output_path = "process_navigator/static/images/erdiagram.png"
 
         # Log the paths being used

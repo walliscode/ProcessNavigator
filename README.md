@@ -6,12 +6,27 @@
     - run ```pip install -r .\requirements.txt```
     - equally to update requirements just run ```pip freeze > .\requirements.txt```
 
-2. create database 
-    - create the instance folder in the root directory (next to the process_navigator folder)
-    - if the database doesn't exist then it needs to be created via the python shell. If you run ``flask --app .\process_navigator\ shell``` in the terminal you will enter a python shell with app context. this allows you to perform database operations
-    - when in the shell run ```db.create_all()``` and the database will be created in the instance folder.
-    - ```ctrl-z``` to exit
-    - n.b. running ```db.drop_all() will clear the database file of all data and models. use wisely
+### Database set up
+1. This flask is designed around using a POSTGRESQL database. however altering the SQLALCHEMY_DATABASE_URI in the __init__.py file will allow you to use other DBMS.
+2. Install postgresql from the [official website](https://www.postgresql.org/download/) and set your password during installation.
+3. Add the postgres bin folder to the environment variables.
+4. Next open a termainal and type ```psql -U postgres``` to open the postgres shell. This is the superuser default for postgres and should use your password you set up during installation.
+
+5. Create a database by typing ```CREATE DATABASE processnavigator;``` in the shell. This will create a database called processnavigator.
+6. Create a user by typing ```CREATE USER processnavigator WITH PASSWORD 'test';``` in the shell. This will create a user called processnavigator with the password 'test'.
+7. Change the ownership of the database to the user by typing ```ALTER DATABASE processnavigator OWNER TO processnavigator;``` in the shell. This should grant the user full access to the database.
+8. Exit the shell by typing ```\q```.
+
+9. Now we need to create the tables from the schema in the python shell. To do this open a terminal and type ```flask --app process_navigator shell```. This will open the python shell with the app context.
+
+10. Now type the following commands in the shell to create the tables:
+    ```python
+    db.create_all()
+    ```
+
+11. Now you should have a database with the tables created.
+12. Exit the shell by typing ```exit()```.
+13. This should be one time setup. Any commands such as ```db.drop_all()``` will drop all the tables in the database and remove all data. HANDLE WITH CARE.
 
 ## Running the app
 1. open up virtual environment with ```.\.venv\Scripts\activate``` in the terminal
