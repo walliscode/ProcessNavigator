@@ -11,11 +11,14 @@ def create_app(test_config=None):
     app = Flask(
         __name__, instance_relative_config=True
     )  # Create an instance of the Flask class and assign it to the variable app
-    app.config["SECRET_KEY"] = "dev"  # Set the secret key of the app to 'dev'
-    app.config["SQLALCHEMY_DATABASE_URI"] = (
-        "postgresql://processnavigator:test@localhost/processnavigator"
-    )
 
+    if test_config is None:
+        app.config["SECRET_KEY"] = "dev"  # Set the secret key of the app to 'dev'
+        app.config["SQLALCHEMY_DATABASE_URI"] = (
+            "postgresql://processnavigator:test@localhost/processnavigator"
+        )
+    else:
+        app.config.from_mapping(test_config)
     # register blueprints
     app.register_blueprint(home.bp)
     # register extensions
