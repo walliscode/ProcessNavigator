@@ -1,5 +1,3 @@
-import logging
-
 import eralchemy2
 
 # import flask functionality
@@ -7,7 +5,6 @@ from flask import current_app, render_template
 
 # get bp object and use as decorator
 from process_navigator.home import bp
-from process_navigator.models import db
 
 # render_templates looks for templates in the templates folder
 
