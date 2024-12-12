@@ -6,7 +6,7 @@ class AnalysisMethod(db.Model):
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     analysis_method_part = db.relationship(
-        "AnalysisMethodPart", backref=db.backref("analysis_method", lazy=True)
+        "AnalysisMethodPart", back_populates="analysis_method"
     )
 
     def __repr__(self):
@@ -20,8 +20,8 @@ class AnalysisMethodPart(db.Model):
         db.Integer, db.ForeignKey("analysis_method.id"), nullable=False
     )
 
-    analysismethod = db.relationship(
-        "AnalysisMethod", backref=db.backref("analysis_method_part", lazy=True)
+    analysis_method = db.relationship(
+        "AnalysisMethod", back_populates="analysis_method_part"
     )
 
     def __repr__(self):
