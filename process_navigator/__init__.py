@@ -3,7 +3,7 @@
 from flask import Flask
 
 from process_navigator import home
-from process_navigator.extensions import db
+from process_navigator.extensions import db, refresh_database_command
 
 
 # create a create_app function that initializes the Flask application, we can add other logic depending on set up
@@ -23,4 +23,8 @@ def create_app(test_config=None):
     app.register_blueprint(home.bp)
     # register extensions
     db.init_app(app)
+
+    # register commands
+    app.cli.add_command(refresh_database_command)
+
     return app
