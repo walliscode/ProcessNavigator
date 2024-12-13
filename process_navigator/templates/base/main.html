@@ -14,27 +14,14 @@
   {% include 'base/navbar.html' %}
 
   <section class="content">
-    <div class="form-container">
-      {% block form_1 %}
+    {% block form_1 %}
+    {% endblock %}
 
-      {% endblock %}
+    {% block form_2 %}
+    {% endblock %}
 
-    </div>
-    <div class="form-container">
-
-      {% block form_2 %}
-
-      {% endblock %}
-
-    </div>
-
-    <div class="form-container">
-
-      {% block form_3 %}
-
-      {% endblock %}
-    </div>
-
+    {% block form_3 %}
+    {% endblock %}
   </section>
 
 </body>

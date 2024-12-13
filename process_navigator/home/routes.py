@@ -1,17 +1,68 @@
 import eralchemy2
 
 # import flask functionality
-from flask import current_app, render_template
+from flask import current_app, flash, render_template
 
-# get bp object and use as decorator
+from process_navigator.extensions import db
 from process_navigator.home import bp
+from process_navigator.models.admin import User
+from process_navigator.utils.decorators import session_keys
 
-# render_templates looks for templates in the templates folder
+from .forms import RegistrationForm
 
 
 @bp.route("/")
 def index():
     return render_template("home/index.html")
+
+
+# add registration route to add new user to User table
+@bp.route("/register", methods=["GET", "POST"])
+@session_keys()
+def register():
+    form = RegistrationForm()
+
+    if form.submit.data:
+        # first check if user email already exists
+        email_check = db.session.execute(
+            db.select(User).filter(User.email == form.email.data)
+        ).scalar()
+        # if email already exists, flash message and return to registration page
+        if email_check is not None:
+            flash(
+                "User with email {email} already exists.".format(email=form.email.data),
+                "error-message",
+            )
+            return render_template("home/register.html", form=form)
+
+        # if email does not exist, add user to the Database
+        new_user = User(
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            email=form.email.data,
+            password=form.password.data,
+        )
+        db.session.add(new_user)
+        db.session.commit()
+
+        # check if user was added to the Database
+        user_check = db.session.execute(
+            db.select(User).filter(User.email == form.email.data)
+        ).scalar()
+        if user_check is not None:
+            message = "User {first_name} {last_name} was registered successfully with email {email}.".format(
+                first_name=form.first_name.data,
+                last_name=form.last_name.data,
+                email=form.email.data,
+            )
+            flash(message, "success-message")
+        else:
+            message = "User {first_name} {last_name} was not registered.".format(
+                first_name=form.first_name.data, last_name=form.last_name.data
+            )
+            flash(message, "error-message")
+
+    return render_template("home/register.html", form=form)
 
 
 @bp.route("/erdiagram")
