@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, MappedAsDataclass
 
 
-# Create a base class for our models to inherit from, this is following the documentation from the flask_sqlalchemy website
 class Base(DeclarativeBase, MappedAsDataclass):
     pass
 

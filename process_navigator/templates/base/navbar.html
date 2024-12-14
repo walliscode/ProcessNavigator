@@ -1,4 +1,14 @@
 <nav>
+  {% if "user" in session %}
+  <div class="username">
+    <p>User: {{session["user"]["first_name"]}} {{session["user"]["last_name"]}} </p>
 
-  <a class="nav_link" href="{{ url_for('home.index') }}">HOME</a>
+  </div>
+  <a class="nav_link" href="{{ url_for('home.index') }}">Home</a>
+
+
+  {% else %}
+  <a class="nav_link" href="{{ url_for('home.register') }}">Register</a>
+  <a class="nav_link" href="{{ url_for('home.login') }}">Login</a>
+  {% endif %}
 </nav>

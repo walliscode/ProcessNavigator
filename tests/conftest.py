@@ -2,6 +2,7 @@ import pytest
 
 # get imports from process_navigator
 from process_navigator import create_app, db
+from process_navigator.models.admin import User
 
 # create a fixture to set up a temporary database for TESTING
 
@@ -29,3 +30,27 @@ def test_app():
 @pytest.fixture
 def client(test_app):
     return test_app.test_client()
+
+
+# create a admin register and login fixture
+@pytest.fixture
+def admin_user(client, test_app):
+    with test_app.app_context():
+        admin = User(
+            first_name="Fiber",
+            last_name="Admin",
+            email="fiber_admin@astrea-bio.com",
+            password="admin",
+            is_admin=True,
+        )
+        db.session.add(admin)
+        db.session.commit()
+
+    client.post(
+        "/login",
+        data={
+            "email": "fiber_admin@astrea-bio.com",
+            "password": "admin",
+            "submit": True,
+        },
+    )
