@@ -6,12 +6,13 @@ from flask import current_app, flash, redirect, render_template, session, url_fo
 from process_navigator.extensions import db
 from process_navigator.home import bp
 from process_navigator.models.admin import User
-from process_navigator.utils.decorators import session_keys
+from process_navigator.utils.decorators import login_required, session_keys
 
 from .forms import LoginForm, RegistrationForm
 
 
 @bp.route("/")
+@login_required
 @session_keys()
 def index():
     return render_template("home/index.html")
