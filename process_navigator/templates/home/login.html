@@ -1,0 +1,30 @@
+{% extends 'base/main.html' %}
+
+
+{% block form_1 %}
+<div class="form-container">
+  <h1>Login</h1>
+  <p>
+    Welcome to the login page. Please fill in the form to login to your account. This will use your email as a
+    unique identifier.
+  </p>
+</div>
+{% endblock %}
+
+{% from "helpers/_formhelpers.html" import render_field %}
+{% from "helpers/_formhelpers.html" import render_form_button %}
+{% block form_2 %}
+<div class="form-container">
+  <form method="post">
+    {{ csrf_token }}
+    {{ render_field(form.email) }}
+    {{ render_field(form.password) }}
+    {{ render_form_button(form.submit, class="add_button") }}
+  </form>
+  </div>
+{% endblock %}
+
+{% block form_3 %}
+{% from "helpers/_messagehelpers.html" import display_messages %}
+{{ display_messages() }}
+{% endblock %}

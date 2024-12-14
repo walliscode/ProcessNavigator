@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column
@@ -6,10 +7,11 @@ from sqlalchemy.sql import func
 from process_navigator.extensions import db
 
 
+@dataclass
 class User(db.Model):
     id: Mapped[int] = mapped_column(
         primary_key=True, init=False
-    )  # init prevents it from being passed in the constructor as the database will handle this
+    )  # init prevents it from being passed in the constructor
     first_name: Mapped[str] = mapped_column(nullable=False)
     last_name: Mapped[str] = mapped_column(nullable=False)
     email: Mapped[str] = mapped_column(nullable=False, unique=True)
