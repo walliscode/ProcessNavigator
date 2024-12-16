@@ -29,8 +29,32 @@
     "path": ["login_get"],
     "assertions": {
       "status_code": 200,
+      "content": ["Email", "Password", "Login"],
+      "session": {}
+    }
+  },
+  {
+    "path": ["login_user"],
+    "assertions": {
+      "status_code": 200,
+      "content": ["User with email test_user@astrea-bio.com does not exist."],
+      "session": {}
+    }
+  },
+  {
+    "path": ["register_user", "login_get", "login_user"],
+    "assertions": {
+      "status_code": 302,
+      "location": "/",
       "content": [],
       "session": {}
+    }
+  },
+  {
+    "path": ["register_user", "login_get", "login_user_bad_password"],
+    "assertions": {
+      "status_code": 200,
+      "content": ["Incorrect password for user test_user@astrea-bio.com."]
     }
   }
 ]
