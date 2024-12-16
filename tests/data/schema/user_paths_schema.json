@@ -20,6 +20,10 @@
             "type": "integer",
             "description": "The HTTP status code of the response"
           },
+          "location": {
+            "type": "string",
+            "description": "The location header of the response"
+          },
           "content": {
             "type": "array",
             "description": "The content of the response",
