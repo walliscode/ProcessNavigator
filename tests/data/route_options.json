@@ -1,0 +1,28 @@
+[
+  { "name": "home_get", "route": "/", "method": "GET", "data": {} },
+  {
+    "name": "register_get",
+    "route": "/register",
+    "method": "GET",
+    "data": {}
+  },
+  {
+    "name": "register_user",
+    "route": "/register",
+    "method": "POST",
+    "data": {
+      "first_name": "test",
+      "last_name": "user",
+      "email": "test_user@astrea-bio.com",
+      "password": "testpassword",
+      "submit": true
+    }
+  },
+
+  {
+    "name": "login_get",
+    "route": "/login",
+    "method": "GET",
+    "data": {}
+  }
+]

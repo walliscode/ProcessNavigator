@@ -1,0 +1,36 @@
+[
+  {
+    "path": ["home_get"],
+    "assertions": {
+      "status_code": 302,
+      "content": [],
+      "session": {}
+    }
+  },
+  {
+    "path": ["register_get"],
+    "assertions": {
+      "status_code": 200,
+      "content": [],
+      "session": {}
+    }
+  },
+  {
+    "path": ["register_user"],
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "User test user was registered successfully with email test_user@astrea-bio.com"
+      ],
+      "session": {}
+    }
+  },
+  {
+    "path": ["login_get"],
+    "assertions": {
+      "status_code": 200,
+      "content": [],
+      "session": {}
+    }
+  }
+]
