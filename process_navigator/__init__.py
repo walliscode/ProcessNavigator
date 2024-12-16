@@ -2,7 +2,7 @@
 
 from flask import Flask
 
-from process_navigator import home
+from process_navigator import data, home
 from process_navigator.extensions import db, refresh_database_command
 
 
@@ -20,7 +20,9 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
     # register blueprints
-    app.register_blueprint(home.bp)
+    blueprint_list = [home.bp, data.bp]
+    for blueprint in blueprint_list:
+        app.register_blueprint(blueprint)
     # register extensions
     db.init_app(app)
 
