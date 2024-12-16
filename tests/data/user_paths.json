@@ -56,5 +56,19 @@
       "status_code": 200,
       "content": ["Incorrect password for user test_user@astrea-bio.com."]
     }
+  },
+  {
+    "path": ["data_index_get"],
+    "assertions": {
+      "status_code": 302,
+      "location": "/login"
+    }
+  },
+  {
+    "path": ["register_user", "login_user", "data_index_get"],
+    "assertions": {
+      "status_code": 200,
+      "content": ["Click on the links below to take you to the relevant page"]
+    }
   }
 ]

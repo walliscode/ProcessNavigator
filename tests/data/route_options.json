@@ -44,5 +44,11 @@
       "password": "badpassword",
       "submit": true
     }
+  },
+  {
+    "name": "data_index_get",
+    "route": "/data/",
+    "method": "GET",
+    "data": {}
   }
 ]
