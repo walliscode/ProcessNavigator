@@ -1,0 +1,28 @@
+{
+  "type": "array",
+  "description": "collection of route options",
+  "items": {
+    "type": "object",
+    "description": "Schema for route options",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "user friendly route name/descirption"
+      },
+      "route": {
+        "type": "string",
+        "description": "Route path to feed into client"
+      },
+      "method": {
+        "type": "string",
+        "description": "HTTP method",
+        "enum": ["GET", "POST"]
+      },
+      "data": {
+        "type": "object",
+        "description": "Data to be sent with the request"
+      }
+    },
+    "required": ["name", "route", "method", "data"]
+  }
+}

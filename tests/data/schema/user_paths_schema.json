@@ -1,0 +1,38 @@
+{
+  "type": "array",
+  "description": "An array of user paths",
+  "items": {
+    "type": "object",
+    "description": "a path describing the user's journey through the site",
+    "properties": {
+      "path": {
+        "type": "array",
+        "description": "The path the user took through the site",
+        "items": {
+          "type": "string"
+        }
+      },
+      "assertions": {
+        "type": "object",
+        "description": "Assertions about the user's journey",
+        "properties": {
+          "status_code": {
+            "type": "integer",
+            "description": "The HTTP status code of the response"
+          },
+          "content": {
+            "type": "array",
+            "description": "The content of the response",
+            "items": {
+              "type": "string"
+            }
+          },
+          "session": {
+            "type": "object",
+            "description": "The session variables set by the response"
+          }
+        }
+      }
+    }
+  }
+}
