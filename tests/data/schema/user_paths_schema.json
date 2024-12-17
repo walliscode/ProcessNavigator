@@ -12,6 +12,10 @@
           "type": "string"
         }
       },
+      "description": {
+        "type": "string",
+        "description": "A description of the test route"
+      },
       "assertions": {
         "type": "object",
         "description": "Assertions about the user's journey",

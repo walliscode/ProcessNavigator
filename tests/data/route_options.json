@@ -50,5 +50,11 @@
     "route": "/data/",
     "method": "GET",
     "data": {}
+  },
+  {
+    "name": "method_get",
+    "route": "/data/methods",
+    "method": "GET",
+    "data": {}
   }
 ]

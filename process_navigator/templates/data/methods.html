@@ -1,0 +1,30 @@
+{% extends 'base/main.html' %}
+
+{% block form_1 %}
+<div class="form-container">
+<h1>Methods</h1>
+<p>
+Welcome to the methods page. Here we can add, edit and delete methods.
+</p>
+</div>
+{% endblock %}
+
+
+{% from "helpers/_formhelpers.html" import render_form_button %}
+{% block form_2 %}
+<div class="form-container">
+<form method="post">
+{{ csrf_token }}
+{{ render_form_button(form.add_method, class="add_button") }}
+{{ render_form_button(form.edit_method, class="edit_button") }}
+{{ render_form_button(form.delete_method, class="delete_button") }}
+</form>
+</div>
+{% endblock %}
+
+{% block form_3 %}
+<div class="form-container">
+<h1>Contact</h1>
+<p>Contact us!</p>
+</div>
+{% endblock %}

@@ -68,7 +68,25 @@
     "path": ["register_user", "login_user", "data_index_get"],
     "assertions": {
       "status_code": 200,
-      "content": ["Click on the links below to take you to the relevant page"]
+      "content": [
+        "Click on the links below to take you to the relevant page",
+        "<a href=\"/data/methods\">Methods</a>"
+      ]
+    }
+  },
+
+  {
+    "path": ["register_user", "login_user", "data_index_get", "method_get"],
+    "description": "User navigates to the method paga via the data index page",
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Methods",
+        "Welcome to the methods page. Here we can add, edit and delete methods.",
+        "Add Method",
+        "Edit Method",
+        "Delete Method"
+      ]
     }
   }
 ]
