@@ -12,15 +12,7 @@ from process_navigator import create_app, db
 @pytest.fixture
 def test_app():
     # initialize the app with testing configuration
-    test_app = create_app(
-        {
-            "TESTING": True,
-            "SECRET_KEY": "test",
-            "SQLALCHEMY_DATABASE_URI": (
-                "postgresql://processnavigator:test@localhost/processnavigator_test"
-            ),
-        }
-    )
+    test_app = create_app(test_config=True)
 
     with test_app.app_context():
         db.create_all()
