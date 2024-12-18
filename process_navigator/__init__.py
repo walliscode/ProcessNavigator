@@ -1,5 +1,7 @@
 # Import the Flask class from the flask module, which is the main class of the Flask framework
 
+from pathlib import Path
+
 from flask import Flask
 
 from process_navigator import data, home
@@ -7,18 +9,23 @@ from process_navigator.extensions import db, refresh_database_command
 
 
 # create a create_app function that initializes the Flask application, we can add other logic depending on set up
-def create_app(test_config=None):
+def create_app(test_config=False):
     app = Flask(
         __name__, instance_relative_config=True
     )  # Create an instance of the Flask class and assign it to the variable app
 
-    if test_config is None:
-        app.config["SECRET_KEY"] = "dev"  # Set the secret key of the app to 'dev'
-        app.config["SQLALCHEMY_DATABASE_URI"] = (
-            "postgresql://processnavigator:test@localhost/processnavigator"
-        )
+    # set up configuration
+    if test_config:
+        app.config.from_pyfile("testing_config.py")
+        app.config["FILE_STORAGE"] = Path(app.instance_path) / "test_file_storage"
     else:
-        app.config.from_mapping(test_config)
+        # make sure to change this for production
+        app.config.from_pyfile("development_config.py")
+        app.config["FILE_STORAGE"] = Path(app.instance_path) / "file_storage"
+
+    # ensure the instance folder exists
+    if not Path(app.config["FILE_STORAGE"]).exists():
+        Path(app.config["FILE_STORAGE"]).mkdir()
     # register blueprints
     blueprint_list = [home.bp, data.bp]
     for blueprint in blueprint_list:
