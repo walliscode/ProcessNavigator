@@ -38,6 +38,13 @@
           "session": {
             "type": "object",
             "description": "The session variables set by the response"
+          },
+          "security_keys": {
+            "type": "array",
+            "description": "The keys in session[security_keys], these are used to make sure the user is on the correct page",
+            "items": {
+              "type": "string"
+            }
           }
         }
       }

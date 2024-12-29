@@ -1,5 +1,10 @@
 """Contains sqlalchemy models for the process_navigator app."""
 
+from dataclasses import dataclass
+from typing import List
+
+from sqlalchemy.orm import Mapped, mapped_column
+
 from process_navigator.extensions import db
 
 
@@ -67,29 +72,38 @@ class ProcessSteps(db.Model):
 # such as using a piece of equipment or how to handle an Entity
 
 
+@dataclass
 class ProcessMethod(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True, init=False)
+    name: Mapped[str] = mapped_column(nullable=False)
+    file_name: Mapped[str] = mapped_column(nullable=False)
+
+    process_method_parts: Mapped[List["ProcessMethodPart"]] = db.relationship(
+        back_populates="process_method"
+    )
 
     def __repr__(self):
-        return f"< Process Method {self.name}>"
+        return f"<Process Method {self.name}>"
+
+
+@dataclass
+class ProcessMethodPart(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(nullable=False)
+    process_method_id: Mapped[int] = mapped_column(
+        db.ForeignKey("process_method.id"), nullable=False
+    )
+    process_method: Mapped["ProcessMethod"] = db.relationship(
+        back_populates="process_method_parts"
+    )
+
+    def __repr__(self):
+        return f"<Process Method Part {self.name}>"
 
 
 # The Method is broken down into method parts to describe different steps in the process.
 # This is a one to many relationship as a Method can have many Method Parts
 # but a Method Part can only belong to one Method
-class ProcessMethodPart(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    process_method_id = db.Column(
-        db.Integer, db.ForeignKey("process_method.id"), nullable=False
-    )
-    processmethod = db.relationship(
-        "ProcessMethod", backref=db.backref("process_method_part", lazy=True)
-    )
-
-    def __repr__(self):
-        return f"<Process Method Part {self.name}>"
 
 
 class Param(db.Model):

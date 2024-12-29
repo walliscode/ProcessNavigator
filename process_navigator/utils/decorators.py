@@ -16,11 +16,9 @@ def session_keys(required_keys=None):
             if required_keys is None:
                 return func(*args, **kwargs)
             for key, redirect_location in required_keys.items():
-                if (
-                    "security_keys" not in session
-                    or key not in session["security_keys"]
-                ):
+                if key not in session["security_keys"]:
                     return redirect(url_for(redirect_location))
+
                 return func(*args, **kwargs)
 
         return decorated_function

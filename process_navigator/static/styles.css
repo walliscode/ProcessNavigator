@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis/com/css?family=Raleway");
+
 /*set colour scheme for the app*/
 
 :root {
@@ -48,7 +50,7 @@
 
 /* Font used by Joplin */
 * {
-  font-family: var(--font-face) !important;
+  font-family: "Raleway", sans-serif;
 }
 
 html,
@@ -102,6 +104,7 @@ nav a:hover {
   padding: 20px;
   background-color: var(--ctp-mocha-crust);
   /*height: 80%;*/
+  max-width: 50%;
 }
 
 form h1 {
@@ -132,6 +135,24 @@ fieldset #submit {
 
 fieldset #submit:hover {
   cursor: pointer;
+}
+
+input {
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+/* some quick and dirty and orientation divs */
+.horizontal-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.vertical-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .add_button {
