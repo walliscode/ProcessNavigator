@@ -56,5 +56,19 @@
     "route": "/data/methods",
     "method": "GET",
     "data": {}
+  },
+  {
+    "name": "method_post_add_method",
+    "route": "/data/methods",
+    "method": "POST",
+    "data": {
+      "add_method": true
+    }
+  },
+  {
+    "name": "add_method_get",
+    "route": "/data/add_method",
+    "method": "GET",
+    "data": {}
   }
 ]

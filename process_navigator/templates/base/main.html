@@ -1,30 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <title></title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
-</head>
-
-
-
-<body>
-
-  {% include 'base/navbar.html' %}
-
-  <section class="content">
-    {% block form_1 %}
-    {% endblock %}
-
-    {% block form_2 %}
-    {% endblock %}
-
-    {% block form_3 %}
-    {% endblock %}
-  </section>
-
-</body>
-
-
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css')}}"
+    />
+  </head>
+  <body>
+    {% include 'base/navbar.html' %}
+    <section class="content">
+      {% block form_1 %} {% endblock %} {% block form_2 %} {% endblock %} {%
+      block form_3 %} {% endblock %}
+    </section>
+  </body>
 </html>

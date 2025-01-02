@@ -1,0 +1,28 @@
+{% extends 'base/main.html' %} {% block form_1 %}
+<div class="form-container">
+  <h1>Add Methods</h1>
+  <p>
+    Here you can add methods to the database. You have the option to add either
+    Process Methods or Analytical Methods. Process methods deal with how to
+    generate an Entity whereass Analytical Methods deal with how to analyze an
+    Entity or a Process (get data about its state).
+  </p>
+</div>
+{% endblock %} {% from "helpers/_formhelpers.html" import render_field %} {%
+from "helpers/_formhelpers.html" import render_form_button %} {% block form_2 %}
+<div class="form-container">
+  <h1>Add Process Method</h1>
+  <form method="post" enctype="multipart/form-data">
+    {{ csrf_token }} {{render_field(form.method_name)}}
+    {{render_field(form.method_description)}} {% for method_part in
+    form.method_parts %} {{render_field(method_part.form.method_part_name)}} {%
+    endfor %} {{render_form_button(form.method_file)}}
+    <div class="horizontal-container">
+      {{ render_form_button(form.add_method_part, class="add_button") }} {{
+      render_form_button(form.remove_method_part, class="delete_button") }}
+    </div>
+    {{ render_form_button(form.add_method, class="add_button") }}
+  </form>
+</div>
+{% endblock %} {% block form_3 %} {% from "helpers/_messagehelpers.html" import
+display_messages %} {{ display_messages() }} {% endblock %}

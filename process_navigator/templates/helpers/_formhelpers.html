@@ -1,21 +1,6 @@
 {% macro render_field(field) %}
-<fieldset>
-  {{ field.label }}
-  {{ field(**kwargs)|safe }}
-</fieldset>
-<dd>
-  {% if field.errors %}
-  <ul class=errors>
-    {% for error in field.errors %}
-    <li>{{ error }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-</dd>
-{% endmacro %}
+<fieldset>{{ field.label }} {{ field(**kwargs)|safe }}</fieldset>
 
-{% macro render_form_button(field) %}
-<fieldset>
-  {{ field(**kwargs)|safe }}
-</fieldset>
+{% endmacro %} {% macro render_form_button(field) %}
+<fieldset>{{ field(**kwargs)|safe }}</fieldset>
 {% endmacro %}

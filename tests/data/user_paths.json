@@ -88,5 +88,34 @@
         "Delete Method"
       ]
     }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "method_get",
+      "method_post_add_method"
+    ],
+    "description": "User starts add_method process from method page",
+    "assertions": {
+      "status_code": 302,
+      "location": "/data/add_method",
+      "security_keys": ["add_method"]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "method_get",
+      "method_post_add_method",
+      "add_method_get"
+    ],
+    "description": "User navigates to the add method page via the method page, this should be a valid route",
+    "assertions": {
+      "status_code": 200
+    }
   }
 ]

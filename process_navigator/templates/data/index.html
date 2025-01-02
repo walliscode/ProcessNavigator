@@ -1,29 +1,22 @@
-{% extends 'base/main.html' %}
-
-{% block form_1 %}
+{% extends 'base/main.html' %} {% block form_1 %}
 <div class="form-container">
-<h1>Data</h1>
-<p>
-Welcome to the Data landing page, here you can choose to upload or extract data.
-
-</p>
+  <h1>Data</h1>
+  <p>
+    Welcome to the Data landing page, here you can choose to upload or extract
+    data.i
+  </p>
 </div>
-{% endblock %}
-
-{% block form_2 %}
+{% endblock %} {% block form_2 %}
 <div class="form-container">
-<h1>Useful Links</h1>
-<p> Click on the links below to take you to the relevant page</p>
-<ul>
-  <a href="{{url_for('data.methods')}}">Methods</a>
-
-</ul>
+  <h1>Useful Links</h1>
+  <p>Click on the links below to take you to the relevant page</p>
+  <ul>
+    <a href="{{url_for('data.methods')}}">Methods</a>
+  </ul>
 </div>
-{% endblock %}
-
-{% block form_3 %}
+{% endblock %} {% block form_3 %}
 <div class="form-container">
-<h1>Contact</h1>
-<p>Contact us!</p>
+  <h1>Contact</h1>
+  <p>Contact us!</p>
 </div>
 {% endblock %}
