@@ -76,10 +76,12 @@ class ProcessSteps(db.Model):
 class ProcessMethod(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
     name: Mapped[str] = mapped_column(nullable=False)
+    description: Mapped[str] = mapped_column(nullable=False)
     file_name: Mapped[str] = mapped_column(nullable=False)
 
     process_method_parts: Mapped[List["ProcessMethodPart"]] = db.relationship(
-        back_populates="process_method"
+        back_populates="process_method",
+        default_factory=list,
     )
 
     def __repr__(self):
@@ -88,7 +90,7 @@ class ProcessMethod(db.Model):
 
 @dataclass
 class ProcessMethodPart(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True, init=False)
     name: Mapped[str] = mapped_column(nullable=False)
     process_method_id: Mapped[int] = mapped_column(
         db.ForeignKey("process_method.id"), nullable=False

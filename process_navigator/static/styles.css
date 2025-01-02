@@ -147,6 +147,7 @@ input {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  margin: 10px;
 }
 
 .vertical-container {
