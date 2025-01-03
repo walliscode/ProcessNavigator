@@ -66,8 +66,34 @@
     }
   },
   {
+    "name": "process_method_post_delete_method",
+    "route": "/data/process_methods",
+    "method": "POST",
+    "data": {
+      "delete_method": true
+    }
+  },
+  {
     "name": "add_process_method_get",
     "route": "/data/add_process_method",
+    "method": "GET",
+    "data": {}
+  },
+  {
+    "name": "delete_process_method_get",
+    "route": "/data/delete_process_method",
+    "method": "GET",
+    "data": {}
+  },
+  {
+    "name": "add_process_method_get",
+    "route": "/data/add_process_method",
+    "method": "GET",
+    "data": {}
+  },
+  {
+    "name": "delete_process_method_get",
+    "route": "/data/delete_process_method",
     "method": "GET",
     "data": {}
   }

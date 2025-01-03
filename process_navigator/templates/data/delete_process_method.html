@@ -1,0 +1,22 @@
+{% extends 'base/main.html' %} {% block form_1 %}
+<div class="form-container">
+  <h1>Delete Process Methods</h1>
+  <p>
+    Here we can delete Process Methods. By selecting a method from the dropdown
+    list and clicking the delete button, the Process Method and all associated
+    Method Parts will be deleted from the Database. This will not work if the
+    method is associated with any Processes.
+  </p>
+</div>
+{% endblock %} {% from "helpers/_formhelpers.html" import render_field %} {%
+from "helpers/_formhelpers.html" import render_form_button %} {% block form_2 %}
+<div class="form-container">
+  <h1>Delete Process Method</h1>
+  <form method="post">
+    {{ csrf_token }} {{render_field(form.process_method_list)}}
+    {{render_field(form.process_method_part_list)}} {{
+    render_form_button(form.delete_method, class="delete_button") }}
+  </form>
+</div>
+{% endblock %} {% block form_3 %} {% from "helpers/_messagehelpers.html" import
+display_messages %} {{ display_messages() }} {% endblock %}
