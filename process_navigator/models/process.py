@@ -3,9 +3,9 @@
 from dataclasses import dataclass
 from typing import List
 
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from process_navigator.extensions import db
+from process_navigator.extensions import Base, db
 
 
 # Define the models for the database
@@ -72,30 +72,31 @@ class ProcessSteps(db.Model):
 # such as using a piece of equipment or how to handle an Entity
 
 
-@dataclass
-class ProcessMethod(db.Model):
+class ProcessMethod(Base):
+    __tablename__ = "process_method"
+
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
     name: Mapped[str] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(nullable=False)
     file_name: Mapped[str] = mapped_column(nullable=False)
 
-    process_method_parts: Mapped[List["ProcessMethodPart"]] = db.relationship(
+    process_method_parts: Mapped[List["ProcessMethodPart"]] = relationship(
         back_populates="process_method",
-        default_factory=list,
+        init=False,
     )
 
     def __repr__(self):
         return f"<Process Method {self.name}>"
 
 
-@dataclass
-class ProcessMethodPart(db.Model):
+class ProcessMethodPart(Base):
+    __tablename__ = "process_method_part"
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
     name: Mapped[str] = mapped_column(nullable=False)
     process_method_id: Mapped[int] = mapped_column(
         db.ForeignKey("process_method.id"), nullable=False
     )
-    process_method: Mapped["ProcessMethod"] = db.relationship(
+    process_method: Mapped["ProcessMethod"] = relationship(
         back_populates="process_method_parts"
     )
 
