@@ -1,0 +1,14 @@
+{
+  "ProcessMethods": [
+    {
+      "name": "test_process_method_1",
+      "description": "test_description",
+      "file_name": "test_file_name.txt",
+      "parts": [
+        { "name": "test_part_1" },
+        { "name": "test_part_2" },
+        { "name": "test_part_3" }
+      ]
+    }
+  ]
+}
