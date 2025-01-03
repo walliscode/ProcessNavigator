@@ -52,22 +52,22 @@
     "data": {}
   },
   {
-    "name": "method_get",
-    "route": "/data/methods",
+    "name": "process_method_get",
+    "route": "/data/process_methods",
     "method": "GET",
     "data": {}
   },
   {
-    "name": "method_post_add_method",
-    "route": "/data/methods",
+    "name": "process_method_post_add_method",
+    "route": "/data/process_methods",
     "method": "POST",
     "data": {
       "add_method": true
     }
   },
   {
-    "name": "add_method_get",
-    "route": "/data/add_method",
+    "name": "add_process_method_get",
+    "route": "/data/add_process_method",
     "method": "GET",
     "data": {}
   }

@@ -15,25 +15,25 @@ def index():
     return render_template("data/index.html")
 
 
-@bp.route("/methods", methods=["GET", "POST"])
+@bp.route("/process_methods", methods=["GET", "POST"])
 @login_required
-def methods():
+def process_methods():
     form = MethodForm()
     form2 = CurrentMethodsForm()
 
     if form.add_method.data:
         # add security key to session of "add_method"
-        session["security_keys"].append("add_method")
+        session["security_keys"].append("add_process_method")
         # session does not automatically update when a list is modified (a mutable object)
         session.modified = True
-        return redirect(url_for("data.add_method"))
-    return render_template("data/methods.html", form=form, form2=form2)
+        return redirect(url_for("data.add_process_method"))
+    return render_template("data/process_methods.html", form=form, form2=form2)
 
 
-@bp.route("/add_method", methods=["GET", "POST"])
+@bp.route("/add_process_method", methods=["GET", "POST"])
 @login_required
-@session_keys({"add_method": "data.methods"})
-def add_method():
+@session_keys({"add_process_method": "data.process_methods"})
+def add_process_method():
     form = AddMethodForm()
 
     # add extra method part field if the add_method_part button is clicked
@@ -91,8 +91,8 @@ def add_method():
             flash(messsage)
 
             # remove security key from session and redirect to the methods page
-            session["security_keys"].remove("add_method")
+            session["security_keys"].remove("add_process_method")
             session.modified = True
             return redirect(url_for("data.methods"))
 
-    return render_template("data/add_method.html", form=form)
+    return render_template("data/add_process_method.html", form=form)

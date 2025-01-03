@@ -70,19 +70,24 @@
       "status_code": 200,
       "content": [
         "Click on the links below to take you to the relevant page",
-        "<a href=\"/data/methods\">Methods</a>"
+        "<a href=\"/data/process_methods\">Process Methods</a>"
       ]
     }
   },
 
   {
-    "path": ["register_user", "login_user", "data_index_get", "method_get"],
-    "description": "User navigates to the method paga via the data index page",
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "process_method_get"
+    ],
+    "description": "User navigates to the process method page via the data index page",
     "assertions": {
       "status_code": 200,
       "content": [
-        "Methods",
-        "Welcome to the methods page. Here we can add, edit and delete methods.",
+        "Process Methods",
+        "Welcome to the Process Methods page",
         "Add Method",
         "Edit Method",
         "Delete Method"
@@ -94,14 +99,14 @@
       "register_user",
       "login_user",
       "data_index_get",
-      "method_get",
-      "method_post_add_method"
+      "process_method_get",
+      "process_method_post_add_method"
     ],
-    "description": "User starts add_method process from method page",
+    "description": "User starts 'add process method' process from method page",
     "assertions": {
       "status_code": 302,
-      "location": "/data/add_method",
-      "security_keys": ["add_method"]
+      "location": "/data/add_process_method",
+      "security_keys": ["add_process_method"]
     }
   },
   {
@@ -109,9 +114,9 @@
       "register_user",
       "login_user",
       "data_index_get",
-      "method_get",
-      "method_post_add_method",
-      "add_method_get"
+      "process_method_get",
+      "process_method_post_add_method",
+      "add_process_method_get"
     ],
     "description": "User navigates to the add method page via the method page, this should be a valid route",
     "assertions": {
