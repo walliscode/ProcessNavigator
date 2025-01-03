@@ -4,7 +4,7 @@ from wtforms.validators import InputRequired
 from wtforms_sqlalchemy.fields import QuerySelectField
 
 from process_navigator.extensions import db
-from process_navigator.models.process import ProcessMethod
+from process_navigator.models.process import ProcessMethod, ProcessMethodPart
 
 
 class MethodForm(FlaskForm):
@@ -15,6 +15,10 @@ class MethodForm(FlaskForm):
 
 def get_current_process_methods():
     return db.session.execute(db.select(ProcessMethod)).scalars()
+
+
+def get_current_process_method_parts():
+    return db.session.execute(db.select(ProcessMethodPart)).scalars()
 
 
 class CurrentMethodsForm(FlaskForm):
@@ -38,3 +42,17 @@ class AddMethodForm(FlaskForm):
     method_file = FileField("Method File", validators=[InputRequired()])
     add_method = SubmitField("Add Method")
     reset = SubmitField("Reset")
+
+
+class DeleteProcessMethodForm(FlaskForm):
+    process_method_list = QuerySelectField(
+        "Process Method List",
+        allow_blank=False,
+        query_factory=get_current_process_methods,
+    )
+    process_method_part_list = QuerySelectField(
+        "Process Method Part List",
+        allow_blank=False,
+        query_factory=get_current_process_method_parts,
+    )
+    delete_method = SubmitField("Delete Method")

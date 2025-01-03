@@ -122,5 +122,31 @@
     "assertions": {
       "status_code": 200
     }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "delete_process_method_get"
+    ],
+    "description": "User navgiates to the delete process method page without going via tht e process method page, this should redirect to the process method page",
+    "assertions": {
+      "status_code": 302,
+      "location": "/data/process_methods"
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "process_method_post_delete_method",
+      "delete_process_method_get"
+    ],
+    "description": "User navigates to the delete process method page via the process method page, this should be a valid route",
+    "assertions": {
+      "status_code": 200
+    }
   }
 ]

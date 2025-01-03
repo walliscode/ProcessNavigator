@@ -83,6 +83,7 @@ class ProcessMethod(Base):
     process_method_parts: Mapped[List["ProcessMethodPart"]] = relationship(
         back_populates="process_method",
         init=False,
+        cascade="all, delete",
     )
 
     def __repr__(self):
