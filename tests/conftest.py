@@ -6,6 +6,8 @@ import pytest  # get imports from process_navigator
 
 from process_navigator import create_app, db
 
+from .load_data import load_test_data
+
 # create a fixture to set up a temporary database for TESTING
 
 
@@ -16,6 +18,13 @@ def test_app():
 
     with test_app.app_context():
         db.create_all()
+
+        # upload test data to the database
+        test_data_path = Path.cwd() / "tests" / "data" / "test_data.json"
+        with open(test_data_path) as test_data:
+            test_data = json.load(test_data)
+            load_test_data(json_data=test_data)
+
     yield test_app
     with test_app.app_context():
         db.drop_all()
