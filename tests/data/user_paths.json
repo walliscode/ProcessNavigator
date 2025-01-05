@@ -1,6 +1,7 @@
 [
   {
     "path": ["home_get"],
+    "follow_redirects": false,
     "assertions": {
       "status_code": 302,
       "content": [],
@@ -9,6 +10,7 @@
   },
   {
     "path": ["register_get"],
+    "follow_redirects": false,
     "assertions": {
       "status_code": 200,
       "content": [],
@@ -17,6 +19,7 @@
   },
   {
     "path": ["register_user"],
+    "follow_redirects": false,
     "assertions": {
       "status_code": 200,
       "content": [
@@ -27,6 +30,7 @@
   },
   {
     "path": ["login_get"],
+    "follow_redirects": false,
     "assertions": {
       "status_code": 200,
       "content": ["Email", "Password", "Login"],
@@ -35,6 +39,7 @@
   },
   {
     "path": ["login_user"],
+    "follow_redirects": false,
     "assertions": {
       "status_code": 200,
       "content": ["User with email test_user@astrea-bio.com does not exist."],
@@ -43,6 +48,7 @@
   },
   {
     "path": ["register_user", "login_get", "login_user"],
+    "follow_redirects": false,
     "assertions": {
       "status_code": 302,
       "location": "/",
@@ -52,6 +58,7 @@
   },
   {
     "path": ["register_user", "login_get", "login_user_bad_password"],
+    "follow_redirects": false,
     "assertions": {
       "status_code": 200,
       "content": ["Incorrect password for user test_user@astrea-bio.com."]
@@ -59,6 +66,7 @@
   },
   {
     "path": ["data_index_get"],
+    "follow_redirects": false,
     "assertions": {
       "status_code": 302,
       "location": "/login"
@@ -66,6 +74,7 @@
   },
   {
     "path": ["register_user", "login_user", "data_index_get"],
+    "follow_redirects": false,
     "assertions": {
       "status_code": 200,
       "content": [
@@ -83,6 +92,7 @@
       "process_method_get"
     ],
     "description": "User navigates to the process method page via the data index page",
+    "follow_redirects": false,
     "assertions": {
       "status_code": 200,
       "content": [
@@ -103,6 +113,8 @@
       "process_method_post_add_method"
     ],
     "description": "User starts 'add process method' process from method page",
+    "follow_redirects": false,
+
     "assertions": {
       "status_code": 302,
       "location": "/data/add_process_method",
@@ -119,6 +131,7 @@
       "add_process_method_get"
     ],
     "description": "User navigates to the add method page via the method page, this should be a valid route",
+    "follow_redirects": false,
     "assertions": {
       "status_code": 200
     }
@@ -131,6 +144,7 @@
       "delete_process_method_get"
     ],
     "description": "User navgiates to the delete process method page without going via tht e process method page, this should redirect to the process method page",
+    "follow_redirects": false,
     "assertions": {
       "status_code": 302,
       "location": "/data/process_methods"
@@ -145,8 +159,28 @@
       "delete_process_method_get"
     ],
     "description": "User navigates to the delete process method page via the process method page, this should be a valid route",
+    "follow_redirects": false,
     "assertions": {
       "status_code": 200
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "process_method_post_delete_method",
+      "delete_process_method_get",
+      "delete_process_method_post"
+    ],
+    "description": "User deletes a process method",
+    "follow_redirects": true,
+    "assertions": {
+      "status_code": 200,
+      "location": "/data/process_methods",
+      "content": [
+        "Process Method test_process_method_1 and Process Method Parts test_part_1, test_part_2, test_part_3 deleted from database"
+      ]
     }
   }
 ]

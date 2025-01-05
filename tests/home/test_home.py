@@ -23,9 +23,15 @@ def test_(client, route_options, user_path):
             data = route_info["data"]
 
             if method == "GET":
-                response = client.get(route)
+                if user_path["follow_redirects"]:
+                    response = client.get(route, follow_redirects=True)
+                else:
+                    response = client.get(route)
             elif method == "POST":
-                response = client.post(route, data=data)
+                if user_path["follow_redirects"]:
+                    response = client.post(route, data=data, follow_redirects=True)
+                else:
+                    response = client.post(route, data=data)
 
             else:
                 raise ValueError("Invalid method")
@@ -34,12 +40,16 @@ def test_(client, route_options, user_path):
         assert response.status_code == user_path["assertions"]["status_code"]
         # if Location data then assert the Location of the response
         if "location" in user_path["assertions"]:
-            assert response.headers["Location"] == user_path["assertions"]["location"]
+            if user_path["follow_redirects"]:
+                assert response.request.path == user_path["assertions"]["location"]
+            else:
+                assert (
+                    response.headers["Location"] == user_path["assertions"]["location"]
+                )
         # assert the session data
         if "session" in user_path["assertions"]:
             for key, value in user_path["assertions"]["session"].items():
                 assert session[key] == value
-
         # assert security keys in session data
         if "security_keys" in user_path["assertions"]:
             for key in user_path["assertions"]["security_keys"]:
