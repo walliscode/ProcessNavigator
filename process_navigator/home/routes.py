@@ -109,6 +109,12 @@ def login():
     return render_template("home/login.html", form=form)
 
 
+@bp.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("home.login"))
+
+
 @bp.route("/erdiagram")
 def erdiagram():
     try:
