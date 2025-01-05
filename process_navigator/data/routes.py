@@ -130,17 +130,25 @@ def delete_process_method():
 
         # if present return an error message
         if process_method_query:
+            parts = ", ".join(
+                [part.name for part in process_method_query.process_method_parts]
+            )
+
             message = "Process Method {name} and Process Method Parts {parts} not deleted from database".format(
                 name=process_method.name,
-                parts=[part.name for part in process_method.process_method_parts],
+                parts=parts,
             )
             flash(message)
             return redirect(url_for("data.delete_process_method"))
 
         elif not process_method_query:
+            parts = ", ".join(
+                [part.name for part in process_method.process_method_parts]
+            )
+
             message = "Process Method {name} and Process Method Parts {parts} deleted from database".format(
                 name=process_method.name,
-                parts=[part.name for part in process_method.process_method_parts],
+                parts=parts,
             )
             flash(message)
 

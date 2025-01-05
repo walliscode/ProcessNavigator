@@ -96,5 +96,14 @@
     "route": "/data/delete_process_method",
     "method": "GET",
     "data": {}
+  },
+  {
+    "name": "delete_process_method_post",
+    "route": "/data/delete_process_method",
+    "method": "POST",
+    "data": {
+      "delete_method": true,
+      "process_method_list": 1
+    }
   }
 ]
