@@ -9,6 +9,7 @@ from process_navigator.utils.file_handling import save_file
 from .forms import (
     AddMethodForm,
     CurrentMethodsForm,
+    CurrentUnitsForm,
     DeleteProcessMethodForm,
     MethodForm,
     UnitsForm,
@@ -169,4 +170,5 @@ The next routes deal with adding, editing and deleting Units from the database
 @login_required
 def units():
     form = UnitsForm()
-    return render_template("data/units.html", form=form)
+    form2 = CurrentUnitsForm()
+    return render_template("data/units.html", form=form, form2=form2)

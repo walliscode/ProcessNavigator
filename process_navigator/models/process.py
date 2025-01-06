@@ -1,6 +1,5 @@
 """Contains sqlalchemy models for the process_navigator app."""
 
-from dataclasses import dataclass
 from typing import List
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -126,15 +125,6 @@ class Input(db.Model):
 
     def __repr__(self):
         return f"<Input {self.name}>"
-
-
-class Unit(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    symbol = db.Column(db.String(10), nullable=False)
-
-    def __repr__(self):
-        return f"<Unit {self.name}>"
 
 
 class StepInput(db.Model):

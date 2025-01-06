@@ -20,5 +20,8 @@
 {% block form_3 %}
     {% from "helpers/_messagehelpers.html" import
     display_messages %} {{ display_messages() }}
-    <div class="form-container">{{ form2.current_methods }}</div>
+    <div class="form-container">
+        <h2>Current Process Methods</h2>
+        {{ form2.current_methods }}
+    </div>
 {% endblock %}

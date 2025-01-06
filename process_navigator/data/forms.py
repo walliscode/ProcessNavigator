@@ -5,6 +5,7 @@ from wtforms_sqlalchemy.fields import QuerySelectField
 
 from process_navigator.extensions import db
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
+from process_navigator.models.units import Unit
 
 
 class MethodForm(FlaskForm):
@@ -62,3 +63,13 @@ class UnitsForm(FlaskForm):
     add_units = SubmitField("Add Units")
     edit_units = SubmitField("Edit Units")
     delete_units = SubmitField("Delete Units")
+
+
+def get_current_units():
+    return db.session.execute(db.select(Unit)).scalars()
+
+
+class CurrentUnitsForm(FlaskForm):
+    current_units = QuerySelectField(
+        "Current Units", allow_blank=False, query_factory=get_current_units
+    )
