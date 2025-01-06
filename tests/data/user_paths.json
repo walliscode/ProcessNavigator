@@ -182,5 +182,20 @@
         "Process Method test_process_method_1 and Process Method Parts test_part_1, test_part_2, test_part_3 deleted from database"
       ]
     }
+  },
+  {
+    "path": ["register_user", "login_user", "data_index_get", "units_get"],
+    "description": "User navigates to the units page via the data index page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Units",
+        "Welcome to the Units page",
+        "Add Unit",
+        "Edit Unit",
+        "Delete Unit"
+      ]
+    }
   }
 ]

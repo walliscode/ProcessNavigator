@@ -87,6 +87,11 @@ nav a:hover {
   font-size: 32px;
 }
 
+ul {
+  display: flex;
+  flex-direction: column;
+}
+
 .nav-button {
   display: inline-block;
   padding: 10px 20px;

@@ -1,0 +1,23 @@
+{% extends 'base/main.html' %}
+{% block form_1 %}
+    <div class="form-container">
+        <h1>Units</h1>
+        <p>Welcome to the Units page. Here we can add, edit and delete units.</p>
+    </div>
+{% endblock %}
+{% from "helpers/_formhelpers.html" import render_form_button %}
+{% block form_2 %}
+    <div class="form-container">
+        <form method="post">
+            {{ csrf_token }}
+            {{ render_form_button(form.add_units, class = "add_button") }}
+            {{ render_form_button(form.edit_units, class = "edit_button") }}
+            {{ render_form_button(form.delete_units, class = "delete_button") }}
+        </form>
+    </div>
+{% endblock %}
+{% block form_3 %}
+    {% from "helpers/_messagehelpers.html" import
+    display_messages %} {{ display_messages() }}
+    <div class="form-container"></div>
+{% endblock %}

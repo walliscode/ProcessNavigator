@@ -11,6 +11,7 @@ from .forms import (
     CurrentMethodsForm,
     DeleteProcessMethodForm,
     MethodForm,
+    UnitsForm,
 )
 
 
@@ -157,3 +158,15 @@ def delete_process_method():
             session.modified = True
             return redirect(url_for("data.process_methods"))
     return render_template("data/delete_process_method.html", form=form)
+
+
+"""
+The next routes deal with adding, editing and deleting Units from the database
+"""
+
+
+@bp.route("/units", methods=["GET", "POST"])
+@login_required
+def units():
+    form = UnitsForm()
+    return render_template("data/units.html", form=form)

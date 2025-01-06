@@ -105,5 +105,11 @@
       "delete_method": true,
       "process_method_list": 1
     }
+  },
+  {
+    "name": "units_get",
+    "route": "/data/units",
+    "method": "GET",
+    "data": {}
   }
 ]
