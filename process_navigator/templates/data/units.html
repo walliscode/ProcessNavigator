@@ -19,5 +19,8 @@
 {% block form_3 %}
     {% from "helpers/_messagehelpers.html" import
     display_messages %} {{ display_messages() }}
-    <div class="form-container"></div>
+    <div class="form-container">
+        <h2>Current Units</h2>
+        {{ form2.current_units }}
+    </div>
 {% endblock %}
