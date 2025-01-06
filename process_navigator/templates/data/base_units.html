@@ -1,0 +1,32 @@
+{% extends 'base/main.html' %}
+{% block form_1 %}
+    <div class="form-container">
+        <h1>Base Units</h1>
+        <p>
+            Here you can add base units to the database. Base units are the fundamental
+            units of measurement that are used to define other units of measurement.
+        </p>
+    </div>
+{% endblock %}
+{% from "helpers/_formhelpers.html" import render_field %} {% from "helpers/_formhelpers.html" import render_form_button %}
+{% block form_2 %}
+    <div class="form-container">
+        <h1>Add Base Unit</h1>
+        <form method="post" enctype="multipart/form-data">
+            {{ csrf_token }} {{ render_field(form.unit_name) }}
+            {{ render_field(form.unit_symbol) }}
+            {{ render_form_button(form.add_base_unit, class = "add_button") }}
+        </form>
+    </div>
+{% endblock %}
+{% block form_3 %}
+    {% from "helpers/_messagehelpers.html" import display_messages %}
+    {{ display_messages() }}
+    <div class="form-container">
+        <h2>Current Base Units</h2>
+        <form method = "post">
+            {{ form.current_base_units }}
+            {{ render_form_button(form.delete_base_unit, class = "delete_button") }}
+        </form>
+    </div>
+{% endblock %}

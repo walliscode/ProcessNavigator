@@ -3,15 +3,18 @@ from flask import flash, redirect, render_template, session, url_for
 from process_navigator.data import bp
 from process_navigator.extensions import db
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
+from process_navigator.models.units import BaseUnit, UnitModifier
 from process_navigator.utils.decorators import login_required, session_keys
 from process_navigator.utils.file_handling import save_file
 
 from .forms import (
     AddMethodForm,
+    BaseUnitForm,
     CurrentMethodsForm,
     CurrentUnitsForm,
     DeleteProcessMethodForm,
     MethodForm,
+    UnitModifierForm,
     UnitsForm,
 )
 
@@ -172,3 +175,141 @@ def units():
     form = UnitsForm()
     form2 = CurrentUnitsForm()
     return render_template("data/units.html", form=form, form2=form2)
+
+
+@bp.route("/base_units", methods=["GET", "POST"])
+@login_required
+def base_units():
+    form = BaseUnitForm()
+
+    if form.add_base_unit.data:
+        # check whether the base unit already exists in the database
+        base_unit_query = db.session.execute(
+            db.select(BaseUnit).filter(BaseUnit.name == form.unit_name.data)
+        ).scalar()
+
+        if base_unit_query:
+            message = "Base Unit {name} already exists".format(name=form.unit_name.data)
+            flash(message)
+            return redirect(url_for("data.base_units"))
+
+        new_base_unit = BaseUnit(name=form.unit_name.data, symbol=form.unit_symbol.data)
+
+        db.session.add(new_base_unit)
+        db.session.commit()
+
+        new_base_unit_query = db.session.execute(
+            db.select(BaseUnit).filter(BaseUnit.name == form.unit_name.data)
+        ).scalar()
+
+        if new_base_unit_query:
+            message = "Base Unit {name} added to database".format(
+                name=new_base_unit.name
+            )
+            flash(message)
+            return redirect(url_for("data.base_units"))
+
+        elif not new_base_unit_query:
+            message = "Base Unit {name} not added to database".format(
+                name=new_base_unit.name
+            )
+            flash(message)
+            return redirect(url_for("data.base_units"))
+
+    if form.delete_base_unit.data:
+        base_unit = form.current_base_units.data
+
+        db.session.delete(base_unit)
+        db.session.commit()
+
+        base_unit_query = db.session.execute(
+            db.select(BaseUnit).filter(BaseUnit.name == base_unit.name)
+        ).scalar()
+
+        if base_unit_query:
+            message = "Base Unit {name} not deleted from database".format(
+                name=base_unit.name
+            )
+            flash(message)
+            return redirect(url_for("data.base_units"))
+
+        elif not base_unit_query:
+            message = "Base Unit {name} deleted from database".format(
+                name=base_unit.name
+            )
+            flash(message)
+            return redirect(url_for("data.base_units"))
+
+    return render_template("data/base_units.html", form=form)
+
+
+@bp.route("/unit_modifiers", methods=["GET", "POST"])
+@login_required
+def unit_modifiers():
+    form = UnitModifierForm()
+
+    if form.add_unit_modifier.data:
+        # check whether the unit modifier already exists in the database
+        unit_modifier_query = db.session.execute(
+            db.select(UnitModifier).filter(UnitModifier.name == form.modifier_name.data)
+        ).scalar()
+
+        if unit_modifier_query:
+            message = "Unit Modifier {name} already exists".format(
+                name=form.modifier_name.data
+            )
+            flash(message)
+            return redirect(url_for("data.unit_modifiers"))
+
+        new_unit_modifier = UnitModifier(
+            name=form.modifier_name.data.__str__(),
+            symbol=form.modifier_symbol.data,
+            multiplier=form.modifier_multiplier.data,
+        )
+
+        db.session.add(new_unit_modifier)
+        db.session.commit()
+
+        new_unit_modifier_query = db.session.execute(
+            db.select(UnitModifier).filter(UnitModifier.name == form.modifier_name.data)
+        ).scalar()
+
+        if new_unit_modifier_query:
+            message = "Unit Modifier {name} added to database".format(
+                name=new_unit_modifier.name
+            )
+            flash(message)
+            return redirect(url_for("data.unit_modifiers"))
+
+        elif not new_unit_modifier_query:
+            message = "Unit Modifier {name} not added to database".format(
+                name=new_unit_modifier.name
+            )
+            flash(message)
+            return redirect(url_for("data.unit_modifiers"))
+
+    if form.delete_unit_modifier.data:
+        unit_modifier = form.current_unit_modifiers.data
+
+        db.session.delete(unit_modifier)
+        db.session.commit()
+
+        unit_modifier_query = db.session.execute(
+            db.select(UnitModifier).filter(UnitModifier.name == unit_modifier.name)
+        ).scalar()
+
+        if unit_modifier_query:
+            message = "Unit Modifier {name} not deleted from database".format(
+                name=unit_modifier.name
+            )
+            flash(message)
+            return redirect(url_for("data.unit_modifiers"))
+
+        elif not unit_modifier_query:
+            message = "Unit Modifier {name} deleted from database".format(
+                name=unit_modifier.name
+            )
+            flash(message)
+            return redirect(url_for("data.unit_modifiers"))
+
+    return render_template("data/unit_modifiers.html", form=form)
