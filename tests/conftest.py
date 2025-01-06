@@ -5,8 +5,7 @@ import jsonschema
 import pytest  # get imports from process_navigator
 
 from process_navigator import create_app, db
-
-from .load_data import load_test_data
+from tests.load_data import load_test_data
 
 # create a fixture to set up a temporary database for TESTING
 

@@ -56,3 +56,9 @@ class DeleteProcessMethodForm(FlaskForm):
         query_factory=get_current_process_method_parts,
     )
     delete_method = SubmitField("Delete Method")
+
+
+class UnitsForm(FlaskForm):
+    add_units = SubmitField("Add Units")
+    edit_units = SubmitField("Edit Units")
+    delete_units = SubmitField("Delete Units")
