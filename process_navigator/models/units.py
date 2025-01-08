@@ -1,5 +1,6 @@
 from typing import List
 
+from markupsafe import Markup
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from process_navigator.extensions import Base, db
@@ -48,7 +49,7 @@ class Unit(Base):
     )
 
     def __repr__(self):
-        return f"<Unit {self.name}>"
+        return "Unit {name} ({symbol})".format(name=self.name, symbol=self.symbol)
 
 
 class UnitCombination(Base):
@@ -64,12 +65,14 @@ class UnitCombination(Base):
     )
     exponent: Mapped[int] = mapped_column(nullable=False)
 
-    unit: Mapped["Unit"] = relationship("Unit", back_populates="unit_combinations")
+    unit: Mapped["Unit"] = relationship(
+        "Unit", back_populates="unit_combinations", init=False
+    )
     base_unit: Mapped["BaseUnit"] = relationship(
-        "BaseUnit", back_populates="unit_combinations"
+        "BaseUnit", back_populates="unit_combinations", init=False
     )
     unit_modifier: Mapped["UnitModifier"] = relationship(
-        "UnitModifier", back_populates="unit_combinations"
+        "UnitModifier", back_populates="unit_combinations", init=False
     )
 
     def __repr__(self):

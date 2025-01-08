@@ -1,14 +1,16 @@
 from flask import flash, redirect, render_template, session, url_for
+from wtforms.validators import InputRequired
 
 from process_navigator.data import bp
 from process_navigator.extensions import db
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
-from process_navigator.models.units import BaseUnit, UnitModifier
+from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
 from process_navigator.utils.decorators import login_required, session_keys
 from process_navigator.utils.file_handling import save_file
 
 from .forms import (
     AddMethodForm,
+    AddUnitForm,
     BaseUnitForm,
     CurrentMethodsForm,
     CurrentUnitsForm,
@@ -174,7 +176,132 @@ The next routes deal with adding, editing and deleting Units from the database
 def units():
     form = UnitsForm()
     form2 = CurrentUnitsForm()
-    return render_template("data/units.html", form=form, form2=form2)
+
+    symbol_query = db.session.execute(db.select(Unit)).first()
+    test_text = symbol_query
+    if form.add_units.data:
+        # add security key to session of "add_units"
+        session["security_keys"].append("add_unit")
+        # session does not automatically update when a list is modified (a mutable object)
+        session.modified = True
+        return redirect(url_for("data.add_unit"))
+    return render_template(
+        "data/units.html", form=form, form2=form2, test_text=test_text
+    )
+
+
+@bp.route("/add_unit", methods=["GET", "POST"])
+@login_required
+@session_keys({"add_unit": "data.units"})
+def add_unit():
+    form = AddUnitForm()
+
+    if form.add_unit_part.data:
+        # adds another entry to the unit_combinations form
+        form.unit_combinations.append_entry()
+
+    if form.add_unit.data:
+        # first check the unit by name whether it already exists in the database
+        unit_query = db.session.execute(
+            db.select(Unit).filter(Unit.name == form.unit_name.data)
+        ).scalar()
+
+        if unit_query is not None:
+            message = "Unit {name} already exists".format(name=form.unit_name.data)
+            flash(message)
+            return redirect(url_for("data.add_unit"))
+
+        # check whether the unit combination is unique
+        # if at any point a unit combination is not found then the unit combination is unique
+        unit_combination_is_unique = False
+        for unit_combination in form.unit_combinations:
+            unit_combination_query = db.session.execute(
+                db.select(UnitCombination)
+                .filter(
+                    UnitCombination.base_unit_id == unit_combination.base_unit.data.id
+                )
+                .filter(
+                    UnitCombination.unit_modifier_id
+                    == unit_combination.unit_modifier.data.id
+                )
+                .filter(UnitCombination.exponent == unit_combination.exponent.data)
+            ).scalar()
+
+            if not unit_combination_query:
+                unit_combination_is_unique = True
+                break
+
+        if not unit_combination_is_unique:
+            message = "That combination of unit parts already exists"
+            flash(message)
+            return redirect(url_for("data.add_unit"))
+
+        # if the unit_combination is unique then add the unit to the database
+        if unit_combination_is_unique:
+            # first add the Unit, the symbol is generated from the Unit Parts
+
+            symbol = ""
+            for unit_part in form.unit_combinations:
+                symbol += unit_part.unit_modifier.data.symbol
+                symbol += unit_part.base_unit.data.symbol
+                symbol += "^"
+                symbol += unit_part.exponent.data.__str__()
+
+            html_symbol = ""
+
+            for unit_part in form.unit_combinations:
+                html_symbol += unit_part.unit_modifier.data.symbol
+                html_symbol += unit_part.base_unit.data.symbol
+                html_symbol += "<sup>"
+                html_symbol += unit_part.exponent.data.__str__()
+                html_symbol += "</sup>"
+
+            new_unit = Unit(
+                name=form.unit_name.data.__str__(),
+                symbol=symbol,
+                html_symbol=html_symbol,
+            )
+
+            db.session.add(new_unit)
+            db.session.commit()
+
+            # now add the unit combinations to the database
+
+            for unit_combination in form.unit_combinations:
+                new_unit_combination = UnitCombination(
+                    unit_id=new_unit.id,
+                    base_unit_id=unit_combination.base_unit.data.id,
+                    unit_modifier_id=unit_combination.unit_modifier.data.id,
+                    exponent=unit_combination.exponent.data,
+                )
+
+                db.session.add(new_unit_combination)
+
+            db.session.commit()
+
+            # check if the unit has been added to the database
+            unit_query = db.session.execute(
+                db.select(Unit).filter(Unit.name == form.unit_name.data)
+            ).scalar()
+
+            # return message depending on result of the unit_query
+            if unit_query:
+                message = "Unit {name} added to database".format(name=unit_query.name)
+                flash(message)
+
+                # remove security key from session and redirect to the units page
+                session["security_keys"].remove("add_unit")
+                session.modified = True
+                return redirect(url_for("data.units"))
+
+            elif not unit_query:
+                message = "Unit {name} not added to database".format(
+                    name=form.unit_name.data
+                )
+                flash(message)
+                return redirect(url_for("data.add_unit"))
+
+    return render_template("data/add_unit.html", form=form)
 
 
 @bp.route("/base_units", methods=["GET", "POST"])

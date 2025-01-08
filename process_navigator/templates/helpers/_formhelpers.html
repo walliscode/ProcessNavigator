@@ -1,6 +1,10 @@
 {% macro render_field(field) %}
-<fieldset>{{ field.label }} {{ field(**kwargs)|safe }}</fieldset>
-
-{% endmacro %} {% macro render_form_button(field) %}
-<fieldset>{{ field(**kwargs)|safe }}</fieldset>
+    <fieldset>
+        {{ field.label }} {{ field(**kwargs) |safe }}
+    </fieldset>
+{% endmacro %}
+{% macro render_form_button(field) %}
+    <fieldset>
+        {{ field(**kwargs) |safe }}
+    </fieldset>
 {% endmacro %}

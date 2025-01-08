@@ -1,9 +1,11 @@
 from flask_wtf import FlaskForm
+from markupsafe import Markup
 from wtforms import (
     DecimalField,
     FieldList,
     FileField,
     FormField,
+    IntegerField,
     StringField,
     SubmitField,
 )
@@ -78,7 +80,12 @@ def get_current_units():
 
 class CurrentUnitsForm(FlaskForm):
     current_units = QuerySelectField(
-        "Current Units", allow_blank=False, query_factory=get_current_units
+        "Current Units",
+        allow_blank=False,
+        query_factory=get_current_units,
+        get_label=lambda x: "{name} ({symbol})".format(
+            name=x.name, symbol=x.html_symbol
+        ),
     )
 
 
@@ -112,7 +119,7 @@ class UnitModifierForm(FlaskForm):
         "Modifier Multiplier", validators=[InputRequired()]
     )
     add_unit_modifier = SubmitField("Add Unit Modifier")
-
+    test = QuerySelectField
     current_unit_modifiers = QuerySelectField(
         "Current Unit Modifiers",
         allow_blank=False,
@@ -121,3 +128,27 @@ class UnitModifierForm(FlaskForm):
     )
 
     delete_unit_modifier = SubmitField("Delete Unit Modifier")
+
+
+class UnitCombinationForm(FlaskForm):
+    base_unit = QuerySelectField(
+        "Base Unit",
+        allow_blank=False,
+        query_factory=get_current_base_units,
+        get_label=lambda x: "{name} ({symbol})".format(name=x.name, symbol=x.symbol),
+    )
+    unit_modifier = QuerySelectField(
+        "Unit Modifier",
+        allow_blank=False,
+        query_factory=get_current_unit_modifiers,
+        get_label=lambda x: "{name} ({symbol})".format(name=x.name, symbol=x.symbol),
+    )
+
+    exponent = IntegerField("Exponent", validators=[InputRequired()])
+
+
+class AddUnitForm(FlaskForm):
+    unit_name = StringField("Unit Name", validators=[InputRequired()])
+    unit_combinations = FieldList(FormField(UnitCombinationForm), min_entries=1)
+    add_unit_part = SubmitField("Add Combination")
+    add_unit = SubmitField("Add Unit")
