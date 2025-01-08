@@ -1,11 +1,20 @@
 from flask_wtf import FlaskForm
-from wtforms import FieldList, FileField, FormField, StringField, SubmitField
+from markupsafe import Markup
+from wtforms import (
+    DecimalField,
+    FieldList,
+    FileField,
+    FormField,
+    IntegerField,
+    StringField,
+    SubmitField,
+)
 from wtforms.validators import InputRequired
 from wtforms_sqlalchemy.fields import QuerySelectField
 
 from process_navigator.extensions import db
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
-from process_navigator.models.units import Unit
+from process_navigator.models.units import BaseUnit, Unit, UnitModifier
 
 
 class MethodForm(FlaskForm):
@@ -71,5 +80,75 @@ def get_current_units():
 
 class CurrentUnitsForm(FlaskForm):
     current_units = QuerySelectField(
-        "Current Units", allow_blank=False, query_factory=get_current_units
+        "Current Units",
+        allow_blank=False,
+        query_factory=get_current_units,
+        get_label=lambda x: "{name} ({symbol})".format(
+            name=x.name, symbol=x.html_symbol
+        ),
     )
+
+
+def get_current_base_units():
+    return db.session.execute(db.select(BaseUnit)).scalars()
+
+
+class BaseUnitForm(FlaskForm):
+    unit_name = StringField("Unit Name", validators=[InputRequired()])
+    unit_symbol = StringField("Unit Symbol", validators=[InputRequired()])
+    add_base_unit = SubmitField("Add Base Unit")
+
+    current_base_units = QuerySelectField(
+        "Current Base Units",
+        allow_blank=False,
+        query_factory=get_current_base_units,
+        get_label=lambda x: "{name} ({symbol})".format(name=x.name, symbol=x.symbol),
+    )
+
+    delete_base_unit = SubmitField("Delete Base Unit")
+
+
+def get_current_unit_modifiers():
+    return db.session.execute(db.select(UnitModifier)).scalars()
+
+
+class UnitModifierForm(FlaskForm):
+    modifier_name = StringField("Modifier Name", validators=[InputRequired()])
+    modifier_symbol = StringField("Modifier Symbol", validators=[InputRequired()])
+    modifier_multiplier = DecimalField(
+        "Modifier Multiplier", validators=[InputRequired()]
+    )
+    add_unit_modifier = SubmitField("Add Unit Modifier")
+    test = QuerySelectField
+    current_unit_modifiers = QuerySelectField(
+        "Current Unit Modifiers",
+        allow_blank=False,
+        query_factory=get_current_unit_modifiers,
+        get_label=lambda x: "{name} ({symbol})".format(name=x.name, symbol=x.symbol),
+    )
+
+    delete_unit_modifier = SubmitField("Delete Unit Modifier")
+
+
+class UnitCombinationForm(FlaskForm):
+    base_unit = QuerySelectField(
+        "Base Unit",
+        allow_blank=False,
+        query_factory=get_current_base_units,
+        get_label=lambda x: "{name} ({symbol})".format(name=x.name, symbol=x.symbol),
+    )
+    unit_modifier = QuerySelectField(
+        "Unit Modifier",
+        allow_blank=False,
+        query_factory=get_current_unit_modifiers,
+        get_label=lambda x: "{name} ({symbol})".format(name=x.name, symbol=x.symbol),
+    )
+
+    exponent = IntegerField("Exponent", validators=[InputRequired()])
+
+
+class AddUnitForm(FlaskForm):
+    unit_name = StringField("Unit Name", validators=[InputRequired()])
+    unit_combinations = FieldList(FormField(UnitCombinationForm), min_entries=1)
+    add_unit_part = SubmitField("Add Combination")
+    add_unit = SubmitField("Add Unit")

@@ -1,0 +1,46 @@
+{% extends 'base/main.html' %}
+{% from "helpers/_formhelpers.html" import render_field, render_form_button %}
+{% block form_1 %}
+    <div class="form-container">
+        <h1>Add Unit</h1>
+        <p>Welcome to the Add Unit page. Here we can add a new unit.</p>
+        <p>
+            Each unit is composed of a number of unit parts. Each unit part is composed of a base unit, a unit modifier, and an exponent. The base unit is the fundamental unit of the unit part. The unit modifier is a prefix or suffix that modifies the base unit. The exponent is the power to which the unit part is raised. e.g Km<sup>2</sup> is a unit part with a base unit of m, a unit modifier of K, and an exponent of 2.
+        </p>
+        <p>
+            We can then compound this unit part with other unit parts to create a unit. e.g. Km<sup>2</sup> + s<sup>-1</sup> = Km<sup>2</sup>s<sup>-1</sup>
+        </p>
+    </div>
+{% endblock %}
+{% block form_2 %}
+    <div class="form-container">
+        <h2>Add Unit</h2>
+        <form method="post">
+            {{ csrf_token }}
+            <fieldset>
+                {{ form.unit_name.label }}
+                {{ form.unit_name }}
+            </fieldset>
+            <h3>Unit Parts</h3>
+            {% for unit_part in form.unit_combinations %}
+                <fieldset>
+                    {{ unit_part.form.base_unit.label }}
+                    {{ unit_part.form.base_unit }}
+                    {{ unit_part.form.unit_modifier.label }}
+                    {{ unit_part.form.unit_modifier }}
+                    {{ unit_part.form.exponent.label }}
+                    {{ unit_part.form.exponent }}
+                </fieldset>
+            {% endfor %}
+            <fieldset>
+                {{ form.add_unit_part(class = "add_button") }}
+                {{ form.add_unit(class = "add_button") }}
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+{% block form_3 %}
+    {% from "helpers/_messagehelpers.html" import
+    display_messages %} {{ display_messages() }}
+    <div class="form-container"></div>
+{% endblock %}
