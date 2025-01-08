@@ -1,5 +1,4 @@
 from flask import flash, redirect, render_template, session, url_for
-from wtforms.validators import InputRequired
 
 from process_navigator.data import bp
 from process_navigator.extensions import db
@@ -11,6 +10,7 @@ from process_navigator.utils.file_handling import save_file
 from .forms import (
     AddMethodForm,
     AddUnitForm,
+    AnalysisMethodForm,
     BaseUnitForm,
     CurrentMethodsForm,
     CurrentUnitsForm,
@@ -440,3 +440,11 @@ def unit_modifiers():
             return redirect(url_for("data.unit_modifiers"))
 
     return render_template("data/unit_modifiers.html", form=form)
+
+
+@bp.route("/analysis_methods", methods=["GET", "POST"])
+@login_required
+def analysis_methods():
+    form = AnalysisMethodForm()
+
+    return render_template("data/analysis_methods.html", form=form)

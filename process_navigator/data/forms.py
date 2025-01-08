@@ -1,5 +1,4 @@
 from flask_wtf import FlaskForm
-from markupsafe import Markup
 from wtforms import (
     DecimalField,
     FieldList,
@@ -13,6 +12,7 @@ from wtforms.validators import InputRequired
 from wtforms_sqlalchemy.fields import QuerySelectField
 
 from process_navigator.extensions import db
+from process_navigator.models.analysis import AnalysisMethod
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
 from process_navigator.models.units import BaseUnit, Unit, UnitModifier
 
@@ -66,6 +66,21 @@ class DeleteProcessMethodForm(FlaskForm):
         query_factory=get_current_process_method_parts,
     )
     delete_method = SubmitField("Delete Method")
+
+
+def get_current_analytical_methods():
+    return db.session.execute(db.select(AnalysisMethod)).scalars()
+
+
+class AnalysisMethodForm(FlaskForm):
+    add_analysis_method = SubmitField("Add Analysis Method")
+    edit_analysis_method = SubmitField("Edit Analysis Method")
+    delete_analysis_method = SubmitField("Delete Analysis Method")
+    current_analysis_methods = QuerySelectField(
+        "Current Analysis Methods",
+        allow_blank=False,
+        query_factory=get_current_analytical_methods,
+    )
 
 
 class UnitsForm(FlaskForm):

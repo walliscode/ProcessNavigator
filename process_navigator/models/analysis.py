@@ -10,7 +10,7 @@ class AnalysisMethod(db.Model):
     )
 
     def __repr__(self):
-        return f"<Analysis Method {self.name}>"
+        return f"Analysis Method {self.name}"
 
 
 class AnalysisMethodPart(db.Model):

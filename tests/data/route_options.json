@@ -111,5 +111,11 @@
     "route": "/data/units",
     "method": "GET",
     "data": {}
+  },
+  {
+    "name": "analysis_methods_get",
+    "route": "/data/analysis_methods",
+    "method": "GET",
+    "data": {}
   }
 ]
