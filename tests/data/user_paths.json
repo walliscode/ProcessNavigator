@@ -197,5 +197,25 @@
         "Delete Unit"
       ]
     }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "analysis_methods_get"
+    ],
+    "description": "User navigates to the analysis methods page via the data index page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Analysis Methods",
+        "Welcome to the Analysis Methods page",
+        "Add Analysis Method",
+        "Edit Analysis Method",
+        "Delete Analysis Method"
+      ]
+    }
   }
 ]
