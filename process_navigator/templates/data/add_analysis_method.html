@@ -1,0 +1,49 @@
+{% extends 'base/main.html' %}
+{% block form_1 %}
+    <div class="form-container">
+        <h1>Add Analysis Methods</h1>
+        <p>
+            Here we can add the analysis methods that will be used to process the data. This will be used to create the
+            analysis pipeline.
+        </p>
+    </div>
+{% endblock %}
+{% block form_2 %}
+    <div class="form-container">
+        <h1>Add Analysis Method</h1>
+        <form method="post" enctype="multipart/form-data">
+            {{ csrf_token }}
+            <fieldset>
+                {{ form.method_name.label }}
+                {{ form.method_name }}
+                {{ form.method_description.label }}
+                {{ form.method_description }}
+            </fieldset>
+            <fieldset>
+                {{ form.method_file.label }}
+                {{ form.method_file }}
+            </fieldset>
+            {% for part in form.method_parts %}
+                <fieldset>
+                    {{ part.method_part_name.label }}
+                    {{ part.method_part_name }}
+                    {{ part.data_type.label }}
+                    {{ part.data_type }}
+                    {{ part.method_part_unit.label }}
+                    {{ part.method_part_unit }}
+                </fieldset>
+            {% endfor %}
+            <fieldset>
+                {{ form.add_method_part(class="add_button") }}
+                {{ form.remove_method_part(class="delete_button") }}
+            </fieldset>
+            <fieldset>
+                {{ form.add_method(class="add_button") }}
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+{% block form_3 %}
+    {% from "helpers/_messagehelpers.html" import
+    display_messages %} {{ display_messages() }}
+{% endblock %}

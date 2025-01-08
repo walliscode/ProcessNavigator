@@ -8,13 +8,20 @@ from wtforms import (
     StringField,
     SubmitField,
 )
+from wtforms.fields import SelectField
 from wtforms.validators import InputRequired
 from wtforms_sqlalchemy.fields import QuerySelectField
 
+from process_navigator import data
 from process_navigator.extensions import db
 from process_navigator.models.analysis import AnalysisMethod
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
 from process_navigator.models.units import BaseUnit, Unit, UnitModifier
+from process_navigator.shared_data.enums import DataTypes
+
+
+def get_current_units():
+    return db.session.execute(db.select(Unit)).scalars()
 
 
 class MethodForm(FlaskForm):
@@ -83,14 +90,33 @@ class AnalysisMethodForm(FlaskForm):
     )
 
 
+class AddAnalysisMethodPartForm(FlaskForm):
+    method_part_name = StringField("Method Part Name", validators=[InputRequired()])
+    method_part_unit = QuerySelectField(
+        "Unit",
+        allow_blank=False,
+        query_factory=get_current_units,
+    )
+    data_type = SelectField(
+        "Data Type",
+        choices=[(data_type.name, data_type.value) for data_type in DataTypes],
+    )
+
+
+class AddAnalysisMethodForm(FlaskForm):
+    method_name = StringField("Method Name", validators=[InputRequired()])
+    method_description = StringField("Method Description", validators=[InputRequired()])
+    method_parts = FieldList(FormField(AddAnalysisMethodPartForm), min_entries=1)
+    add_method_part = SubmitField("Add Method Part")
+    remove_method_part = SubmitField("Remove Method Part")
+    method_file = FileField("Method File", validators=[InputRequired()])
+    add_method = SubmitField("Add Method")
+
+
 class UnitsForm(FlaskForm):
     add_units = SubmitField("Add Units")
     edit_units = SubmitField("Edit Units")
     delete_units = SubmitField("Delete Units")
-
-
-def get_current_units():
-    return db.session.execute(db.select(Unit)).scalars()
 
 
 class CurrentUnitsForm(FlaskForm):

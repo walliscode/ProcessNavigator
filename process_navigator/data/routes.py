@@ -8,6 +8,7 @@ from process_navigator.utils.decorators import login_required, session_keys
 from process_navigator.utils.file_handling import save_file
 
 from .forms import (
+    AddAnalysisMethodForm,
     AddMethodForm,
     AddUnitForm,
     AnalysisMethodForm,
@@ -447,4 +448,27 @@ def unit_modifiers():
 def analysis_methods():
     form = AnalysisMethodForm()
 
+    # add security key to session of "add_analysis_method" and redirect to the add_analysis_method page
+    if form.add_analysis_method.data:
+        session["security_keys"].append("add_analysis_method")
+        session.modified = True
+        return redirect(url_for("data.add_analysis_method"))
+
     return render_template("data/analysis_methods.html", form=form)
+
+
+@bp.route("/add_analysis_method", methods=["GET", "POST"])
+@login_required
+@session_keys({"add_analysis_method": "data.analysis_methods"})
+def add_analysis_method():
+    form = AddAnalysisMethodForm()
+
+    # add extra method part field if the add_method_part button is clicked
+    if form.add_method_part.data:
+        form.method_parts.append_entry()
+
+    # remove method part field if the remove_method_part button is clicked
+    if form.remove_method_part.data:
+        form.method_parts.pop_entry()
+
+    return render_template("data/add_analysis_method.html", form=form)

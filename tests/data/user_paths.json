@@ -217,5 +217,21 @@
         "Delete Analysis Method"
       ]
     }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "analysis_methods_get",
+      "analysis_method_post_add_analysis_method",
+      "add_analysis_method_get"
+    ],
+    "description": "User navigates to the add analysis method page via the analysis methods page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": ["Add Analysis Method"]
+    }
   }
 ]

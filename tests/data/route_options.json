@@ -117,5 +117,19 @@
     "route": "/data/analysis_methods",
     "method": "GET",
     "data": {}
+  },
+  {
+    "name": "analysis_method_post_add_analysis_method",
+    "route": "/data/analysis_methods",
+    "method": "POST",
+    "data": {
+      "add_analysis_method": true
+    }
+  },
+  {
+    "name": "add_analysis_method_get",
+    "route": "/data/add_analysis_method",
+    "method": "GET",
+    "data": {}
   }
 ]
