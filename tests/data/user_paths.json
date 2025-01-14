@@ -1,6 +1,8 @@
 [
   {
-    "path": ["home_get"],
+    "path": [
+      "home_get"
+    ],
     "follow_redirects": false,
     "assertions": {
       "status_code": 302,
@@ -9,7 +11,9 @@
     }
   },
   {
-    "path": ["register_get"],
+    "path": [
+      "register_get"
+    ],
     "follow_redirects": false,
     "assertions": {
       "status_code": 200,
@@ -18,7 +22,9 @@
     }
   },
   {
-    "path": ["register_user"],
+    "path": [
+      "register_user"
+    ],
     "follow_redirects": false,
     "assertions": {
       "status_code": 200,
@@ -29,25 +35,39 @@
     }
   },
   {
-    "path": ["login_get"],
+    "path": [
+      "login_get"
+    ],
     "follow_redirects": false,
     "assertions": {
       "status_code": 200,
-      "content": ["Email", "Password", "Login"],
+      "content": [
+        "Email",
+        "Password",
+        "Login"
+      ],
       "session": {}
     }
   },
   {
-    "path": ["login_user"],
+    "path": [
+      "login_user"
+    ],
     "follow_redirects": false,
     "assertions": {
       "status_code": 200,
-      "content": ["User with email test_user@astrea-bio.com does not exist."],
+      "content": [
+        "User with email test_user@astrea-bio.com does not exist."
+      ],
       "session": {}
     }
   },
   {
-    "path": ["register_user", "login_get", "login_user"],
+    "path": [
+      "register_user",
+      "login_get",
+      "login_user"
+    ],
     "follow_redirects": false,
     "assertions": {
       "status_code": 302,
@@ -57,15 +77,23 @@
     }
   },
   {
-    "path": ["register_user", "login_get", "login_user_bad_password"],
+    "path": [
+      "register_user",
+      "login_get",
+      "login_user_bad_password"
+    ],
     "follow_redirects": false,
     "assertions": {
       "status_code": 200,
-      "content": ["Incorrect password for user test_user@astrea-bio.com."]
+      "content": [
+        "Incorrect password for user test_user@astrea-bio.com."
+      ]
     }
   },
   {
-    "path": ["data_index_get"],
+    "path": [
+      "data_index_get"
+    ],
     "follow_redirects": false,
     "assertions": {
       "status_code": 302,
@@ -73,7 +101,11 @@
     }
   },
   {
-    "path": ["register_user", "login_user", "data_index_get"],
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get"
+    ],
     "follow_redirects": false,
     "assertions": {
       "status_code": 200,
@@ -83,7 +115,6 @@
       ]
     }
   },
-
   {
     "path": [
       "register_user",
@@ -114,11 +145,12 @@
     ],
     "description": "User starts 'add process method' process from method page",
     "follow_redirects": false,
-
     "assertions": {
       "status_code": 302,
       "location": "/data/add_process_method",
-      "security_keys": ["add_process_method"]
+      "security_keys": [
+        "add_process_method"
+      ]
     }
   },
   {
@@ -184,7 +216,12 @@
     }
   },
   {
-    "path": ["register_user", "login_user", "data_index_get", "units_get"],
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "units_get"
+    ],
     "description": "User navigates to the units page via the data index page",
     "follow_redirects": false,
     "assertions": {
@@ -215,6 +252,50 @@
         "Add Analysis Method",
         "Edit Analysis Method",
         "Delete Analysis Method"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "analysis_methods_get",
+      "analysis_method_post_add_analysis_method",
+      "add_analysis_method_get"
+    ],
+    "description": "User navigates to the add analysis method page via the analysis methods page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Add Analysis Method",
+        "Method Name",
+        "Method Description",
+        "Method File",
+        "Method Part Name",
+        "Data Type",
+        "Unit"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "analysis_methods_get",
+      "analysis_method_post_add_analysis_method",
+      "add_analysis_method_get",
+      "add_analysis_method_post_add_method"
+    ],
+    "description": "User adds an analysis method",
+    "follow_redirects": true,
+    "assertions": {
+      "status_code": 200,
+      "location": "/data/analysis_methods",
+      "content": [
+        "Analysis Method test_analysis_method_1 and Analysis Method Parts test_part_1, test_part_2, test_part_3 added to database"
       ]
     }
   }

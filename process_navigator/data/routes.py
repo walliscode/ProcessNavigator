@@ -2,12 +2,14 @@ from flask import flash, redirect, render_template, session, url_for
 
 from process_navigator.data import bp
 from process_navigator.extensions import db
+from process_navigator.models.analysis import AnalysisMethod, AnalysisMethodPart
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
 from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
 from process_navigator.utils.decorators import login_required, session_keys
 from process_navigator.utils.file_handling import save_file
 
 from .forms import (
+    AddAnalysisMethodForm,
     AddMethodForm,
     AddUnitForm,
     AnalysisMethodForm,
@@ -239,27 +241,8 @@ def add_unit():
         # if the unit_combination is unique then add the unit to the database
         if unit_combination_is_unique:
             # first add the Unit, the symbol is generated from the Unit Parts
-
-            symbol = ""
-            for unit_part in form.unit_combinations:
-                symbol += unit_part.unit_modifier.data.symbol
-                symbol += unit_part.base_unit.data.symbol
-                symbol += "^"
-                symbol += unit_part.exponent.data.__str__()
-
-            html_symbol = ""
-
-            for unit_part in form.unit_combinations:
-                html_symbol += unit_part.unit_modifier.data.symbol
-                html_symbol += unit_part.base_unit.data.symbol
-                html_symbol += "<sup>"
-                html_symbol += unit_part.exponent.data.__str__()
-                html_symbol += "</sup>"
-
             new_unit = Unit(
                 name=form.unit_name.data.__str__(),
-                symbol=symbol,
-                html_symbol=html_symbol,
             )
 
             db.session.add(new_unit)
@@ -270,9 +253,12 @@ def add_unit():
             for unit_combination in form.unit_combinations:
                 new_unit_combination = UnitCombination(
                     unit_id=new_unit.id,
+                    unit=new_unit,
                     base_unit_id=unit_combination.base_unit.data.id,
                     unit_modifier_id=unit_combination.unit_modifier.data.id,
                     exponent=unit_combination.exponent.data,
+                    base_unit=unit_combination.base_unit.data,
+                    unit_modifier=unit_combination.unit_modifier.data,
                 )
 
                 db.session.add(new_unit_combination)
@@ -373,8 +359,10 @@ def base_units():
 @bp.route("/unit_modifiers", methods=["GET", "POST"])
 @login_required
 def unit_modifiers():
+    print("test_text_1")
     form = UnitModifierForm()
 
+    print("test_text")
     if form.add_unit_modifier.data:
         # check whether the unit modifier already exists in the database
         unit_modifier_query = db.session.execute(
@@ -390,7 +378,7 @@ def unit_modifiers():
 
         new_unit_modifier = UnitModifier(
             name=form.modifier_name.data.__str__(),
-            symbol=form.modifier_symbol.data,
+            symbol=form.modifier_symbol.data.__str__(),
             multiplier=form.modifier_multiplier.data,
         )
 
@@ -447,4 +435,99 @@ def unit_modifiers():
 def analysis_methods():
     form = AnalysisMethodForm()
 
+    # add security key to session of "add_analysis_method" and redirect to the add_analysis_method page
+    if form.add_analysis_method.data:
+        session["security_keys"].append("add_analysis_method")
+        session.modified = True
+        return redirect(url_for("data.add_analysis_method"))
+
     return render_template("data/analysis_methods.html", form=form)
+
+
+@bp.route("/add_analysis_method", methods=["GET", "POST"])
+@login_required
+@session_keys({"add_analysis_method": "data.analysis_methods"})
+def add_analysis_method():
+    form = AddAnalysisMethodForm()
+
+    # add extra method part field if the add_method_part button is clicked
+    if form.add_method_part.data:
+        form.method_parts.append_entry()
+
+    # remove method part field if the remove_method_part button is clicked
+    if form.remove_method_part.data:
+        form.method_parts.pop_entry()
+
+    # now to add method to the database
+    if form.add_method.data:
+        # perform error checking to make sure the AnalysisMethod do not already exist
+        analysis_method_query = db.session.execute(
+            db.select(AnalysisMethod).filter(
+                AnalysisMethod.name == form.method_name.data
+            )
+        ).scalar()
+
+        if analysis_method_query:
+            message = "Analysis Method {name} already exists".format(
+                name=form.method_name.data
+            )
+            flash(message)
+            return redirect(url_for("data.add_analysis_method"))
+
+        # save file to the file storage system and get the new file name
+        method_file = save_file(form.method_file.data)
+
+        # add the analysis method to the database, this will give the analysis method an id
+        new_method = AnalysisMethod(
+            name=form.method_name.data.__str__(),
+            description=form.method_description.data.__str__(),
+            file_name=method_file,
+        )
+        db.session.add(new_method)
+
+        # cycle through analysis method parts and add to the database
+        for method_part in form.method_parts:
+            new_method_part = AnalysisMethodPart(
+                name=method_part.method_part_name.data,
+                unit_id=method_part.method_part_unit.data.id,
+                data_type=method_part.data_type.data,
+                analysis_method_id=new_method.id,
+                analysis_method=new_method,
+            )
+            db.session.add(new_method_part)
+
+        db.session.commit()
+
+        # now check the data has been correctly added to the database, dedirect upon success
+
+        method_added_query = db.session.execute(
+            db.select(AnalysisMethod).filter(AnalysisMethod.id == new_method.id)
+        ).scalar()
+
+        if method_added_query is not None:
+            # check new_method parts have been added are linked to the AnalysisMethod
+            if method_added_query.analysis_method_parts is not None:
+                message = "Analysis Method {name} and Analysis Method Parts {parts} added to database".format(
+                    name=method_added_query.name,
+                    parts=", ".join(
+                        [part.name for part in method_added_query.analysis_method_parts]
+                    ),
+                )
+
+                flash(message)
+                return redirect(url_for("data.analysis_methods"))
+
+            else:
+                message = "Analysis Method {name} added to database, but Analysis Method Parts not added. Please edit or delete method_added_query".format(
+                    name=method_added_query.name
+                )
+                return redirect(url_for("data.analysis_methods"))
+        else:
+            message = "Analysis Method {name} not added to database".format(
+                name=new_method.name
+            )
+
+            flash(message)
+            return redirect(url_for("data.add_analysis_method"))
+
+    return render_template("data/add_analysis_method.html", form=form)

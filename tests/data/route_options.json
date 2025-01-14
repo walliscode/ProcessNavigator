@@ -1,5 +1,10 @@
 [
-  { "name": "home_get", "route": "/", "method": "GET", "data": {} },
+  {
+    "name": "home_get",
+    "route": "/",
+    "method": "GET",
+    "data": {}
+  },
   {
     "name": "register_get",
     "route": "/register",
@@ -18,7 +23,6 @@
       "submit": true
     }
   },
-
   {
     "name": "login_get",
     "route": "/login",
@@ -117,5 +121,42 @@
     "route": "/data/analysis_methods",
     "method": "GET",
     "data": {}
+  },
+  {
+    "name": "analysis_method_post_add_analysis_method",
+    "route": "/data/analysis_methods",
+    "method": "POST",
+    "data": {
+      "add_analysis_method": true
+    }
+  },
+  {
+    "name": "add_analysis_method_get",
+    "route": "/data/add_analysis_method",
+    "method": "GET",
+    "data": {}
+  },
+  {
+    "name": "add_analysis_method_post_add_method",
+    "route": "/data/add_analysis_method",
+    "method": "POST",
+    "data": {
+      "add_method": true,
+      "method_name": "test_analysis_method_1",
+      "method_description": "test analysis method description",
+      "file": {
+        "field_name": "method_file",
+        "file_name": "test_file.txt"
+      },
+      "method_parts-0-method_part_name": "test_part_1",
+      "method_parts-0-method_part_unit": 1,
+      "method_parts-0-data_type": "Continuous",
+      "method_parts-1-method_part_name": "test_part_2",
+      "method_parts-1-method_part_unit": 1,
+      "method_parts-1-data_type": "String",
+      "method_parts-2-method_part_name": "test_part_3",
+      "method_parts-2-method_part_unit": 1,
+      "method_parts-2-data_type": "Continuous"
+    }
   }
 ]

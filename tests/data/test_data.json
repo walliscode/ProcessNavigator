@@ -10,5 +10,54 @@
         { "name": "test_part_3" }
       ]
     }
+  ],
+
+  "BaseUnits": [
+    {
+      "name": "Meter",
+      "symbol": "m"
+    },
+    {
+      "name": "Second",
+      "symbol": "s"
+    },
+    {
+      "name": "Gram",
+      "symbol": "g"
+    }
+  ],
+  "UnitModifiers": [
+    {
+      "name": "Kilo",
+      "symbol": "K",
+      "multiplier": 1000
+    },
+    {
+      "name": "Mega",
+      "symbol": "M",
+      "multiplier": 1000000
+    },
+    {
+      "name": "Milli",
+      "symbol": "m",
+      "multiplier": 0.001
+    }
+  ],
+  "Units": [
+    {
+      "name": "Velocity",
+      "UnitCombinations": [
+        {
+          "base_unit": "Meter",
+          "modifier": "Kilo",
+          "exponent": 1
+        },
+        {
+          "base_unit": "Second",
+          "modifier": "",
+          "exponent": -1
+        }
+      ]
+    }
   ]
 }

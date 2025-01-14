@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 from flask import session
 
@@ -22,6 +24,13 @@ def test_(client, route_options, user_path):
             route = route_info["route"]
             data = route_info["data"]
 
+            # if the data requires a file upload then we need to insert it now
+            if "file" in data:
+                test_files = Path.cwd() / "tests" / "data" / "test_files"
+
+                new_key = data["file"]["field_name"]
+                data[new_key] = (test_files / data["file"]["file_name"]).open("rb")
+
             if method == "GET":
                 if user_path["follow_redirects"]:
                     response = client.get(route, follow_redirects=True)
@@ -29,7 +38,12 @@ def test_(client, route_options, user_path):
                     response = client.get(route)
             elif method == "POST":
                 if user_path["follow_redirects"]:
-                    response = client.post(route, data=data, follow_redirects=True)
+                    response = client.post(
+                        route,
+                        data=data,
+                        follow_redirects=True,
+                        content_type="multipart/form-data",
+                    )
                 else:
                     response = client.post(route, data=data)
 
