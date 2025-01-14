@@ -12,7 +12,6 @@ from wtforms.fields import SelectField
 from wtforms.validators import InputRequired
 from wtforms_sqlalchemy.fields import QuerySelectField
 
-from process_navigator import data
 from process_navigator.extensions import db
 from process_navigator.models.analysis import AnalysisMethod
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
@@ -99,7 +98,7 @@ class AddAnalysisMethodPartForm(FlaskForm):
     )
     data_type = SelectField(
         "Data Type",
-        choices=[(data_type.name, data_type.value) for data_type in DataTypes],
+        choices=[data_type.value for data_type in DataTypes],
     )
 
 
@@ -124,9 +123,7 @@ class CurrentUnitsForm(FlaskForm):
         "Current Units",
         allow_blank=False,
         query_factory=get_current_units,
-        get_label=lambda x: "{name} ({symbol})".format(
-            name=x.name, symbol=x.html_symbol
-        ),
+        get_label=lambda x: "{name} ({symbol})".format(name=x.name, symbol=x.symbol),
     )
 
 
@@ -160,7 +157,7 @@ class UnitModifierForm(FlaskForm):
         "Modifier Multiplier", validators=[InputRequired()]
     )
     add_unit_modifier = SubmitField("Add Unit Modifier")
-    test = QuerySelectField
+
     current_unit_modifiers = QuerySelectField(
         "Current Unit Modifiers",
         allow_blank=False,

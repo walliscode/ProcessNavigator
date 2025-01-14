@@ -1,11 +1,13 @@
 from process_navigator.extensions import db
 from process_navigator.models.process import ProcessMethod
+from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
 
 
 def test_load_data(test_app):
     # check ProcessMethod and Process Method Parts
 
     with test_app.app_context():
+        # check ProcessMethod and Process Method Parts
         query_process_methods_one = db.session.execute(db.select(ProcessMethod)).all()
 
         assert len(query_process_methods_one) == 1
@@ -18,3 +20,36 @@ def test_load_data(test_app):
 
         assert query_process_methods_two is not None
         assert len(query_process_methods_two.process_method_parts) == 3
+
+        # check Base Units
+        query_base_units = db.session.scalars(db.select(BaseUnit)).all()
+
+        assert len(query_base_units) == 3
+
+        base_unit_names = [unit.name for unit in query_base_units]
+        for unit in ["Meter", "Second", "Gram"]:
+            assert unit in base_unit_names
+
+        # check Unit Modifiers
+
+        query_unit_modifiers = db.session.scalars(db.select(UnitModifier)).all()
+
+        assert len(query_unit_modifiers) == 3
+
+        unit_modifier_names = [unit.name for unit in query_unit_modifiers]
+        for unit in ["Kilo", "Mega", "Milli"]:
+            assert unit in unit_modifier_names
+
+        # check units
+
+        query_units = db.session.execute(db.select(Unit)).scalar_one()
+
+        assert query_units.id == 1
+        assert query_units.name == "Velocity"
+        assert query_units.symbol == "Kms^-1"
+
+        # check unit combinations
+
+        query_unit_combinations = db.session.scalars(db.select(UnitCombination)).all()
+
+        assert len(query_unit_combinations) == 2
