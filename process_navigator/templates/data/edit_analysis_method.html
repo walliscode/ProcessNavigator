@@ -1,0 +1,50 @@
+{% extends 'base/main.html' %}
+{% block form_1 %}
+    <div class="form-container">
+        <h1>Edit Analysis Methods</h1>
+        <p>Here we can edit the analysis methods that will be used to process the data.</p>
+    </div>
+{% endblock %}
+{% block form_2 %}
+    <div class="form-container">
+        <h1>Edit Analysis Method</h1>
+        <form method="post">
+            {{ csrf_token }}
+            {% if "analytical_method" not in session %}
+                <fieldset>
+                    {{ form.current_methods }}
+                    {{ form.select_method(class="add_button") }}
+                </fieldset>
+            {% endif %}
+            {% if "analytical_method" in session %}
+                <fieldset>
+                    {{ form.method_name.label }}
+                    {{ form.method_name }}
+                    {{ form.method_description.label }}
+                    {{ form.method_description }}
+                </fieldset>
+                <fieldset>
+                    {{ form.method_file.label }}
+                    {{ form.method_file }}
+                </fieldset>
+                <fieldset>
+                    {% for part in form.method_parts %}
+                        {{ part.method_part_name.label }}
+                        {{ part.method_part_name }}
+                        {{ part.method_part_unit.label }}
+                        {{ part.method_part_unit }}
+                        {{ part.data_type.label }}
+                        {{ part.data_type }}
+                    {% endfor %}
+                </fieldset>
+                <fieldset>
+                    {{ form.commit_changes(class="add_button") }}
+                </fieldset>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}
+{% block form_3 %}
+    {% from "helpers/_messagehelpers.html" import
+    display_messages %} {{ display_messages() }}
+{% endblock %}

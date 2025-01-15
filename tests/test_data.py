@@ -1,6 +1,7 @@
 from process_navigator.extensions import db
 from process_navigator.models.process import ProcessMethod
 from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
+from process_navigator.models.analysis import AnalysisMethod, AnalysisMethodPart
 
 
 def test_load_data(test_app):
@@ -53,3 +54,30 @@ def test_load_data(test_app):
         query_unit_combinations = db.session.scalars(db.select(UnitCombination)).all()
 
         assert len(query_unit_combinations) == 2
+
+        # check Anlaysis Method and Analysis Method Parts
+        analysis_method_query = db.session.scalars(db.select(AnalysisMethod)).all()
+
+        assert len(analysis_method_query) == 1
+        assert analysis_method_query[0].name == "test_analysis_method_1"
+        assert analysis_method_query[0].description == "test_description"
+
+        # get part information
+        part_name_list = [
+            part.name for part in analysis_method_query[0].analysis_method_parts
+        ]
+
+        assert len(analysis_method_query[0].analysis_method_parts) == 3
+        for part in ["test_part_1", "test_part_2", "test_part_3"]:
+            assert part in part_name_list
+
+        # check data type
+        for part in analysis_method_query[0].analysis_method_parts:
+            assert part.data_type == "Continuous"
+
+        # check only 3 AnalysisMethodParts were added:
+        analysis_method_part_query = db.session.scalars(
+            db.select(AnalysisMethodPart)
+        ).all()
+
+        assert len(analysis_method_part_query) == 3

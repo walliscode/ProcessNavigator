@@ -10,6 +10,7 @@ from process_navigator.utils.file_handling import save_file
 
 from .forms import (
     AddAnalysisMethodForm,
+    EditAnalysisMethodForm,
     AddMethodForm,
     AddUnitForm,
     AnalysisMethodForm,
@@ -306,7 +307,9 @@ def base_units():
             flash(message)
             return redirect(url_for("data.base_units"))
 
-        new_base_unit = BaseUnit(name=form.unit_name.data, symbol=form.unit_symbol.data)
+        new_base_unit = BaseUnit(
+            name=form.unit_name.data.__str__(), symbol=form.unit_symbol.data.__str__()
+        )
 
         db.session.add(new_base_unit)
         db.session.commit()
@@ -441,6 +444,11 @@ def analysis_methods():
         session.modified = True
         return redirect(url_for("data.add_analysis_method"))
 
+    if form.edit_analysis_method.data:
+        session["security_keys"].append("edit_analysis_method")
+        session.modified = True
+        return redirect(url_for("data.edit_analysis_method"))
+
     return render_template("data/analysis_methods.html", form=form)
 
 
@@ -531,3 +539,66 @@ def add_analysis_method():
             return redirect(url_for("data.add_analysis_method"))
 
     return render_template("data/add_analysis_method.html", form=form)
+
+
+@bp.route("/edit_analysis_method", methods=["GET", "POST"])
+@login_required
+@session_keys({"edit_analysis_method": "data.analysis_methods"})
+def edit_analysis_method():
+    form = EditAnalysisMethodForm()
+
+    # once analytical method is selected to edit, populate the form with data and add correct session keys
+    if form.select_method.data:
+        session["analytical_method"] = {}
+        session["analytical_method"]["id"] = form.current_methods.data.id
+
+        # prepopulate form data
+        form.method_name.data = form.current_methods.data.name
+        form.method_description.data = form.current_methods.data.description
+        # for each method part on the AnalysisMethod object, create a Field and populate data
+        for count, method_part in enumerate(
+            form.current_methods.data.analysis_method_parts
+        ):
+            form.method_parts.append_entry()
+            form.method_parts[count].method_part_name.data = method_part.name
+            form.method_parts[count].method_part_unit.data = method_part.unit_id
+            form.method_parts[count].data_type.data = method_part.data_type
+
+    if form.commit_changes.data:
+        # get AnalysisMethod objcet from the database
+        analysis_method = db.session.execute(
+            db.select(AnalysisMethod).filter(
+                AnalysisMethod.id == session["analytical_method"]["id"]
+            )
+        ).scalar_one()
+
+        # modify the AnalysisMethod object with the form data
+        analysis_method.name = form.method_name.data
+        analysis_method.description = form.method_description.data
+
+        if form.method_file.data:
+            method_file = save_file(form.method_file.data)
+            analysis_method.file_name = method_file
+
+        # modify the AnalysisMethodParts
+        for count, method_part in enumerate(analysis_method.analysis_method_parts):
+            method_part.name = form.method_parts[count].method_part_name.data
+            method_part.unit_id = form.method_parts[count].method_part_unit.data.id
+            method_part.data_type = form.method_parts[count].data_type.data
+
+        db.session.commit()
+
+        # flash success message and clear relevant session keys and data, redirect to analysis_methods
+        message = "Analysis Method {name} and Analysis Method Parts {parts} updated in database".format(
+            name=analysis_method.name,
+            parts=", ".join(
+                [part.name for part in analysis_method.analysis_method_parts]
+            ),
+        )
+        flash(message)
+        session.pop("analytical_method")
+        session["security_keys"].remove("edit_analysis_method")
+        session.modified = True
+        return redirect(url_for("data.analysis_methods"))
+
+    return render_template("data/edit_analysis_method.html", form=form)

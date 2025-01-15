@@ -131,6 +131,14 @@
     }
   },
   {
+    "name": "analysis_method_post_edit_analysis_method",
+    "route": "/data/analysis_methods",
+    "method": "POST",
+    "data": {
+      "edit_analysis_method": true
+    }
+  },
+  {
     "name": "add_analysis_method_get",
     "route": "/data/add_analysis_method",
     "method": "GET",
@@ -142,21 +150,36 @@
     "method": "POST",
     "data": {
       "add_method": true,
-      "method_name": "test_analysis_method_1",
+      "method_name": "test_analysis_method_2",
       "method_description": "test analysis method description",
       "file": {
         "field_name": "method_file",
         "file_name": "test_file.txt"
       },
-      "method_parts-0-method_part_name": "test_part_1",
+      "method_parts-0-method_part_name": "test_part_4",
       "method_parts-0-method_part_unit": 1,
       "method_parts-0-data_type": "Continuous",
-      "method_parts-1-method_part_name": "test_part_2",
+      "method_parts-1-method_part_name": "test_part_5",
       "method_parts-1-method_part_unit": 1,
       "method_parts-1-data_type": "String",
-      "method_parts-2-method_part_name": "test_part_3",
+      "method_parts-2-method_part_name": "test_part_6",
       "method_parts-2-method_part_unit": 1,
       "method_parts-2-data_type": "Continuous"
+    }
+  },
+  {
+    "name": "edit_analysis_method_get",
+    "route": "/data/edit_analysis_method",
+    "method": "GET",
+    "data": {}
+  },
+  {
+    "name": "edit_analysis_method_post_select_method",
+    "route": "/data/edit_analysis_method",
+    "method": "POST",
+    "data": {
+      "select_method": true,
+      "current_methods": 1
     }
   }
 ]

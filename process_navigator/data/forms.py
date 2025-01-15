@@ -37,6 +37,10 @@ def get_current_process_method_parts():
     return db.session.execute(db.select(ProcessMethodPart)).scalars()
 
 
+def get_current_analytical_methods():
+    return db.session.execute(db.select(AnalysisMethod)).scalars()
+
+
 class CurrentMethodsForm(FlaskForm):
     current_methods = QuerySelectField(
         "Current Methods",
@@ -74,10 +78,6 @@ class DeleteProcessMethodForm(FlaskForm):
     delete_method = SubmitField("Delete Method")
 
 
-def get_current_analytical_methods():
-    return db.session.execute(db.select(AnalysisMethod)).scalars()
-
-
 class AnalysisMethodForm(FlaskForm):
     add_analysis_method = SubmitField("Add Analysis Method")
     edit_analysis_method = SubmitField("Edit Analysis Method")
@@ -90,7 +90,10 @@ class AnalysisMethodForm(FlaskForm):
 
 
 class AddAnalysisMethodPartForm(FlaskForm):
-    method_part_name = StringField("Method Part Name", validators=[InputRequired()])
+    method_part_name = StringField(
+        "Method Part Name",
+        validators=[InputRequired()],
+    )
     method_part_unit = QuerySelectField(
         "Unit",
         allow_blank=False,
@@ -110,6 +113,20 @@ class AddAnalysisMethodForm(FlaskForm):
     remove_method_part = SubmitField("Remove Method Part")
     method_file = FileField("Method File", validators=[InputRequired()])
     add_method = SubmitField("Add Method")
+
+
+class EditAnalysisMethodForm(FlaskForm):
+    current_methods = QuerySelectField(
+        "Current Analysis Methods",
+        allow_blank=False,
+        query_factory=get_current_analytical_methods,
+    )
+    select_method = SubmitField("Select Method")
+    method_name = StringField("Method Name", validators=[InputRequired()])
+    method_description = StringField("Method Description", validators=[InputRequired()])
+    method_file = FileField("Method File")
+    method_parts = FieldList(FormField(AddAnalysisMethodPartForm), min_entries=0)
+    commit_changes = SubmitField("Commit Changes")
 
 
 class UnitsForm(FlaskForm):

@@ -1,6 +1,7 @@
 from process_navigator.extensions import db
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
 from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
+from process_navigator.models.analysis import AnalysisMethod, AnalysisMethodPart
 
 
 def load_test_data(json_data):
@@ -71,10 +72,32 @@ def load_test_data(json_data):
                 base_unit_id=base_unit.id,
                 base_unit=base_unit,
                 unit_modifier_id=modifier.id if modifier is not None else None,
-                unit_modifier=modifier,
+                unit_modifier=modifier if modifier is not None else None,
                 exponent=combo["exponent"],
             )
 
             db.session.add(new_combo)
 
         db.session.commit()
+
+    for method in json_data["AnalysisMethods"]:
+        new_method = AnalysisMethod(
+            name=method["name"],
+            description=method["description"],
+            file_name=method["file_name"],
+        )
+
+        db.session.add(new_method)
+        db.session.commit()
+
+        for part in method["parts"]:
+            new_part = AnalysisMethodPart(
+                name=part["name"],
+                unit_id=part["unit_id"],
+                analysis_method_id=new_method.id,
+                analysis_method=new_method,
+                data_type=part["data_type"],
+            )
+
+            db.session.add(new_part)
+            db.session.commit()

@@ -5,13 +5,18 @@
       "description": "test_description",
       "file_name": "test_file_name.txt",
       "parts": [
-        { "name": "test_part_1" },
-        { "name": "test_part_2" },
-        { "name": "test_part_3" }
+        {
+          "name": "test_part_1"
+        },
+        {
+          "name": "test_part_2"
+        },
+        {
+          "name": "test_part_3"
+        }
       ]
     }
   ],
-
   "BaseUnits": [
     {
       "name": "Meter",
@@ -56,6 +61,30 @@
           "base_unit": "Second",
           "modifier": "",
           "exponent": -1
+        }
+      ]
+    }
+  ],
+  "AnalysisMethods": [
+    {
+      "name": "test_analysis_method_1",
+      "description": "test_description",
+      "file_name": "test_file_name.txt",
+      "parts": [
+        {
+          "name": "test_part_1",
+          "unit_id": 1,
+          "data_type": "Continuous"
+        },
+        {
+          "name": "test_part_2",
+          "unit_id": 1,
+          "data_type": "Continuous"
+        },
+        {
+          "name": "test_part_3",
+          "unit_id": 1,
+          "data_type": "Continuous"
         }
       ]
     }

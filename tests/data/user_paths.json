@@ -295,7 +295,47 @@
       "status_code": 200,
       "location": "/data/analysis_methods",
       "content": [
-        "Analysis Method test_analysis_method_1 and Analysis Method Parts test_part_1, test_part_2, test_part_3 added to database"
+        "Analysis Method test_analysis_method_2 and Analysis Method Parts test_part_4, test_part_5, test_part_6 added to database"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "analysis_methods_get",
+      "analysis_method_post_edit_analysis_method",
+      "edit_analysis_method_get"
+    ],
+    "description": "User navigates to the edit analysis method page via the analysis methods page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Edit Analysis Method",
+        "Select Method"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "analysis_methods_get",
+      "analysis_method_post_edit_analysis_method",
+      "edit_analysis_method_get",
+      "edit_analysis_method_post_select_method"
+    ],
+    "description": "User selects an analysis method to edit",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Method Name",
+        "Method Description",
+        "Method File"
       ]
     }
   }
