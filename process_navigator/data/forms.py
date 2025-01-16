@@ -104,6 +104,8 @@ class AddAnalysisMethodPartForm(FlaskForm):
         choices=[data_type.value for data_type in DataTypes],
     )
 
+    delete_method_part = SubmitField("Delete Method Part")
+
 
 class AddAnalysisMethodForm(FlaskForm):
     method_name = StringField("Method Name", validators=[InputRequired()])

@@ -601,4 +601,10 @@ def edit_analysis_method():
         session.modified = True
         return redirect(url_for("data.analysis_methods"))
 
+    # Check if a specific button inside the FieldList was pressed
+    for i, method_part in enumerate(form.method_parts):
+        if method_part.delete_method_part.data:
+            print("delete test")
+            print(i)
+
     return render_template("data/edit_analysis_method.html", form=form)
