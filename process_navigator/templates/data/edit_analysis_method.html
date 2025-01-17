@@ -29,7 +29,8 @@
                 </fieldset>
                 >
                 {% for part in form.method_parts %}
-                    <fieldset {{ part.method_part_name.label }} {{ part.method_part_name }} {{ part.method_part_unit.label }} {{ part.method_part_unit }} {{ part.data_type.label }} {{ part.data_type }} {{ part.delete_method_part(class="delete_button") }}
+                    <fieldset>
+                        {{ part.method_part_name.label }} {{ part.method_part_name }} {{ part.method_part_unit.label }} {{ part.method_part_unit }} {{ part.data_type.label }} {{ part.data_type }} {{ part.delete_method_part(class="delete_button") }}
                     </fieldset>
                 {% endfor %}
                 <fieldset>

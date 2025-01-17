@@ -127,7 +127,7 @@ class EditAnalysisMethodForm(FlaskForm):
     method_name = StringField("Method Name", validators=[InputRequired()])
     method_description = StringField("Method Description", validators=[InputRequired()])
     method_file = FileField("Method File")
-    method_parts = FieldList(FormField(AddAnalysisMethodPartForm), min_entries=0)
+    method_parts = FieldList(FormField(AddAnalysisMethodPartForm))
     commit_changes = SubmitField("Commit Changes")
 
 

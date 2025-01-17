@@ -556,13 +556,6 @@ def edit_analysis_method():
         form.method_name.data = form.current_methods.data.name
         form.method_description.data = form.current_methods.data.description
         # for each method part on the AnalysisMethod object, create a Field and populate data
-        for count, method_part in enumerate(
-            form.current_methods.data.analysis_method_parts
-        ):
-            form.method_parts.append_entry()
-            form.method_parts[count].method_part_name.data = method_part.name
-            form.method_parts[count].method_part_unit.data = method_part.unit_id
-            form.method_parts[count].data_type.data = method_part.data_type
 
     if form.commit_changes.data:
         # get AnalysisMethod objcet from the database
@@ -602,9 +595,42 @@ def edit_analysis_method():
         return redirect(url_for("data.analysis_methods"))
 
     # Check if a specific button inside the FieldList was pressed
-    for i, method_part in enumerate(form.method_parts):
+    for index, method_part in enumerate(form.method_parts):
         if method_part.delete_method_part.data:
             print("delete test")
-            print(i)
+            print(index)
+
+    """ 
+    each time the method parts get deleted or new one added, we are going to do the datbase edits straight away.
+    This is to prevent the order of the list getting muddled
+    To aid this, at the end of each requset we are going to update the form method parts with the AnalysisMethod object
+    """
+
+    if "analytical_method" in session:
+        # get fresh object from the database
+        analysis_method = db.session.execute(
+            db.select(AnalysisMethod).filter(
+                AnalysisMethod.id == session["analytical_method"]["id"]
+            )
+        ).scalar_one()
+
+        # set the number of form.method_parts to mactch the number of AnalysisMethodParts using pop/append_entry
+        print("ANalysis Method Parts")
+        print(len(analysis_method.analysis_method_parts))
+        while len(form.method_parts) < len(analysis_method.analysis_method_parts):
+            form.method_parts.append_entry()
+            if len(form.method_parts) == len(analysis_method.analysis_method_parts):
+                break
+
+        while len(form.method_parts) > len(analysis_method.analysis_method_parts):
+            form.method_parts.pop_entry()
+            if len(form.method_parts) == len(analysis_method.analysis_method_parts):
+                break
+
+        # update the method parts in the form
+        for count, method_part in enumerate(analysis_method.analysis_method_parts):
+            form.method_parts[count].method_part_name.data = method_part.name
+            form.method_parts[count].method_part_unit.data = method_part.unit_id
+            form.method_parts[count].data_type.data = method_part.data_type
 
     return render_template("data/edit_analysis_method.html", form=form)
