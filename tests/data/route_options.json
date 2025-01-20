@@ -241,5 +241,19 @@
       "method_parts-1-method_part_unit": 1,
       "method_parts-1-data_type": "Categorical"
     }
+  },
+  {
+    "name": "analysis_method_post_delete_analysis_method",
+    "route": "/data/analysis_methods",
+    "method": "POST",
+    "data": {
+      "delete_analysis_method": true
+    }
+  },
+  {
+    "name": "delete_analysis_method_get",
+    "route": "/data/delete_analysis_method",
+    "method": "GET",
+    "data": {}
   }
 ]

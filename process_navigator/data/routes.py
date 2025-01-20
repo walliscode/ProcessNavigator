@@ -10,14 +10,15 @@ from process_navigator.utils.file_handling import save_file
 
 from .forms import (
     AddAnalysisMethodForm,
-    EditAnalysisMethodForm,
     AddMethodForm,
     AddUnitForm,
     AnalysisMethodForm,
     BaseUnitForm,
     CurrentMethodsForm,
     CurrentUnitsForm,
+    DeleteAnalysisMethodForm,
     DeleteProcessMethodForm,
+    EditAnalysisMethodForm,
     MethodForm,
     UnitModifierForm,
     UnitsForm,
@@ -448,6 +449,11 @@ def analysis_methods():
         session.modified = True
         return redirect(url_for("data.edit_analysis_method"))
 
+    if form.delete_analysis_method.data:
+        session["security_keys"].append("delete_analysis_method")
+        session.modified = True
+        return redirect(url_for("data.delete_analysis_method"))
+
     return render_template("data/analysis_methods.html", form=form)
 
 
@@ -669,3 +675,32 @@ def edit_analysis_method():
             form.method_parts[count].data_type.data = method_part["data_type"]
 
     return render_template("data/edit_analysis_method.html", form=form)
+
+
+@bp.route("/delete_analysis_method", methods=["GET", "POST"])
+@login_required
+@session_keys({"delete_analysis_method": "data.analysis_methods"})
+def delete_analysis_method():
+    form = DeleteAnalysisMethodForm()
+    if form.delete_analysis_method.data:
+        analysis_method = form.analysis_method_list.data
+        db.session.delete(analysis_method)
+        db.session.commit()
+        analysis_method_query = db.session.execute(
+            db.select(AnalysisMethod).filter(
+                AnalysisMethod.name == analysis_method.name
+            )
+        ).scalar()
+        if analysis_method_query:
+            message = "Analysis Method {name} not deleted from database".format(
+                name=analysis_method.name
+            )
+            flash(message)
+            return redirect(url_for("data.delete_analysis_method"))
+        elif not analysis_method_query:
+            message = "Analysis Method {name} deleted from database".format(
+                name=analysis_method.name
+            )
+            flash(message)
+            return redirect(url_for("data.analysis_methods"))
+    return render_template("data/delete_analysis_method.html", form=form)

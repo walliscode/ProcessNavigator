@@ -136,6 +136,15 @@ class EditAnalysisMethodForm(FlaskForm):
     commit_changes = SubmitField("Commit Changes")
 
 
+class DeleteAnalysisMethodForm(FlaskForm):
+    analysis_method_list = QuerySelectField(
+        "Select Analysis Method",
+        allow_blank=False,
+        query_factory=get_current_analytical_methods,
+    )
+    delete_analysis_method = SubmitField("Delete Analysis Method")
+
+
 class UnitsForm(FlaskForm):
     add_units = SubmitField("Add Units")
     edit_units = SubmitField("Edit Units")
