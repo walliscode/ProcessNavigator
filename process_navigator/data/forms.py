@@ -230,11 +230,11 @@ def current_parameters():
     return db.session.execute(db.select(Param)).scalars()
 
 
-class ParameterForm(FlaskForm):
+class ParametersForm(FlaskForm):
     add_parameter = SubmitField("Add Parameter")
     edit_parameter = SubmitField("Edit Parameter")
     delete_parameter = SubmitField("Delete Parameter")
-    parameter_list = QuerySelectField(
+    parameters_list = QuerySelectField(
         "Parameter List",
         allow_blank=False,
         query_factory=current_parameters,

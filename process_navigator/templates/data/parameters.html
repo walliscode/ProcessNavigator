@@ -1,27 +1,30 @@
 {% extends 'base/main.html' %}
 {% block form_1 %}
     <div class="form-container">
-        <h1>Analysis Methods</h1>
+        <h1>Parameters</h1>
         <p>
-            Welcome to the Analysis Methods page. Here we can add, edit and delete
-            methods associated with gathering data of Entities and Processes.
+            Welcome to the Parameters page. Here you can add, edit, and delete parameters which can be associated with Process Steps.
         </p>
     </div>
 {% endblock %}
-{% from "helpers/_formhelpers.html" import render_form_button %}
 {% block form_2 %}
     <div class="form-container">
         <form method="post">
-            {{ csrf_token }} {{ render_form_button(form.add_analysis_method, class="add_button") 
-            }} {{ render_form_button(form.edit_analysis_method, class="edit_button") }} {{ render_form_button(form.delete_analysis_method, class="delete_button") }}
+            <fieldset>
+                {{ form.add_parameter(class = "add_button") }}
+            </fieldset>
+            <fieldset>
+                {{ form.edit_parameter(class = "edit_button") }}
+            </fieldset>
+            <fieldset>
+                {{ form.delete_parameter(class = "delete_button") }}
+            </fieldset>
         </form>
     </div>
 {% endblock %}
 {% block form_3 %}
-    {% from "helpers/_messagehelpers.html" import
-    display_messages %} {{ display_messages() }}
     <div class="form-container">
-        <h2>Current Analysis Methods</h2>
-        {{ form.current_analysis_methods }}
+        <h2>Current Parameters</h2>
+        {{ form.parameters_list }}
     </div>
 {% endblock %}
