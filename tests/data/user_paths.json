@@ -437,5 +437,59 @@
         "Analysis Method test_analysis_method_1 and Analysis Method Parts test_part_1, test_part_2 updated in database"
       ]
     }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "analysis_methods_get",
+      "analysis_method_post_delete_analysis_method"
+    ],
+    "description": "User redirects to the delete analysis method page via the analysis methods page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 302,
+      "location": "/data/delete_analysis_method",
+      "content": []
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "analysis_methods_get",
+      "analysis_method_post_delete_analysis_method",
+      "delete_analysis_method_get"
+    ],
+    "description": "User navigates to the delete analysis method page via the analysis methods page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Delete Analysis Method"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "analysis_methods_get",
+      "analysis_method_post_delete_analysis_method",
+      "delete_analysis_method_get",
+      "delete_analysis_method_post_delete_analysis_method"
+    ],
+    "description": "User deletes an analysis method",
+    "follow_redirects": true,
+    "assertions": {
+      "status_code": 200,
+      "location": "/data/analysis_methods",
+      "content": [
+        "Analysis Method test_analysis_method_1 and Analysis Method Parts test_part_1, test_part_2, test_part_3 deleted from database"
+      ]
+    }
   }
 ]
