@@ -264,5 +264,11 @@
       "delete_analysis_method": true,
       "analysis_method_list": 1
     }
+  },
+  {
+    "name": "parameters_get",
+    "route": "/data/parameters",
+    "method": "GET",
+    "data": {}
   }
 ]

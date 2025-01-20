@@ -109,15 +109,6 @@ class ProcessMethodPart(Base):
 # but a Method Part can only belong to one Method
 
 
-class Param(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    unit_id = db.Column(db.Integer, db.ForeignKey("unit.id"), nullable=False)
-
-    def __repr__(self):
-        return f"<Param {self.name}>"
-
-
 class Input(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)

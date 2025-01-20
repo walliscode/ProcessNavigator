@@ -15,6 +15,7 @@ from wtforms_sqlalchemy.fields import QuerySelectField
 
 from process_navigator.extensions.database import db
 from process_navigator.models.analysis import AnalysisMethod
+from process_navigator.models.parameters import Param
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
 from process_navigator.models.units import BaseUnit, Unit, UnitModifier
 from process_navigator.shared_data.enums import DataTypes
@@ -223,3 +224,18 @@ class AddUnitForm(FlaskForm):
     unit_combinations = FieldList(FormField(UnitCombinationForm), min_entries=1)
     add_unit_part = SubmitField("Add Combination")
     add_unit = SubmitField("Add Unit")
+
+
+def current_parameters():
+    return db.session.execute(db.select(Param)).scalars()
+
+
+class ParameterForm(FlaskForm):
+    add_parameter = SubmitField("Add Parameter")
+    edit_parameter = SubmitField("Edit Parameter")
+    delete_parameter = SubmitField("Delete Parameter")
+    parameter_list = QuerySelectField(
+        "Parameter List",
+        allow_blank=False,
+        query_factory=current_parameters,
+    )

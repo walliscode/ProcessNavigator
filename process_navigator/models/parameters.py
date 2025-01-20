@@ -1,0 +1,16 @@
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from process_navigator.extensions.database import Base
+
+
+class Param(Base):
+    __tablename__ = "param"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(nullable=False)
+    unit_id: Mapped[int] = mapped_column(ForeignKey("unit.id"), nullable=False)
+
+    unit: Mapped["Unit"] = relationship("Unit", back_populates="parameters")
+
+    def __repr__(self):
+        return "Parameter {self.name}"
