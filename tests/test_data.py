@@ -2,6 +2,7 @@ from process_navigator.extensions.database import db
 from process_navigator.models.process import ProcessMethod
 from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
 from process_navigator.models.analysis import AnalysisMethod, AnalysisMethodPart
+from process_navigator.models.parameters import Param
 
 
 def test_load_data(test_app):
@@ -82,3 +83,8 @@ def test_load_data(test_app):
             db.select(AnalysisMethodPart)
         ).all()
         assert len(analysis_method_part_query) == 3
+
+        # check Parameter added to Param table
+        param_query = db.session.scalars(db.select(Param)).all()
+        assert len(param_query) == 1
+        assert param_query[0].name == "test_parameter_1"

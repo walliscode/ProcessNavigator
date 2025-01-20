@@ -491,5 +491,26 @@
         "Analysis Method test_analysis_method_1 and Analysis Method Parts test_part_1, test_part_2, test_part_3 deleted from database"
       ]
     }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "parameters_get"
+    ],
+    "description": "User navigates to the parameters page via the data index page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Parameters",
+        "Welcome to the Parameters page",
+        "Add Parameter",
+        "Edit Parameter",
+        "Delete Parameter",
+        "Current Parameters"
+      ]
+    }
   }
 ]

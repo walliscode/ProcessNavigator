@@ -88,5 +88,12 @@
         }
       ]
     }
+  ],
+  "Parameters": [
+    {
+      "name": "test_parameter_1",
+      "description": "test_description",
+      "unit_id": 1
+    }
   ]
 }

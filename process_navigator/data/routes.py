@@ -20,6 +20,7 @@ from .forms import (
     DeleteProcessMethodForm,
     EditAnalysisMethodForm,
     MethodForm,
+    ParametersForm,
     UnitModifierForm,
     UnitsForm,
 )
@@ -708,3 +709,10 @@ def delete_analysis_method():
             session["security_keys"].remove("delete_analysis_method")
             return redirect(url_for("data.analysis_methods"))
     return render_template("data/delete_analysis_method.html", form=form)
+
+
+@bp.route("/parameters", methods=["GET", "POST"])
+@login_required
+def parameters():
+    form = ParametersForm()
+    return render_template("data/parameters.html", form=form)
