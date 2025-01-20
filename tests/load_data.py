@@ -1,10 +1,9 @@
-from process_navigator.extensions import db
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
 from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
 from process_navigator.models.analysis import AnalysisMethod, AnalysisMethodPart
 
 
-def load_test_data(json_data):
+def load_test_data(json_data, db):
     # load process methods
     for method in json_data["ProcessMethods"]:
         new_method = ProcessMethod(

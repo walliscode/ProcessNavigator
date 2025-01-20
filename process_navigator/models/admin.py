@@ -4,11 +4,12 @@ from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql import func
 
-from process_navigator.extensions import db
+from process_navigator.extensions.database import Base
 
 
 @dataclass
-class User(db.Model):
+class User(Base):
+    __tablename__ = "user"
     id: Mapped[int] = mapped_column(
         primary_key=True, init=False
     )  # init prevents it from being passed in the constructor

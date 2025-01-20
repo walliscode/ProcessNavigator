@@ -3,7 +3,7 @@ import eralchemy2
 # import flask functionality
 from flask import current_app, flash, redirect, render_template, session, url_for
 
-from process_navigator.extensions import db
+from process_navigator.extensions.database import db
 from process_navigator.home import bp
 from process_navigator.models.admin import User
 from process_navigator.utils.decorators import login_required, session_keys

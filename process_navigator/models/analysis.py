@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy import CheckConstraint, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from process_navigator.extensions import Base
+from process_navigator.extensions.database import Base
 from process_navigator.shared_data.enums import DataTypes
 
 
@@ -22,6 +22,14 @@ class AnalysisMethod(Base):
 
     def __repr__(self):
         return f"Analysis Method {self.name}"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "file_name": self.file_name,
+        }
 
 
 class AnalysisMethodPart(Base):
@@ -47,3 +55,12 @@ class AnalysisMethodPart(Base):
 
     def __repr__(self):
         return f"Analysis Method Part {self.name}"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "unit_id": self.unit_id,
+            "data_type": self.data_type,
+            "analysis_method_id": self.analysis_method_id,
+        }

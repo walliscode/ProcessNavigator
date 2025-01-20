@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from process_navigator.extensions import Base, db
+from process_navigator.extensions.database import Base, db
 
 
 class BaseUnit(Base):

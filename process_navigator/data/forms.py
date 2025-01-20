@@ -10,9 +10,10 @@ from wtforms import (
 )
 from wtforms.fields import SelectField
 from wtforms.validators import InputRequired
+from wtforms.widgets import HiddenInput
 from wtforms_sqlalchemy.fields import QuerySelectField
 
-from process_navigator.extensions import db
+from process_navigator.extensions.database import db
 from process_navigator.models.analysis import AnalysisMethod
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
 from process_navigator.models.units import BaseUnit, Unit, UnitModifier
@@ -90,6 +91,9 @@ class AnalysisMethodForm(FlaskForm):
 
 
 class AddAnalysisMethodPartForm(FlaskForm):
+    method_id = IntegerField(
+        "Method ID", validators=[InputRequired()], widget=HiddenInput()
+    )
     method_part_name = StringField(
         "Method Part Name",
         validators=[InputRequired()],
@@ -103,6 +107,8 @@ class AddAnalysisMethodPartForm(FlaskForm):
         "Data Type",
         choices=[data_type.value for data_type in DataTypes],
     )
+
+    delete_method_part = SubmitField("Delete Method Part")
 
 
 class AddAnalysisMethodForm(FlaskForm):
@@ -125,7 +131,8 @@ class EditAnalysisMethodForm(FlaskForm):
     method_name = StringField("Method Name", validators=[InputRequired()])
     method_description = StringField("Method Description", validators=[InputRequired()])
     method_file = FileField("Method File")
-    method_parts = FieldList(FormField(AddAnalysisMethodPartForm), min_entries=0)
+    method_parts = FieldList(FormField(AddAnalysisMethodPartForm))
+    add_method_part = SubmitField("Add Method Part")
     commit_changes = SubmitField("Commit Changes")
 
 

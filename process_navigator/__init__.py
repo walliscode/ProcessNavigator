@@ -5,7 +5,8 @@ from pathlib import Path
 from flask import Flask
 
 from process_navigator import data, home
-from process_navigator.extensions import db, refresh_database_command
+from process_navigator.extensions.database import db
+from process_navigator.extensions.click import refresh_database_command
 
 
 # create a create_app function that initializes the Flask application, we can add other logic depending on set up
