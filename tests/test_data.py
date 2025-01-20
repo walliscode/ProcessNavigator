@@ -1,4 +1,4 @@
-from process_navigator.extensions import db
+from process_navigator.extensions.database import db
 from process_navigator.models.process import ProcessMethod
 from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
 from process_navigator.models.analysis import AnalysisMethod, AnalysisMethodPart
@@ -72,12 +72,13 @@ def test_load_data(test_app):
             assert part in part_name_list
 
         # check data type
-        for part in analysis_method_query[0].analysis_method_parts:
-            assert part.data_type == "Continuous"
+        part = analysis_method_query[0].analysis_method_parts
+        assert part[0].data_type == "Continuous"
+        assert part[1].data_type == "Categorical"
+        assert part[2].data_type == "String"
 
         # check only 3 AnalysisMethodParts were added:
         analysis_method_part_query = db.session.scalars(
             db.select(AnalysisMethodPart)
         ).all()
-
         assert len(analysis_method_part_query) == 3

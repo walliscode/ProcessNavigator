@@ -1,4 +1,4 @@
-from process_navigator.extensions import db
+from process_navigator.extensions.database import db
 from process_navigator.models.admin import User
 
 
