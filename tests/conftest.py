@@ -22,7 +22,7 @@ def test_app():
         test_data_path = Path.cwd() / "tests" / "data" / "test_data.json"
         with open(test_data_path) as test_data:
             test_data = json.load(test_data)
-            load_test_data(json_data=test_data)
+            load_test_data(json_data=test_data, db=db)
 
     yield test_app
     with test_app.app_context():

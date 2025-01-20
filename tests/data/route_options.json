@@ -181,5 +181,65 @@
       "select_method": true,
       "current_methods": 1
     }
+  },
+  {
+    "name": "edit_analysis_method_post_add_method_part",
+    "route": "/data/edit_analysis_method",
+    "method": "POST",
+    "data": {
+      "add_method_part": true
+    }
+  },
+  {
+    "name": "edit_analysis_method_post_commit_changes_1",
+    "route": "/data/edit_analysis_method",
+    "method": "POST",
+    "data": {
+      "commit_changes": true,
+      "method_name": "test_analysis_method_1",
+      "method_description": "test_description",
+      "method_parts-0-method_id": 1,
+      "method_parts-0-method_part_name": "test_part_1",
+      "method_parts-0-method_part_unit": 1,
+      "method_parts-0-data_type": "Continuous",
+      "method_parts-1-method_id": 2,
+      "method_parts-1-method_part_name": "test_part_2",
+      "method_parts-1-method_part_unit": 1,
+      "method_parts-1-data_type": "Categorical",
+      "method_parts-2-method_id": 3,
+      "method_parts-2-method_part_name": "test_part_3",
+      "method_parts-2-method_part_unit": 1,
+      "method_parts-2-data_type": "String",
+      "method_parts-3-method_id": "None",
+      "method_parts-3-method_part_name": "test_part_4",
+      "method_parts-3-method_part_unit": 1,
+      "method_parts-3-data_type": "Continuous"
+    }
+  },
+  {
+    "name": "edit_analysis_method_post_delete_method_part",
+    "route": "/data/edit_analysis_method",
+    "method": "POST",
+    "data": {
+      "method_parts-2-delete_method_part": true
+    }
+  },
+  {
+    "name": "edit_analysis_method_post_commit_changes_2",
+    "route": "/data/edit_analysis_method",
+    "method": "POST",
+    "data": {
+      "commit_changes": true,
+      "method_name": "test_analysis_method_1",
+      "method_description": "test_description",
+      "method_parts-0-method_id": 1,
+      "method_parts-0-method_part_name": "test_part_1",
+      "method_parts-0-method_part_unit": 1,
+      "method_parts-0-data_type": "Continuous",
+      "method_parts-1-method_id": 2,
+      "method_parts-1-method_part_name": "test_part_2",
+      "method_parts-1-method_part_unit": 1,
+      "method_parts-1-data_type": "Categorical"
+    }
   }
 ]

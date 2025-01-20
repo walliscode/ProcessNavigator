@@ -606,11 +606,7 @@ def edit_analysis_method():
 
         # second add all the AnalysisMethodParts that do not have an id
         for method_part in form.method_parts:
-            print("trying to  add method part")
-            print(method_part.method_id.data)
             if method_part.method_id.data is None:
-                print("adding new method part")
-
                 new_method_part = AnalysisMethodPart(
                     name=method_part.method_part_name.data,
                     unit_id=method_part.method_part_unit.data.id,

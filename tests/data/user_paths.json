@@ -334,8 +334,107 @@
       "status_code": 200,
       "content": [
         "Method Name",
+        "test_analysis_method_1",
         "Method Description",
-        "Method File"
+        "test_description",
+        "Method File",
+        "Method Part Name",
+        "Data Type",
+        "Unit",
+        "Continuous",
+        "Categorical",
+        "String"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "analysis_methods_get",
+      "analysis_method_post_edit_analysis_method",
+      "edit_analysis_method_get",
+      "edit_analysis_method_post_select_method",
+      "edit_analysis_method_post_add_method_part"
+    ],
+    "description": "User adds another method part option to the form",
+    "follow_redirects": true,
+    "assertions": {
+      "status_code": 200,
+      "location": "/data/edit_analysis_method",
+      "content": [
+        "Method Name",
+        "Method Description",
+        "Method File",
+        "Method Part Name",
+        "Data Type",
+        "Unit",
+        "Continuous",
+        "Categorical",
+        "String"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "analysis_methods_get",
+      "analysis_method_post_edit_analysis_method",
+      "edit_analysis_method_get",
+      "edit_analysis_method_post_select_method",
+      "edit_analysis_method_post_add_method_part",
+      "edit_analysis_method_post_commit_changes_1"
+    ],
+    "description": "User commits changes to the analysis method",
+    "follow_redirects": true,
+    "assertions": {
+      "status_code": 200,
+      "location": "/data/analysis_methods",
+      "content": [
+        "Analysis Method test_analysis_method_1 and Analysis Method Parts test_part_1, test_part_2, test_part_3, test_part_4 updated in database"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "analysis_methods_get",
+      "analysis_method_post_edit_analysis_method",
+      "edit_analysis_method_get",
+      "edit_analysis_method_post_select_method",
+      "edit_analysis_method_post_delete_method_part"
+    ],
+    "description": "User deletes a method part from the analysis method (without commiting changes)",
+    "follow_redirects": true,
+    "assertions": {
+      "status_code": 200,
+      "location": "/data/edit_analysis_method"
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "analysis_methods_get",
+      "analysis_method_post_edit_analysis_method",
+      "edit_analysis_method_get",
+      "edit_analysis_method_post_select_method",
+      "edit_analysis_method_post_delete_method_part",
+      "edit_analysis_method_post_commit_changes_2"
+    ],
+    "description": "User deletes a method part from the analysis method (and commits changes)",
+    "follow_redirects": true,
+    "assertions": {
+      "status_code": 200,
+      "location": "/data/analysis_methods",
+      "content": [
+        "Analysis Method test_analysis_method_1 and Analysis Method Parts test_part_1, test_part_2 updated in database"
       ]
     }
   }
