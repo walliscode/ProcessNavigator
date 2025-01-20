@@ -270,5 +270,39 @@
     "route": "/data/parameters",
     "method": "GET",
     "data": {}
+  },
+  {
+    "name": "parameters_post_add_parameter",
+    "route": "/data/parameters",
+    "method": "POST",
+    "data": {
+      "add_parameter": true
+    }
+  },
+  {
+    "name": "add_parameter_get",
+    "route": "/data/add_parameter",
+    "method": "GET",
+    "data": {}
+  },
+  {
+    "name": "add_parameter_post_add_duplicate_parameter",
+    "route": "/data/add_parameter",
+    "method": "POST",
+    "data": {
+      "add_parameter": true,
+      "parameter_name": "test_parameter_1",
+      "parameter_unit": 1
+    }
+  },
+  {
+    "name": "add_parameter_post_add_parameter",
+    "route": "/data/add_parameter",
+    "method": "POST",
+    "data": {
+      "add_parameter": true,
+      "parameter_name": "test_parameter_3",
+      "parameter_unit": 1
+    }
   }
 ]

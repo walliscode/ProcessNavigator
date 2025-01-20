@@ -5,12 +5,14 @@ from process_navigator.extensions.database import db
 from process_navigator.models.analysis import AnalysisMethod, AnalysisMethodPart
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
 from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
+from process_navigator.models.parameters import Param
 from process_navigator.utils.decorators import login_required, session_keys
 from process_navigator.utils.file_handling import save_file
 
 from .forms import (
     AddAnalysisMethodForm,
     AddMethodForm,
+    AddParameterForm,
     AddUnitForm,
     AnalysisMethodForm,
     BaseUnitForm,
@@ -715,4 +717,63 @@ def delete_analysis_method():
 @login_required
 def parameters():
     form = ParametersForm()
+
+    if form.add_parameter.data:
+        session["security_keys"].append("add_parameter")
+        session.modified = True
+        return redirect(url_for("data.add_parameter"))
+
     return render_template("data/parameters.html", form=form)
+
+
+@bp.route("/add_parameter", methods=["GET", "POST"])
+@login_required
+@session_keys({"add_parameter": "data.parameters"})
+def add_parameter():
+    form = AddParameterForm()
+
+    if form.add_parameter.data:
+        # check whether the parameter already exists in the database
+        parameter_query = db.session.execute(
+            db.select(Param).filter(Param.name == form.parameter_name.data)
+        ).scalar()
+        print(form.parameter_name.data)
+        print(parameter_query)
+        if parameter_query:
+            message = "Parameter {name} already exists in the database".format(
+                name=form.parameter_name.data
+            )
+            flash(message)
+            return redirect(url_for("data.add_parameter"))
+
+        elif not parameter_query:
+            # get unit for Param
+            unit_query = db.session.execute(
+                db.select(Unit).filter(Unit.id == form.parameter_unit.data.id)
+            ).scalar()
+            # add the parameter to the database
+            new_param = Param(
+                name=form.parameter_name.data.__str__(),
+                unit_id=form.parameter_unit.data.id,
+                unit=unit_query,
+            )
+
+            db.session.add(new_param)
+            db.session.commit()
+
+            # check if the parameter has been added to the database
+            parameter_query = db.session.execute(
+                db.select(Param).filter(Param.name == form.parameter_name.data)
+            ).scalar()
+
+            if parameter_query:
+                message = "Parameter {name} added to database".format(
+                    name=parameter_query.name
+                )
+                flash(message)
+                # remove security key from session and redirect to the parameters page
+                session["security_keys"].remove("add_parameter")
+                session.modified = True
+                return redirect(url_for("data.parameters"))
+
+    return render_template("data/add_parameter.html", form=form)
