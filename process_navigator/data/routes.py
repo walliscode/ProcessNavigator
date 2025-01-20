@@ -698,9 +698,13 @@ def delete_analysis_method():
             flash(message)
             return redirect(url_for("data.delete_analysis_method"))
         elif not analysis_method_query:
-            message = "Analysis Method {name} deleted from database".format(
-                name=analysis_method.name
+            message = "Analysis Method {name} and Analysis Method Parts {parts} deleted from database".format(
+                name=analysis_method.name,
+                parts=", ".join(
+                    [part.name for part in analysis_method.analysis_method_parts]
+                ),
             )
             flash(message)
+            session["security_keys"].remove("delete_analysis_method")
             return redirect(url_for("data.analysis_methods"))
     return render_template("data/delete_analysis_method.html", form=form)

@@ -255,5 +255,14 @@
     "route": "/data/delete_analysis_method",
     "method": "GET",
     "data": {}
+  },
+  {
+    "name": "delete_analysis_method_post_delete_analysis_method",
+    "route": "/data/delete_analysis_method",
+    "method": "POST",
+    "data": {
+      "delete_analysis_method": true,
+      "analysis_method_list": 1
+    }
   }
 ]
