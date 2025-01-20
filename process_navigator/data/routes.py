@@ -1,7 +1,7 @@
 from flask import flash, redirect, render_template, session, url_for
 
 from process_navigator.data import bp
-from process_navigator.extensions import db
+from process_navigator.extensions.database import db
 from process_navigator.models.analysis import AnalysisMethod, AnalysisMethodPart
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
 from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
@@ -378,7 +378,6 @@ def unit_modifiers():
             )
             flash(message)
             return redirect(url_for("data.unit_modifiers"))
-
         new_unit_modifier = UnitModifier(
             name=form.modifier_name.data.__str__(),
             symbol=form.modifier_symbol.data.__str__(),
@@ -549,13 +548,30 @@ def edit_analysis_method():
 
     # once analytical method is selected to edit, populate the form with data and add correct session keys
     if form.select_method.data:
-        session["analytical_method"] = {}
+        session["analytical_method"] = form.current_methods.data.to_dict()
         session["analytical_method"]["id"] = form.current_methods.data.id
+        session["analytical_method"]["analysis_method_parts"] = []
 
-        # prepopulate form data
-        form.method_name.data = form.current_methods.data.name
-        form.method_description.data = form.current_methods.data.description
-        # for each method part on the AnalysisMethod object, create a Field and populate data
+        for method_part in form.current_methods.data.analysis_method_parts:
+            session["analytical_method"]["analysis_method_parts"].append(
+                method_part.to_dict()
+            )
+    # add extra method part field if the add_method_part button is clicked (this does not create a new AnalysisMethodPart)
+    if form.add_method_part.data:
+        session["analytical_method"]["analysis_method_parts"].append(
+            {
+                "id": None,
+                "name": None,
+                "unit_id": None,
+                "data_type": None,
+            }
+        )
+
+    # Check if a specific button inside the FieldList was pressed
+    for index, method_part in enumerate(form.method_parts):
+        if method_part.delete_method_part.data:
+            session["analytical_method"]["analysis_method_parts"].pop(index)
+            session.modified = True
 
     if form.commit_changes.data:
         # get AnalysisMethod objcet from the database
@@ -573,15 +589,52 @@ def edit_analysis_method():
             method_file = save_file(form.method_file.data)
             analysis_method.file_name = method_file
 
-        # modify the AnalysisMethodParts
-        for count, method_part in enumerate(analysis_method.analysis_method_parts):
-            method_part.name = form.method_parts[count].method_part_name.data
-            method_part.unit_id = form.method_parts[count].method_part_unit.data.id
-            method_part.data_type = form.method_parts[count].data_type.data
+        # modify the AnalysisMethodParts with the form data
+        # first delete all the AnalysisMethodParts that do not exist in the form data
+        # make a list of AnalysisMethodPart ids from the session data (that we are keeping)
+        session_method_part_ids = [
+            method_part.method_id.data
+            for method_part in form.method_parts
+            if method_part.method_id.data is not None
+        ]
 
-        db.session.commit()
+        # iterate through the AnalysisMethodParts and delete those that are not in the session data
+        for method_part in analysis_method.analysis_method_parts:
+            if method_part.id not in session_method_part_ids:
+                db.session.delete(method_part)
+                db.session.commit()
 
-        # flash success message and clear relevant session keys and data, redirect to analysis_methods
+        # second add all the AnalysisMethodParts that do not have an id
+        for method_part in form.method_parts:
+            print("trying to  add method part")
+            print(method_part.method_id.data)
+            if method_part.method_id.data is None:
+                print("adding new method part")
+
+                new_method_part = AnalysisMethodPart(
+                    name=method_part.method_part_name.data,
+                    unit_id=method_part.method_part_unit.data.id,
+                    data_type=method_part.data_type.data,
+                    analysis_method_id=analysis_method.id,
+                    analysis_method=analysis_method,
+                )
+                db.session.add(new_method_part)
+                db.session.commit()
+
+        # third update all the AnalysisMethodParts that do have an id
+        for method_part in form.method_parts:
+            if method_part.method_id.data is not None:
+                method_part_query = db.session.execute(
+                    db.select(AnalysisMethodPart).filter(
+                        AnalysisMethodPart.id == method_part.method_id.data
+                    )
+                ).scalar_one()
+                method_part_query.name = method_part.method_part_name.data
+                method_part_query.unit_id = method_part.method_part_unit.data.id
+                method_part_query.data_type = method_part.data_type.data
+                db.session.commit()
+
+            # flash success message and clear relevant session keys and data, redirect to analysis_methods
         message = "Analysis Method {name} and Analysis Method Parts {parts} updated in database".format(
             name=analysis_method.name,
             parts=", ".join(
@@ -594,43 +647,29 @@ def edit_analysis_method():
         session.modified = True
         return redirect(url_for("data.analysis_methods"))
 
-    # Check if a specific button inside the FieldList was pressed
-    for index, method_part in enumerate(form.method_parts):
-        if method_part.delete_method_part.data:
-            print("delete test")
-            print(index)
-
-    """ 
-    each time the method parts get deleted or new one added, we are going to do the datbase edits straight away.
-    This is to prevent the order of the list getting muddled
-    To aid this, at the end of each requset we are going to update the form method parts with the AnalysisMethod object
-    """
-
     if "analytical_method" in session:
         # get fresh object from the database
-        analysis_method = db.session.execute(
-            db.select(AnalysisMethod).filter(
-                AnalysisMethod.id == session["analytical_method"]["id"]
-            )
-        ).scalar_one()
+        analysis_method = session["analytical_method"]
+
+        form.method_name.data = analysis_method["name"]
+        form.method_description.data = analysis_method["description"]
 
         # set the number of form.method_parts to mactch the number of AnalysisMethodParts using pop/append_entry
-        print("ANalysis Method Parts")
-        print(len(analysis_method.analysis_method_parts))
-        while len(form.method_parts) < len(analysis_method.analysis_method_parts):
+        while len(form.method_parts) < len(analysis_method["analysis_method_parts"]):
             form.method_parts.append_entry()
-            if len(form.method_parts) == len(analysis_method.analysis_method_parts):
+            if len(form.method_parts) == len(analysis_method["analysis_method_parts"]):
                 break
 
-        while len(form.method_parts) > len(analysis_method.analysis_method_parts):
+        while len(form.method_parts) > len(analysis_method["analysis_method_parts"]):
             form.method_parts.pop_entry()
-            if len(form.method_parts) == len(analysis_method.analysis_method_parts):
+            if len(form.method_parts) == len(analysis_method["analysis_method_parts"]):
                 break
 
         # update the method parts in the form
-        for count, method_part in enumerate(analysis_method.analysis_method_parts):
-            form.method_parts[count].method_part_name.data = method_part.name
-            form.method_parts[count].method_part_unit.data = method_part.unit_id
-            form.method_parts[count].data_type.data = method_part.data_type
+        for count, method_part in enumerate(analysis_method["analysis_method_parts"]):
+            form.method_parts[count].method_id.data = method_part["id"]
+            form.method_parts[count].method_part_name.data = method_part["name"]
+            form.method_parts[count].method_part_unit.data = method_part["unit_id"]
+            form.method_parts[count].data_type.data = method_part["data_type"]
 
     return render_template("data/edit_analysis_method.html", form=form)

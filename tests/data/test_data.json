@@ -79,12 +79,12 @@
         {
           "name": "test_part_2",
           "unit_id": 1,
-          "data_type": "Continuous"
+          "data_type": "Categorical"
         },
         {
           "name": "test_part_3",
           "unit_id": 1,
-          "data_type": "Continuous"
+          "data_type": "String"
         }
       ]
     }
