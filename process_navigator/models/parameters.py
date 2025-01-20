@@ -7,7 +7,7 @@ from process_navigator.extensions.database import Base
 class Param(Base):
     __tablename__ = "param"
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
-    name: Mapped[str] = mapped_column(nullable=False)
+    name: Mapped[str] = mapped_column(nullable=False, unique=True)
     unit_id: Mapped[int] = mapped_column(ForeignKey("unit.id"), nullable=False)
 
     unit: Mapped["Unit"] = relationship("Unit", back_populates="parameters")

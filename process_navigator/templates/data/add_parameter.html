@@ -1,0 +1,30 @@
+{% extends 'base/main.html' %}
+{% block form_1 %}
+    <div class="form-container">
+        <h1>Add Parameter</h1>
+        <p>Here we can add Parameters</p>
+    </div>
+{% endblock %}
+{% block form_2 %}
+    <div class="form-container">
+        <h1>Add Parameter</h1>
+        <form method="post">
+            {{ csrf_token }}
+            <fieldset>
+                {{ form.parameter_name.label }}
+                {{ form.parameter_name }}
+            </fieldset>
+            <fieldset>
+                {{ form.parameter_unit.label }}
+                {{ form.parameter_unit }}
+            </fieldset>
+            <fieldset>
+                {{ form.add_parameter(class ="add_button") }}
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+{% block form_3 %}
+    {% from "helpers/_messagehelpers.html" import
+    display_messages %} {{ display_messages() }}
+{% endblock %}

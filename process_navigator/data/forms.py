@@ -239,3 +239,13 @@ class ParametersForm(FlaskForm):
         allow_blank=False,
         query_factory=current_parameters,
     )
+
+
+class AddParameterForm(FlaskForm):
+    parameter_name = StringField("Parameter Name", validators=[InputRequired()])
+    parameter_unit = QuerySelectField(
+        "Unit",
+        allow_blank=False,
+        query_factory=get_current_units,
+    )
+    add_parameter = SubmitField("Add Parameter")

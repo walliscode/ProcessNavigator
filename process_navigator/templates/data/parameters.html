@@ -24,7 +24,13 @@
 {% endblock %}
 {% block form_3 %}
     <div class="form-container">
-        <h2>Current Parameters</h2>
-        {{ form.parameters_list }}
+        <form>
+            <fieldset>
+                <h2>Current Parameters</h2>
+                {{ form.parameters_list }}
+            </fieldset>
+        </form>
+        {% from "helpers/_messagehelpers.html" import
+        display_messages %} {{ display_messages() }}
     </div>
 {% endblock %}

@@ -512,5 +512,79 @@
         "Current Parameters"
       ]
     }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "parameters_get",
+      "parameters_post_add_parameter"
+    ],
+    "description": "User folows parameters route to add_parameters via add_parameter button",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 302,
+      "location": "/data/add_parameter"
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "parameters_get",
+      "parameters_post_add_parameter",
+      "add_parameter_get"
+    ],
+    "description": "User navigates to the add_parameters page via the parameters page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Add Parameter",
+        "Parameter Name",
+        "Unit"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "parameters_get",
+      "parameters_post_add_parameter",
+      "add_parameter_get",
+      "add_parameter_post_add_duplicate_parameter"
+    ],
+    "description": "User adds a duplicate parameter and gets feedback message",
+    "follow_redirects": true,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Parameter test_parameter_1 already exists in the database"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "parameters_get",
+      "parameters_post_add_parameter",
+      "add_parameter_get",
+      "add_parameter_post_add_parameter"
+    ],
+    "description": "User adds a parameter to the database",
+    "follow_redirects": true,
+    "assertions": {
+      "status_code": 200,
+      "location": "/data/parameters",
+      "content": [
+        "Parameter test_parameter_3 added to database"
+      ]
+    }
   }
 ]
