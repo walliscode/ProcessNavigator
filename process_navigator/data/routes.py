@@ -1,4 +1,5 @@
 from flask import flash, redirect, render_template, session, url_for
+from sqlalchemy.sql.compiler import elements
 
 from process_navigator.data import bp
 from process_navigator.extensions.database import db
@@ -21,6 +22,7 @@ from .forms import (
     DeleteAnalysisMethodForm,
     DeleteProcessMethodForm,
     EditAnalysisMethodForm,
+    EditParameterForm,
     MethodForm,
     ParametersForm,
     UnitModifierForm,
@@ -723,6 +725,10 @@ def parameters():
         session.modified = True
         return redirect(url_for("data.add_parameter"))
 
+    if form.edit_parameter.data:
+        session["security_keys"].append("edit_parameter")
+        session.modified = True
+        return redirect(url_for("data.edit_parameter"))
     return render_template("data/parameters.html", form=form)
 
 
@@ -776,4 +782,74 @@ def add_parameter():
                 session.modified = True
                 return redirect(url_for("data.parameters"))
 
+            else:
+                message = "Parameter {name} not added to database".format(
+                    name=form.parameter_name.data
+                )
+                flash(message)
+                return redirect(url_for("data.add_parameter"))
+
     return render_template("data/add_parameter.html", form=form)
+
+
+@bp.route("/edit_parameter", methods=["GET", "POST"])
+@login_required
+@session_keys({"edit_parameter": "data.parameters"})
+def edit_parameter():
+    form = EditParameterForm()
+
+    if form.select_parameter.data:
+        session["parameter"] = {}
+        session["parameter"]["id"] = form.parameters_list.data.id
+
+        # pass in default form data
+        form.parameter_name.data = form.parameters_list.data.name
+        form.parameter_unit.data = form.parameters_list.data.unit_id
+
+    if form.commit_changes.data:
+        # check new parameter name is unique
+        parameter_query = db.session.execute(
+            db.select(Param).filter(Param.name == form.parameter_name.data)
+        ).scalar()
+
+        if parameter_query:
+            message = "Parameter {name} already exists in the database".format(
+                name=form.parameter_name.data
+            )
+            flash(message)
+            return redirect(url_for("data.edit_parameter"))
+
+        # get the parameter from the database
+        parameter = db.session.execute(
+            db.select(Param).filter(Param.id == session["parameter"]["id"])
+        ).scalar_one()
+
+        # update the parameter with the form data
+        parameter.name = form.parameter_name.data
+        parameter.unit_id = form.parameter_unit.data.id
+        db.session.commit()
+
+        # check if the parameter has been updated in the database
+        parameter_query = db.session.execute(
+            db.select(Param).filter(Param.id == session["parameter"]["id"])
+        ).scalar()
+
+        if parameter_query:
+            message = "Parameter {name} ({symbol}) updated in database".format(
+                name=parameter_query.name,
+                symbol=parameter_query.unit.symbol,
+            )
+            flash(message)
+            # remove security key from session and redirect to the parameters page
+            session["security_keys"].remove("edit_parameter")
+            session.modified = True
+            return redirect(url_for("data.parameters"))
+
+        elif not parameter_query:
+            message = "Parameter {name} not updated in database".format(
+                name=parameter.name
+            )
+            flash(message)
+            return redirect(url_for("data.edit_parameter"))
+
+    return render_template("data/edit_parameter.html", form=form)

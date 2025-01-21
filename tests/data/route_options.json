@@ -304,5 +304,38 @@
       "parameter_name": "test_parameter_3",
       "parameter_unit": 1
     }
+  },
+  {
+    "name": "parameters_post_edit_parameter",
+    "route": "/data/parameters",
+    "method": "POST",
+    "data": {
+      "edit_parameter": true
+    }
+  },
+  {
+    "name": "edit_parameter_get",
+    "route": "/data/edit_parameter",
+    "method": "GET",
+    "data": {}
+  },
+  {
+    "name": "edit_parameter_post_select_parameter",
+    "route": "/data/edit_parameter",
+    "method": "POST",
+    "data": {
+      "select_parameter": true,
+      "parameters_list": 1
+    }
+  },
+  {
+    "name": "edit_parameter_post_commit_changes",
+    "route": "/data/edit_parameter",
+    "method": "POST",
+    "data": {
+      "commit_changes": true,
+      "parameter_name": "change_parameter",
+      "parameter_unit": 1
+    }
   }
 ]

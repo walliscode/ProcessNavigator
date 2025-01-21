@@ -226,7 +226,7 @@ class AddUnitForm(FlaskForm):
     add_unit = SubmitField("Add Unit")
 
 
-def current_parameters():
+def get_current_parameters():
     return db.session.execute(db.select(Param)).scalars()
 
 
@@ -237,7 +237,7 @@ class ParametersForm(FlaskForm):
     parameters_list = QuerySelectField(
         "Parameter List",
         allow_blank=False,
-        query_factory=current_parameters,
+        query_factory=get_current_parameters,
     )
 
 
@@ -249,3 +249,20 @@ class AddParameterForm(FlaskForm):
         query_factory=get_current_units,
     )
     add_parameter = SubmitField("Add Parameter")
+
+
+class EditParameterForm(FlaskForm):
+    parameters_list = QuerySelectField(
+        "Parameter List",
+        allow_blank=False,
+        query_factory=get_current_parameters,
+    )
+
+    select_parameter = SubmitField("Select Parameter")
+    parameter_name = StringField("Parameter Name", validators=[InputRequired()])
+    parameter_unit = QuerySelectField(
+        "Unit",
+        allow_blank=False,
+        query_factory=get_current_units,
+    )
+    commit_changes = SubmitField("Commit Changes")
