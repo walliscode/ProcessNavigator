@@ -24,6 +24,7 @@ from .forms import (
     DeleteParameterForm,
     DeleteProcessMethodForm,
     EditAnalysisMethodForm,
+    EditInputForm,
     EditParameterForm,
     InputsForm,
     MethodForm,
@@ -902,6 +903,12 @@ def inputs():
         session["security_keys"].append("add_input")
         session.modified = True
         return redirect(url_for("data.add_input"))
+
+    if form.edit_input.data:
+        session["security_keys"].append("edit_input")
+        session.modified = True
+        return redirect(url_for("data.edit_input"))
+
     return render_template("data/inputs.html", form=form)
 
 
@@ -960,3 +967,62 @@ def add_input():
             flash(message)
             return redirect(url_for("data.add_input"))
     return render_template("data/add_input.html", form=form)
+
+
+@bp.route("/edit_input", methods=["GET", "POST"])
+@login_required
+@session_keys({"edit_input": "data.inputs"})
+def edit_input():
+    form = EditInputForm()
+
+    if form.select_input.data:
+        session["input"] = {}
+        session["input"]["id"] = form.inputs_list.data.id
+        # pass in default form data
+        form.input_name.data = form.inputs_list.data.name
+        form.input_CAS.data = form.inputs_list.data.CAS
+        form.input_unit.data = form.inputs_list.data.unit_id
+
+    if form.commit_changes.data:
+        # check new input name is unique
+        input_query = db.session.execute(
+            db.select(Input).filter(Input.name == form.input_name.data)
+        ).scalar()
+        if input_query:
+            message = "Input {name} already exists in the database".format(
+                name=form.input_name.data
+            )
+            flash(message)
+            return redirect(url_for("data.edit_input"))
+        # get the input from the database
+        input = db.session.execute(
+            db.select(Input).filter(Input.id == session["input"]["id"])
+        ).scalar_one()
+        # update the input with the form data
+        input.name = form.input_name.data
+        input.CAS = form.input_CAS.data
+        input.unit_id = form.input_unit.data.id
+        db.session.commit()
+        # check if the input has been updated in the database
+        input_query = db.session.execute(
+            db.select(Input).filter(Input.id == session["input"]["id"])
+        ).scalar()
+        if input_query:
+            message = (
+                "Input {name} ({symbol}) with CAS {CAS} updated in database".format(
+                    name=input_query.name,
+                    symbol=input_query.unit.symbol,
+                    CAS=input_query.CAS,
+                )
+            )
+            flash(message)
+            # remove security key from session and redirect to the inputs page
+            session["security_keys"].remove("edit_input")
+            session.modified = True
+            return redirect(url_for("data.inputs"))
+        elif not input_query:
+            message = "Input {name} not updated in database".format(name=input.name)
+            flash(message)
+            return redirect(url_for("data.edit_input"))
+
+    return render_template("data/edit_input.html", form=form)

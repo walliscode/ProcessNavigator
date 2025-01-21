@@ -1,4 +1,5 @@
 from process_navigator.extensions.database import db
+from process_navigator.models.inputs import Input
 from process_navigator.models.process import ProcessMethod
 from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
 from process_navigator.models.analysis import AnalysisMethod, AnalysisMethodPart
@@ -88,3 +89,9 @@ def test_load_data(test_app):
         param_query = db.session.scalars(db.select(Param)).all()
         assert len(param_query) == 1
         assert param_query[0].name == "test_parameter_1"
+
+        # check Input added to Param table
+        input_query = db.session.scalars(db.select(Input)).all()
+        assert len(input_query) == 1
+        assert input_query[0].name == "test_input_1"
+        assert input_query[0].CAS == "1-2-3-4"

@@ -1,0 +1,36 @@
+{% extends 'base/main.html' %}
+{% block form_1 %}
+    <div class="form-container">
+        <h1>Edit Inputs</h1>
+    </div>
+{% endblock %}
+{% block form_2 %}
+    <div class="form-container">
+        <form method="post">
+            {% if "input" not in session %}
+                <fieldset>
+                    {{ form.inputs_list }}
+                </fieldset>
+                <fieldset>
+                    {{ form.select_input(class="add_button") }}
+                </fieldset>
+            {% elif "input" in session %}
+                <fieldset>
+                    {{ form.input_name.label }}
+                    {{ form.input_name }}
+                    {{ form.input_CAS.label }}
+                    {{ form.input_CAS }}
+                    {{ form.input_unit.label }}
+                    {{ form.input_unit }}
+                </fieldset>
+                <fieldset>
+                    {{ form.commit_changes(class="add_button") }}
+                </fieldset>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}
+{% block form_3 %}
+    {% from "helpers/_messagehelpers.html" import
+    display_messages %} {{ display_messages() }}
+{% endblock %}

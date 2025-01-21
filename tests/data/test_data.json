@@ -95,5 +95,12 @@
       "description": "test_description",
       "unit_id": 1
     }
+  ],
+  "Inputs": [
+    {
+      "name": "test_input_1",
+      "CAS": "1-2-3-4",
+      "unit_id": 1
+    }
   ]
 }

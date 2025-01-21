@@ -794,5 +794,86 @@
         "Input test_input_3 (Kms^-1) added to database"
       ]
     }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "inputs_get",
+      "inputs_post_edit_input"
+    ],
+    "description": "User navigates to the edit input route from the inputs page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 302,
+      "location": "/data/edit_input",
+      "content": []
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "inputs_get",
+      "inputs_post_edit_input",
+      "edit_input_get"
+    ],
+    "description": "User navigates to the edit input page via the inputs page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Edit Inputs",
+        "Select Input"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "inputs_get",
+      "inputs_post_edit_input",
+      "edit_input_get",
+      "edit_input_post_select_input"
+    ],
+    "description": "User selects an input to edit",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Input Name",
+        "test_input_1",
+        "Input CAS",
+        "1-2-3-4",
+        "Unit Velocity",
+        "Kms^-1",
+        "Commit Changes"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "inputs_get",
+      "inputs_post_edit_input",
+      "edit_input_get",
+      "edit_input_post_select_input",
+      "edit_input_post_commit_changes"
+    ],
+    "description": "User commits input changes",
+    "follow_redirects": true,
+    "assertions": {
+      "status_code": 200,
+      "location": "/data/inputs",
+      "content": [
+        "Input change_input (Kms^-1) with CAS 7-8-9 updated in database"
+      ]
+    }
   }
 ]

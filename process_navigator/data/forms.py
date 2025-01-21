@@ -302,3 +302,20 @@ class AddInputForm(FlaskForm):
         query_factory=get_current_units,
     )
     add_input = SubmitField("Add Input")
+
+
+class EditInputForm(FlaskForm):
+    inputs_list = QuerySelectField(
+        "Input List",
+        allow_blank=False,
+        query_factory=get_current_inputs,
+    )
+    select_input = SubmitField("Select Input")
+    input_name = StringField("Input Name", validators=[InputRequired()])
+    input_CAS = StringField("Input CAS", validators=[InputRequired()])
+    input_unit = QuerySelectField(
+        "Unit",
+        allow_blank=False,
+        query_factory=get_current_units,
+    )
+    commit_changes = SubmitField("Commit Changes")
