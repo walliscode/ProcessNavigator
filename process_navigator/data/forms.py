@@ -289,7 +289,7 @@ class InputsForm(FlaskForm):
     inputs_list = QuerySelectField(
         "Input List",
         allow_blank=False,
-        query_factory=get_current_parameters,
+        query_factory=get_current_inputs,
     )
 
 
@@ -319,3 +319,12 @@ class EditInputForm(FlaskForm):
         query_factory=get_current_units,
     )
     commit_changes = SubmitField("Commit Changes")
+
+
+class DeleteInputForm(FlaskForm):
+    inputs_list = QuerySelectField(
+        "Input List",
+        allow_blank=False,
+        query_factory=get_current_inputs,
+    )
+    delete_input = SubmitField("Delete Input")

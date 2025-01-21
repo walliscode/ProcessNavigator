@@ -875,5 +875,59 @@
         "Input change_input (Kms^-1) with CAS 7-8-9 updated in database"
       ]
     }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "inputs_get",
+      "inputs_post_delete_input"
+    ],
+    "description": "User navigates to the delete input route from the inputs page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 302,
+      "location": "/data/delete_input",
+      "content": []
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "inputs_get",
+      "inputs_post_delete_input",
+      "delete_input_get"
+    ],
+    "description": "User navigates to the delete input page via the inputs page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Delete Inputs"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "inputs_get",
+      "inputs_post_delete_input",
+      "delete_input_get",
+      "delete_input_post_delete_input"
+    ],
+    "description": "User deletes an input",
+    "follow_redirects": true,
+    "assertions": {
+      "status_code": 200,
+      "location": "/data/inputs",
+      "content": [
+        "Input test_input_1 deleted from database"
+      ]
+    }
   }
 ]
