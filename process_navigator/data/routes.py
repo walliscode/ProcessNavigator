@@ -4,9 +4,9 @@ from sqlalchemy.sql.compiler import elements
 from process_navigator.data import bp
 from process_navigator.extensions.database import db
 from process_navigator.models.analysis import AnalysisMethod, AnalysisMethodPart
+from process_navigator.models.parameters import Param
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
 from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
-from process_navigator.models.parameters import Param
 from process_navigator.utils.decorators import login_required, session_keys
 from process_navigator.utils.file_handling import save_file
 
@@ -20,6 +20,7 @@ from .forms import (
     CurrentMethodsForm,
     CurrentUnitsForm,
     DeleteAnalysisMethodForm,
+    DeleteParameterForm,
     DeleteProcessMethodForm,
     EditAnalysisMethodForm,
     EditParameterForm,
@@ -384,6 +385,7 @@ def unit_modifiers():
             )
             flash(message)
             return redirect(url_for("data.unit_modifiers"))
+
         new_unit_modifier = UnitModifier(
             name=form.modifier_name.data.__str__(),
             symbol=form.modifier_symbol.data.__str__(),
@@ -729,6 +731,12 @@ def parameters():
         session["security_keys"].append("edit_parameter")
         session.modified = True
         return redirect(url_for("data.edit_parameter"))
+
+    if form.delete_parameter.data:
+        session["security_keys"].append("delete_parameter")
+        session.modified = True
+        return redirect(url_for("data.delete_parameter"))
+
     return render_template("data/parameters.html", form=form)
 
 
@@ -853,3 +861,31 @@ def edit_parameter():
             return redirect(url_for("data.edit_parameter"))
 
     return render_template("data/edit_parameter.html", form=form)
+
+
+@bp.route("/delete_parameter", methods=["GET", "POST"])
+@login_required
+@session_keys({"delete_parameter": "data.parameters"})
+def delete_parameter():
+    form = DeleteParameterForm()
+    if form.delete_parameter.data:
+        parameter = form.parameters_list.data
+        db.session.delete(parameter)
+        db.session.commit()
+        parameter_query = db.session.execute(
+            db.select(Param).filter(Param.name == parameter.name)
+        ).scalar()
+        if parameter_query:
+            message = "Parameter {name} not deleted from database".format(
+                name=parameter.name
+            )
+            flash(message)
+            return redirect(url_for("data.delete_parameter"))
+        elif not parameter_query:
+            message = "Parameter {name} deleted from database".format(
+                name=parameter.name
+            )
+            flash(message)
+            return redirect(url_for("data.parameters"))
+
+    return render_template("data/delete_parameter.html", form=form)
