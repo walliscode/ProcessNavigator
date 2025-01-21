@@ -425,5 +425,28 @@
       "input_CAS": "7-8-9",
       "input_unit": 1
     }
+  },
+  {
+    "name": "inputs_post_delete_input",
+    "route": "/data/inputs",
+    "method": "POST",
+    "data": {
+      "delete_input": true
+    }
+  },
+  {
+    "name": "delete_input_get",
+    "route": "/data/delete_input",
+    "method": "GET",
+    "data": {}
+  },
+  {
+    "name": "delete_input_post_delete_input",
+    "route": "/data/delete_input",
+    "method": "POST",
+    "data": {
+      "delete_input": true,
+      "inputs_list": 1
+    }
   }
 ]

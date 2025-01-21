@@ -11,6 +11,7 @@ from process_navigator.utils.decorators import login_required, session_keys
 from process_navigator.utils.file_handling import save_file
 
 from .forms import (
+    DeleteInputForm,
     AddAnalysisMethodForm,
     AddInputForm,
     AddMethodForm,
@@ -909,6 +910,11 @@ def inputs():
         session.modified = True
         return redirect(url_for("data.edit_input"))
 
+    if form.delete_input.data:
+        session["security_keys"].append("delete_input")
+        session.modified = True
+        return redirect(url_for("data.delete_input"))
+
     return render_template("data/inputs.html", form=form)
 
 
@@ -1026,3 +1032,26 @@ def edit_input():
             return redirect(url_for("data.edit_input"))
 
     return render_template("data/edit_input.html", form=form)
+
+
+@bp.route("/delete_input", methods=["GET", "POST"])
+@login_required
+@session_keys({"delete_input": "data.inputs"})
+def delete_input():
+    form = DeleteInputForm()
+    if form.delete_input.data:
+        input = form.inputs_list.data
+        db.session.delete(input)
+        db.session.commit()
+        input_query = db.session.execute(
+            db.select(Input).filter(Input.name == input.name)
+        ).scalar()
+        if input_query:
+            message = "Input {name} not deleted from database".format(name=input.name)
+            flash(message)
+            return redirect(url_for("data.delete_input"))
+        elif not input_query:
+            message = "Input {name} deleted from database".format(name=input.name)
+            flash(message)
+            return redirect(url_for("data.inputs"))
+    return render_template("data/delete_input.html", form=form)

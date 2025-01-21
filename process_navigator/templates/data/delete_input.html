@@ -1,0 +1,25 @@
+{% extends 'base/main.html' %}
+{% block form_1 %}
+    <div class="form-container">
+        <h1>Delete Inputs</h1>
+        <p>Here you can delete an Input. Please select the Input you want to delete from the list.</p>
+    </div>
+{% endblock %}
+{% block form_2 %}
+    <div class="form-container">
+        <h1>Delete Inputs</h1>
+        <form method="post">
+            <fieldset>
+                {{ csrf_token }}
+                {{ form.inputs_list }}
+            </fieldset>
+            <fieldset>
+                {{ form.delete_input(class = "delete_button") }}
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+{% block form_3 %}
+    {% from "helpers/_messagehelpers.html" import
+    display_messages %} {{ display_messages() }}
+{% endblock %}
