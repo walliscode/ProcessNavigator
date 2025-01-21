@@ -719,5 +719,80 @@
         "Parameter test_parameter_1 deleted from database"
       ]
     }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "inputs_get"
+    ],
+    "description": "User navigates to the inputs page via the data index page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Inputs",
+        "Add Input",
+        "Edit Input",
+        "Delete Input"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "inputs_get",
+      "inputs_post_add_input"
+    ],
+    "description": "User navigates to the add input page via the inputs page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 302,
+      "location": "/data/add_input"
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "inputs_get",
+      "inputs_post_add_input",
+      "add_input_get"
+    ],
+    "description": "User navigates to the add input page via the inputs page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Add Input",
+        "Input Name",
+        "Input CAS",
+        "Unit"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "inputs_get",
+      "inputs_post_add_input",
+      "add_input_get",
+      "add_input_post_add_input"
+    ],
+    "description": "User adds an input to the database",
+    "follow_redirects": true,
+    "assertions": {
+      "status_code": 200,
+      "location": "/data/inputs",
+      "content": [
+        "Input test_input_3 (Kms^-1) added to database"
+      ]
+    }
   }
 ]

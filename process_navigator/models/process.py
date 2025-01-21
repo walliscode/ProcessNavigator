@@ -104,20 +104,6 @@ class ProcessMethodPart(Base):
         return f"<Process Method Part {self.name}>"
 
 
-# The Method is broken down into method parts to describe different steps in the process.
-# This is a one to many relationship as a Method can have many Method Parts
-# but a Method Part can only belong to one Method
-
-
-class Input(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    unit_id = db.Column(db.Integer, db.ForeignKey("unit.id"), nullable=False)
-
-    def __repr__(self):
-        return f"<Input {self.name}>"
-
-
 class StepInput(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     step_id = db.Column(db.Integer, db.ForeignKey("step.id"), nullable=False)

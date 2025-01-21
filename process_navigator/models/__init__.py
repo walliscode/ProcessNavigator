@@ -3,6 +3,7 @@ from .analysis import AnalysisMethod, AnalysisMethodPart
 from .process import ProcessMethod, ProcessMethodPart
 from .units import BaseUnit, Unit, UnitModifier, UnitCombination
 from .parameters import Param
+from .inputs import Input
 
 
 __all__ = [
@@ -16,4 +17,5 @@ __all__ = [
     "UnitModifier",
     "UnitCombination",
     "Param",
+    "Input",
 ]

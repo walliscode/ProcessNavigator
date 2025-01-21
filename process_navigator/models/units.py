@@ -51,6 +51,10 @@ class Unit(Base):
         "Param", back_populates="unit", init=False
     )
 
+    inputs: Mapped[List["Input"]] = relationship(
+        "Input", back_populates="unit", init=False
+    )
+
     @hybrid_property
     def symbol(self):
         symbol = ""
