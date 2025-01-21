@@ -1,3 +1,4 @@
+from process_navigator.models.inputs import Input
 from process_navigator.models.parameters import Param
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
 from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
@@ -114,4 +115,18 @@ def load_test_data(json_data, db):
         )
 
         db.session.add(new_parameter)
+        db.session.commit()
+
+    for input in json_data["Inputs"]:
+        # get unit object
+        unit_get = db.session.execute(
+            db.select(Unit).filter(Unit.id == input["unit_id"])
+        ).scalar()
+        new_input = Input(
+            name=input["name"],
+            CAS=input["CAS"],
+            unit_id=input["unit_id"],
+            unit=unit_get,
+        )
+        db.session.add(new_input)
         db.session.commit()

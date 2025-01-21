@@ -391,5 +391,39 @@
       "input_CAS": "123456-78-9",
       "input_unit": 1
     }
+  },
+  {
+    "name": "inputs_post_edit_input",
+    "route": "/data/inputs",
+    "method": "POST",
+    "data": {
+      "edit_input": true
+    }
+  },
+  {
+    "name": "edit_input_get",
+    "route": "/data/edit_input",
+    "method": "GET",
+    "data": {}
+  },
+  {
+    "name": "edit_input_post_select_input",
+    "route": "/data/edit_input",
+    "method": "POST",
+    "data": {
+      "select_input": true,
+      "inputs_list": 1
+    }
+  },
+  {
+    "name": "edit_input_post_commit_changes",
+    "route": "/data/edit_input",
+    "method": "POST",
+    "data": {
+      "commit_changes": true,
+      "input_name": "change_input",
+      "input_CAS": "7-8-9",
+      "input_unit": 1
+    }
   }
 ]
