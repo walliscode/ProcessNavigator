@@ -1,0 +1,36 @@
+{% extends 'base/main.html' %}
+{% block form_1 %}
+    <div class="form-container">
+        <h1>Inputs</h1>
+        <p>
+            Welcome to the Inputs page. Here you can add, edit, and delete inputs which can be associated with Process Steps.
+        </p>
+    </div>
+{% endblock %}
+{% block form_2 %}
+    <div class="form-container">
+        <form method="post">
+            <fieldset>
+                {{ form.add_input(class = "add_button") }}
+            </fieldset>
+            <fieldset>
+                {{ form.edit_input(class = "edit_button") }}
+            </fieldset>
+            <fieldset>
+                {{ form.delete_input(class = "delete_button") }}
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+{% block form_3 %}
+    <div class="form-container">
+        <form>
+            <fieldset>
+                <h2>Current Inputs</h2>
+                {{ form.inputs_list }}
+            </fieldset>
+        </form>
+        {% from "helpers/_messagehelpers.html" import
+        display_messages %} {{ display_messages() }}
+    </div>
+{% endblock %}

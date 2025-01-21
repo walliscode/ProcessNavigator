@@ -1,0 +1,34 @@
+{% extends 'base/main.html' %}
+{% block form_1 %}
+    <div class="form-container">
+        <h1>Add Inputs</h1>
+        <p>Here we can add Inputs</p>
+    </div>
+{% endblock %}
+{% block form_2 %}
+    <div class="form-container">
+        <h1>Add Input</h1>
+        <form method="post">
+            {{ csrf_token }}
+            <fieldset>
+                {{ form.input_name.label }}
+                {{ form.input_name }}
+            </fieldset>
+            <fieldset>
+                {{ form.input_CAS.label }}
+                {{ form.input_CAS }}
+            </fieldset>
+            <fieldset>
+                {{ form.input_unit.label }}
+                {{ form.input_unit }}
+            </fieldset>
+            <fieldset>
+                {{ form.add_input(class ="add_button") }}
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+{% block form_3 %}
+    {% from "helpers/_messagehelpers.html" import
+    display_messages %} {{ display_messages() }}
+{% endblock %}

@@ -15,6 +15,7 @@ from wtforms_sqlalchemy.fields import QuerySelectField
 
 from process_navigator.extensions.database import db
 from process_navigator.models.analysis import AnalysisMethod
+from process_navigator.models.inputs import Input
 from process_navigator.models.parameters import Param
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
 from process_navigator.models.units import BaseUnit, Unit, UnitModifier
@@ -275,3 +276,29 @@ class DeleteParameterForm(FlaskForm):
         query_factory=get_current_parameters,
     )
     delete_parameter = SubmitField("Delete Parameter")
+
+
+def get_current_inputs():
+    return db.session.execute(db.select(Input)).scalars()
+
+
+class InputsForm(FlaskForm):
+    add_input = SubmitField("Add Input")
+    edit_input = SubmitField("Edit Input")
+    delete_input = SubmitField("Delete Input")
+    inputs_list = QuerySelectField(
+        "Input List",
+        allow_blank=False,
+        query_factory=get_current_parameters,
+    )
+
+
+class AddInputForm(FlaskForm):
+    input_name = StringField("Input Name", validators=[InputRequired()])
+    input_CAS = StringField("Input CAS", validators=[InputRequired()])
+    input_unit = QuerySelectField(
+        "Unit",
+        allow_blank=False,
+        query_factory=get_current_units,
+    )
+    add_input = SubmitField("Add Input")

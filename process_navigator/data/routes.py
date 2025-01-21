@@ -1,9 +1,9 @@
 from flask import flash, redirect, render_template, session, url_for
-from sqlalchemy.sql.compiler import elements
 
 from process_navigator.data import bp
 from process_navigator.extensions.database import db
 from process_navigator.models.analysis import AnalysisMethod, AnalysisMethodPart
+from process_navigator.models.inputs import Input
 from process_navigator.models.parameters import Param
 from process_navigator.models.process import ProcessMethod, ProcessMethodPart
 from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
@@ -12,6 +12,7 @@ from process_navigator.utils.file_handling import save_file
 
 from .forms import (
     AddAnalysisMethodForm,
+    AddInputForm,
     AddMethodForm,
     AddParameterForm,
     AddUnitForm,
@@ -24,6 +25,7 @@ from .forms import (
     DeleteProcessMethodForm,
     EditAnalysisMethodForm,
     EditParameterForm,
+    InputsForm,
     MethodForm,
     ParametersForm,
     UnitModifierForm,
@@ -889,3 +891,72 @@ def delete_parameter():
             return redirect(url_for("data.parameters"))
 
     return render_template("data/delete_parameter.html", form=form)
+
+
+@bp.route("inputs", methods=["GET", "POST"])
+@login_required
+def inputs():
+    form = InputsForm()
+
+    if form.add_input.data:
+        session["security_keys"].append("add_input")
+        session.modified = True
+        return redirect(url_for("data.add_input"))
+    return render_template("data/inputs.html", form=form)
+
+
+@bp.route("/add_input", methods=["GET", "POST"])
+@login_required
+@session_keys({"add_input": "data.inputs"})
+def add_input():
+    form = AddInputForm()
+    if form.add_input.data:
+        # check whether the input already exists in the database using name or CAS number
+        input_query = db.session.execute(
+            db.select(Input).filter(
+                (Input.name == form.input_name.data)
+                | (Input.CAS == form.input_CAS.data)
+            )
+        ).scalar()
+
+        if input_query:
+            message = "Input {name} or {CAS} already exists in the database".format(
+                name=form.input_name.data, CAS=form.input_CAS.data
+            )
+            flash(message)
+            return redirect(url_for("data.add_input"))
+
+        # get the unit from the database
+        unit = db.session.execute(
+            db.select(Unit).filter(Unit.id == form.input_unit.data.id)
+        ).scalar()
+
+        # add the input to the database
+        new_input = Input(
+            name=form.input_name.data.__str__(),
+            CAS=form.input_CAS.data.__str__(),
+            unit_id=form.input_unit.data.id,
+            unit=unit,
+        )
+        db.session.add(new_input)
+        db.session.commit()
+        # check if the input has been added to the database
+        input_query = db.session.execute(
+            db.select(Input).filter(Input.name == form.input_name.data)
+        ).scalar()
+        if input_query:
+            message = "Input {name} ({symbol}) added to database".format(
+                name=input_query.name, symbol=input_query.unit.symbol
+            )
+            flash(message)
+            # remove security key from session and redirect to the inputs page
+            session["security_keys"].remove("add_input")
+            session.modified = True
+            return redirect(url_for("data.inputs"))
+        else:
+            message = "Input {name} not added to database".format(
+                name=form.input_name.data
+            )
+            flash(message)
+            return redirect(url_for("data.add_input"))
+    return render_template("data/add_input.html", form=form)

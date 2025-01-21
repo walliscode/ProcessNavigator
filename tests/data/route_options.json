@@ -360,5 +360,36 @@
       "delete_parameter": true,
       "parameters_list": 1
     }
+  },
+  {
+    "name": "inputs_get",
+    "route": "/data/inputs",
+    "method": "GET",
+    "data": {}
+  },
+  {
+    "name": "inputs_post_add_input",
+    "route": "/data/inputs",
+    "method": "POST",
+    "data": {
+      "add_input": true
+    }
+  },
+  {
+    "name": "add_input_get",
+    "route": "/data/add_input",
+    "method": "GET",
+    "data": {}
+  },
+  {
+    "name": "add_input_post_add_input",
+    "route": "/data/add_input",
+    "method": "POST",
+    "data": {
+      "add_input": true,
+      "input_name": "test_input_3",
+      "input_CAS": "123456-78-9",
+      "input_unit": 1
+    }
   }
 ]
