@@ -266,3 +266,12 @@ class EditParameterForm(FlaskForm):
         query_factory=get_current_units,
     )
     commit_changes = SubmitField("Commit Changes")
+
+
+class DeleteParameterForm(FlaskForm):
+    parameters_list = QuerySelectField(
+        "Parameter List",
+        allow_blank=False,
+        query_factory=get_current_parameters,
+    )
+    delete_parameter = SubmitField("Delete Parameter")
