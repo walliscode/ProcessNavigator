@@ -586,5 +586,84 @@
         "Parameter test_parameter_3 added to database"
       ]
     }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "parameters_get",
+      "parameters_post_edit_parameter"
+    ],
+    "description": "User navigates to the edit paramerer route from the parameters page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 302,
+      "location": "/data/edit_parameter",
+      "content": []
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "parameters_get",
+      "parameters_post_edit_parameter",
+      "edit_parameter_get"
+    ],
+    "description": "User navigates to the edit parameter page via the parameters page",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Edit Parameters",
+        "Select Parameter"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "parameters_get",
+      "parameters_post_edit_parameter",
+      "edit_parameter_get",
+      "edit_parameter_post_select_parameter"
+    ],
+    "description": "User selects a parameter to edit",
+    "follow_redirects": false,
+    "assertions": {
+      "status_code": 200,
+      "content": [
+        "Parameter Name",
+        "test_parameter_1",
+        "Unit Velocity",
+        "Kms^-1",
+        "Commit Changes"
+      ]
+    }
+  },
+  {
+    "path": [
+      "register_user",
+      "login_user",
+      "data_index_get",
+      "parameters_get",
+      "parameters_post_edit_parameter",
+      "edit_parameter_get",
+      "edit_parameter_post_select_parameter",
+      "edit_parameter_post_commit_changes"
+    ],
+    "description": "User commits parameter changes",
+    "follow_redirects": true,
+    "assertions": {
+      "status_code": 200,
+      "location": "/data/parameters",
+      "content": [
+        "Parameter change_parameter (Kms^-1) updated in database"
+      ]
+    }
   }
 ]
