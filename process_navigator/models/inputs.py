@@ -14,8 +14,9 @@ class Input(Base):
     unit_id: Mapped[int] = mapped_column(ForeignKey("unit.id"), nullable=False)
 
     unit: Mapped["Unit"] = relationship("Unit", back_populates="inputs")
-    input_values: Mapped[List["InputValue"]] = relationship(
-        "InputValue", back_populates="input"
+
+    step_inputs: Mapped[List["StepInput"]] = relationship(
+        "StepInput", back_populates="input", init=False
     )
 
     def __repr__(self):
