@@ -1,10 +1,11 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
 from process_navigator.extensions.database import Base
+from typing import List
 
 
 @dataclass
@@ -23,6 +24,10 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         default=func.now(), onupdate=func.now()
+    )
+
+    entities: Mapped[List["Entity"]] = relationship(
+        "Entity", back_populates="user", init=False
     )
 
     def __repr__(self):

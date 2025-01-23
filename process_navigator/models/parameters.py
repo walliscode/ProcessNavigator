@@ -12,8 +12,8 @@ class Param(Base):
 
     unit: Mapped["Unit"] = relationship("Unit", back_populates="parameters")
 
-    param_values: Mapped[List["ParamValue"]] = relationship(
-        "ParamValue", back_populates="param"
+    step_params: Mapped[List["StepParam"]] = relationship(
+        "StepParam", back_populates="param", init=False
     )
 
     def __repr__(self):
