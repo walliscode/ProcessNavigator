@@ -1,6 +1,6 @@
 [
   {
-    "name": "home_get",
+    "name": "home_index_get",
     "route": "/",
     "method": "GET",
     "data": {}
@@ -84,12 +84,6 @@
     "data": {}
   },
   {
-    "name": "delete_process_method_get",
-    "route": "/data/delete_process_method",
-    "method": "GET",
-    "data": {}
-  },
-  {
     "name": "add_process_method_get",
     "route": "/data/add_process_method",
     "method": "GET",
@@ -108,7 +102,8 @@
     "data": {
       "delete_method": true,
       "process_method_list": 1
-    }
+    },
+    "follow_redirects": true
   },
   {
     "name": "units_get",
@@ -123,7 +118,7 @@
     "data": {}
   },
   {
-    "name": "analysis_method_post_add_analysis_method",
+    "name": "analysis_methods_post_add_analysis_method",
     "route": "/data/analysis_methods",
     "method": "POST",
     "data": {
@@ -131,7 +126,7 @@
     }
   },
   {
-    "name": "analysis_method_post_edit_analysis_method",
+    "name": "analysis_methods_post_edit_analysis_method",
     "route": "/data/analysis_methods",
     "method": "POST",
     "data": {
@@ -165,7 +160,8 @@
       "method_parts-2-method_part_name": "test_part_6",
       "method_parts-2-method_part_unit": 1,
       "method_parts-2-data_type": "Continuous"
-    }
+    },
+    "follow_redirects": true
   },
   {
     "name": "edit_analysis_method_get",
@@ -214,7 +210,8 @@
       "method_parts-3-method_part_name": "test_part_4",
       "method_parts-3-method_part_unit": 1,
       "method_parts-3-data_type": "Continuous"
-    }
+    },
+    "follow_redirects": true
   },
   {
     "name": "edit_analysis_method_post_delete_method_part",
@@ -240,10 +237,11 @@
       "method_parts-1-method_part_name": "test_part_2",
       "method_parts-1-method_part_unit": 1,
       "method_parts-1-data_type": "Categorical"
-    }
+    },
+    "follow_redirects": true
   },
   {
-    "name": "analysis_method_post_delete_analysis_method",
+    "name": "analysis_methods_post_delete_analysis_method",
     "route": "/data/analysis_methods",
     "method": "POST",
     "data": {
@@ -448,5 +446,11 @@
       "delete_input": true,
       "inputs_list": 1
     }
+  },
+  {
+    "name": "cauldron_index_get",
+    "route": "/cauldron/",
+    "method": "GET",
+    "data": {}
   }
 ]

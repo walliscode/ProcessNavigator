@@ -1,6 +1,6 @@
-from flask import flash, redirect, render_template, session, url_for
+from flask import flash, redirect, render_template, session, url_for, Blueprint
 
-from process_navigator.data import bp
+
 from process_navigator.extensions.database import db
 from process_navigator.models.analysis import AnalysisMethod, AnalysisMethodPart
 from process_navigator.models.inputs import Input
@@ -33,6 +33,9 @@ from .forms import (
     UnitModifierForm,
     UnitsForm,
 )
+
+# set up blueprint
+bp = Blueprint("data", __name__, url_prefix="/data")
 
 
 @bp.route("/", methods=["GET", "POST"])

@@ -4,7 +4,7 @@ from pathlib import Path
 
 from flask import Flask
 
-from process_navigator import data, home
+from process_navigator import cauldron, data, home
 from process_navigator.extensions.database import db
 from process_navigator.extensions.click import refresh_database_command
 
@@ -28,7 +28,7 @@ def create_app(test_config=False):
     if not Path(app.config["FILE_STORAGE"]).exists():
         Path(app.config["FILE_STORAGE"]).mkdir()
     # register blueprints
-    blueprint_list = [home.bp, data.bp]
+    blueprint_list = [home.bp, data.bp, cauldron.bp]
     for blueprint in blueprint_list:
         app.register_blueprint(blueprint)
     # register extensions
