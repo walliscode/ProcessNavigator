@@ -261,7 +261,8 @@
     "data": {
       "delete_analysis_method": true,
       "analysis_method_list": 1
-    }
+    },
+    "follow_redirects": true
   },
   {
     "name": "parameters_get",
@@ -291,7 +292,8 @@
       "add_parameter": true,
       "parameter_name": "test_parameter_1",
       "parameter_unit": 1
-    }
+    },
+    "follow_redirects": true
   },
   {
     "name": "add_parameter_post_add_parameter",
@@ -301,7 +303,8 @@
       "add_parameter": true,
       "parameter_name": "test_parameter_3",
       "parameter_unit": 1
-    }
+    },
+    "follow_redirects": true
   },
   {
     "name": "parameters_post_edit_parameter",
@@ -334,7 +337,8 @@
       "commit_changes": true,
       "parameter_name": "change_parameter",
       "parameter_unit": 1
-    }
+    },
+    "follow_redirects": true
   },
   {
     "name": "parameters_post_delete_parameter",
@@ -357,7 +361,8 @@
     "data": {
       "delete_parameter": true,
       "parameters_list": 1
-    }
+    },
+    "follow_redirects": true
   },
   {
     "name": "inputs_get",
@@ -411,7 +416,8 @@
     "data": {
       "select_input": true,
       "inputs_list": 1
-    }
+    },
+    "follow_redirects": true
   },
   {
     "name": "edit_input_post_commit_changes",
@@ -422,7 +428,8 @@
       "input_name": "change_input",
       "input_CAS": "7-8-9",
       "input_unit": 1
-    }
+    },
+    "follow_redirects": true
   },
   {
     "name": "inputs_post_delete_input",
@@ -445,7 +452,8 @@
     "data": {
       "delete_input": true,
       "inputs_list": 1
-    }
+    },
+    "follow_redirects": true
   },
   {
     "name": "cauldron_index_get",
