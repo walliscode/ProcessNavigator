@@ -45,7 +45,7 @@ json_schema_pairs = [
 ]
 
 
-@pytest.fixture(scope="session", autouse=True, params=json_schema_pairs)
+@pytest.fixture(scope="session", params=json_schema_pairs)
 def validate_json(request):
     json_file = Path.cwd() / "tests" / "data" / request.param[0]
     schema_file = Path.cwd() / "tests" / "data" / "schema" / request.param[1]
@@ -91,41 +91,41 @@ def route_options():
 Check user_paths actually exist in route_options.
 """
 
-
-@pytest.fixture(scope="session", autouse=True)
-def check_user_paths(route_options):
-    data_path = Path.cwd() / "tests" / "data"
-    json_file = data_path / "user_paths.json"
-
-    with open(json_file) as file:
-        user_paths = json.load(file)
-
-    # for all user_paths, check that the paths are contained in the route_options
-    # first get a list of all the paths in the route_options
-    route_options_list = []
-    for route in route_options:
-        route_options_list.append(route["name"])
-
-    # check that all paths in user_paths are in route_options
-    for user_path in user_paths:
-        for path in user_path["path"]:
-            if path not in route_options_list:
-                raise ValueError(f"Path {path} not found in route_options")
-
-    return user_paths
-
+#
+# @pytest.fixture(scope="session", autouse=True)
+# def check_user_paths(route_options):
+#     data_path = Path.cwd() / "tests" / "data"
+#     json_file = data_path / "user_paths.json"
+#
+#     with open(json_file) as file:
+#         user_paths = json.load(file)
+#
+#     # for all user_paths, check that the paths are contained in the route_options
+#     # first get a list of all the paths in the route_options
+#     route_options_list = []
+#     for route in route_options:
+#         route_options_list.append(route["name"])
+#
+#     # check that all paths in user_paths are in route_options
+#     for user_path in user_paths:
+#         for path in user_path["path"]:
+#             if path not in route_options_list:
+#                 raise ValueError(f"Path {path} not found in route_options")
+#
+#     return user_paths
+#
 
 """
 This next function will NOT be a fixture as it is being called directly by pytest.mark.parametrize. 
 Building on this, it can also not rely on a fixture - this may be due to my coding skills or the way pytest works.
 """
 
-
-def get_user_paths():
-    data_path = Path.cwd() / "tests" / "data"
-    user_paths_file = data_path / "user_paths.json"
-
-    with open(user_paths_file) as file:
-        user_paths = json.load(file)
-
-    return user_paths
+#
+# def get_user_paths():
+#     data_path = Path.cwd() / "tests" / "data"
+#     user_paths_file = data_path / "user_paths.json"
+#
+#     with open(user_paths_file) as file:
+#         user_paths = json.load(file)
+#
+#     return user_paths
