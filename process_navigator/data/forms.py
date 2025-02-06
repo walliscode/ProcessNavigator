@@ -7,8 +7,9 @@ from wtforms import (
     IntegerField,
     StringField,
     SubmitField,
+    SelectField,
 )
-from wtforms.fields import SelectField
+
 from wtforms.validators import InputRequired
 from wtforms.widgets import HiddenInput
 from wtforms_sqlalchemy.fields import QuerySelectField
@@ -289,7 +290,7 @@ class InputsForm(FlaskForm):
     inputs_list = QuerySelectField(
         "Input List",
         allow_blank=False,
-        query_factory=get_current_inputs,
+        query_factory=get_current_parameters,
     )
 
 
