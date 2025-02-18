@@ -7,6 +7,7 @@ from wtforms import (
     IntegerField,
     SubmitField,
 )
+
 from wtforms.validators import InputRequired
 from wtforms_sqlalchemy.fields import QuerySelectField
 
@@ -38,6 +39,10 @@ def entity_query():
     return db.session.execute(db.select(Entity)).scalars()
 
 
+class IndexForm(FlaskForm):
+    start = SubmitField("Start")
+
+
 # starting from the smallest unit of the form and building up to the largets unit
 
 
@@ -67,7 +72,7 @@ class ProcessStepForm(FlaskForm):
     select_method = SubmitField("Select Method")
 
     # this will cause a filter on the process method step whilst opening up inputs and parameters
-    process_method_step = QuerySelectField("Process Method Step", allow_blank=False)
+    process_method_part = QuerySelectField("Process Method Part", allow_blank=False)
     inputs = FieldList(FormField(InputsForm), min_entries=0)
     add_input = SubmitField("Add Input")
     remove_input = SubmitField("Remove Input")
@@ -75,12 +80,19 @@ class ProcessStepForm(FlaskForm):
     add_parameter = SubmitField("Add Parameter")
     remove_parameter = SubmitField("Remove Parameter")
     hold_process_step = SubmitField("Hold Process Step")
+    delete_process_step = SubmitField("Remove Process Step")
+
+    # passed to jinja template to control the opening of the details element
+    open_details = False
+    open_parameter_details = False
+    open_input_details = False
 
 
 class ParentEntitiesForm(FlaskForm):
-    parent_entity = QuerySelectField(
-        "Parent Entity", query_factory=entity_query, allow_blank=False
+    entity_list = QuerySelectField(
+        "Parent Entity", query_factory=entity_query, allow_blank=True
     )
+    remove_parent_entity = SubmitField("Delete")
     hold_parent_entity = SubmitField("Hold Parent Entity")
 
 
@@ -93,16 +105,16 @@ class ProcessForm(FlaskForm):
 
     process_steps = FieldList(FormField(ProcessStepForm), min_entries=1)
     add_process_step = SubmitField("Add Process Step")
-    remove_process_step = SubmitField("Remove Process Step")
-    hold_process_steps = SubmitField("Hold Process Steps")
 
-    parent_entities = FieldList(FormField(ParentEntitiesForm), min_entries=0)
-    add_parent_entity = SubmitField("Add Parent Entity")
-    remove_parent_entity = SubmitField("Remove Parent Entity")
-    hold_parent_entity = SubmitField("Hold Parent Entities")
+    hold_process_steps = SubmitField("Hold Process Steps")
 
     process_repeats = IntegerField("Process Repeats", validators=[InputRequired()])
     submit_process = SubmitField("Submit")
+
+    delete_process = SubmitField("Remove Process")
+
+    # passed to jinja template to control the opening of the details element
+    open_details = False
 
 
 class ProcessPathForm(FlaskForm):
@@ -110,6 +122,12 @@ class ProcessPathForm(FlaskForm):
     start_path = SubmitField("Start Path")
     processes = FieldList(FormField(ProcessForm), min_entries=1)
     add_process = SubmitField("Add Process")
-    remove_process = SubmitField("Remove Process")
+
+    # entities are techincally associated with each Process
+    # however, for the user, they only need to specify a set of parent_entities for the whole path
+    # e.g. Process 2 must inherit any entities from Process 1
+    parent_entities = FieldList(FormField(ParentEntitiesForm), min_entries=0)
+    add_parent_entity = SubmitField("Add Parent Entity")
+    hold_parent_entity = SubmitField("Hold Parent Entities")
 
     submit_path = SubmitField("Submit Path")

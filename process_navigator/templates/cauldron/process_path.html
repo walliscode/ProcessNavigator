@@ -1,0 +1,110 @@
+{% extends 'base/main.html' %}
+{% block form_1 %}
+    <div class="form-container">
+        <h1>Cauldron</h1>
+        <p></p>
+    </div>
+{% endblock %}
+{% block form_2 %}
+    <div class="form-container">
+        <form class = "process-form" method = "post">
+            <details>
+                <summary>
+                    <h1>Parent Entities</h1>
+                </summary>
+                {% for entity in form.parent_entities %}
+                    <fieldset>
+                        {{ entity.entity_list.label }}
+                        {{ entity.entity_list }}
+                        {{ entity.remove_parent_entity(class = "delete_button") }}
+                    </fieldset>
+                {% endfor %}
+                <fieldset>
+                    {{ form.add_parent_entity(class = "add_button") }}
+                </fieldset>
+            </details>
+            {% for process in form.processes %}
+                <details {% if process.open_details %}open{% endif %}>
+                    <summary>
+                        <h1>Process {{ loop.index }}</h1>
+                    </summary>
+                    <fieldset>
+                        {{ process.process_discipline.label }}
+                        {{ process.process_discipline }}
+                    </fieldset>
+                    <fieldset>
+                        {{ process.process_date.label }}
+                        {{ process.process_date }}
+                    </fieldset>
+                    {% for step in process.process_steps %}
+                        <details {% if step.open_details %}open{% endif %}>
+                            <summary>
+                                <h2>Step {{ loop.index }}</h2>
+                            </summary>
+                            <fieldset>
+                                {{ step.process_method.label }}
+                                {{ step.process_method }}
+                                {{ step.select_method(class = "add_button") }}
+                            </fieldset>
+                            {% if step.process_method_part.query is not none %}
+                                <fieldset>
+                                    {{ step.process_method_part.label }}
+                                    {{ step.process_method_part }}
+                                </fieldset>
+                            {% endif %}
+                            <details {% if step.open_parameter_details %}open{% endif %}>
+                                <summary>
+                                    <h3>Step {{ loop.index }} Parameters</h3>
+                                </summary>
+                                {% for parameter in step.parameters %}
+                                    <fieldset>
+                                        {{ parameter.parameter.label }}
+                                        {{ parameter.parameter }}
+                                    </fieldset>
+                                    {% for value in parameter.values %}
+                                        <fieldset>
+                                            {{ value.value.label }}
+                                            {{ value.value }}
+                                        </fieldset>
+                                    {% endfor %}
+                                {% endfor %}
+                                <fieldset>
+                                    {{ step.add_parameter(class = "add_button") }}
+                                </fieldset>
+                            </details>
+                            <details>
+                                <summary>
+                                    <h3>Step {{ loop.index }} Inputs</h3>
+                                </summary>
+                                {% for input in step.inputs %}
+                                    <fieldset>
+                                        {{ input.input.label }}
+                                        {{ input.input }}
+                                    </fieldset>
+                                {% endfor %}
+                                <fieldset>
+                                    {{ step.add_input(class = "add_button") }}
+                                </fieldset>
+                            </details>
+                            <fieldset>
+                                {% if loop.index >1 %}{{ step.delete_process_step(class = "delete_button") }}{% endif %}
+                            </fieldset>
+                        </details>
+                    {% endfor %}
+                    <fieldset>
+                        {{ process.add_process_step(class = "add_button") }}
+                    </fieldset>
+                    {% if loop.index >1 %}
+                        <fieldset>
+                            {{ process.delete_process(class = "delete_button") }}
+                        </fieldset>
+                    {% endif %}
+                </details>
+            {% endfor %}
+            <fieldset>
+                {{ form.add_process(class = "add_button") }}
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+{% block form_3 %}<div class="form-container"></div>{% endblock %}

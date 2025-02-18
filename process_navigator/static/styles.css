@@ -226,3 +226,36 @@ input {
   color: var(--ctp-mocha-blue);
   text-decoration: none;
 }
+
+
+
+/* css for process-form at the Cauldron process_path.html*/
+
+.process-form details {
+  background-color: var(--ctp-mocha-surface1);
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+  
+
+}
+
+.process-form summary {
+  background-color: var(--ctp-mocha-surface0);
+  border-radius: 10px;
+  padding: 10px;
+  column-gap: 50px;
+}
+
+.process-form summary h1, h2, h3 {
+
+  display: inline;
+}
+
+
+
+.process-form fieldset {
+  display: flex;
+  column-gap: 40px;
+  justify-content: start;
+}
