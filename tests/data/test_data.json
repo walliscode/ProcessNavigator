@@ -102,5 +102,22 @@
       "CAS": "1-2-3-4",
       "unit_id": 1
     }
+  ],
+  "Disciplines": [
+    {
+      "code": "SOL",
+      "name": "solution",
+      "description": "Solutions or powders made using general chemistry techniques"
+    },
+    {
+      "code": "ASF",
+      "name": "As Spun Fiber",
+      "description": "Fibers or mats made using electrospinning or other fiber spinning techniques"
+    },
+    {
+      "code": "CHE",
+      "name": "Chemistry",
+      "description": "Fibers processed using fiber reaction techniques"
+    }
   ]
 }

@@ -4,15 +4,18 @@
         <h1>Cauldron</h1>
         <p>
             Welcome to the Cauldron, this is the kick off point for setting up Process(es) and commiting them to the database,
-                   </p>
+        </p>
     </div>
 {% endblock %}
 {% block form_2 %}
     <div class="form-container">
         <h1>Instructions</h1>
-            </div>
+    </div>
 {% endblock %}
 {% block form_3 %}
     <div class="form-container">
-            </div>
+        <form method = "post">
+            {{ form.start (class = "add_button") }}
+        </form>
+    </div>
 {% endblock %}

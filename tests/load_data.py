@@ -1,6 +1,10 @@
 from process_navigator.models.inputs import Input
 from process_navigator.models.parameters import Param
-from process_navigator.models.process import ProcessMethod, ProcessMethodPart
+from process_navigator.models.process import (
+    ProcessMethod,
+    ProcessMethodPart,
+    Discipline,
+)
 from process_navigator.models.units import BaseUnit, Unit, UnitCombination, UnitModifier
 from process_navigator.models.analysis import AnalysisMethod, AnalysisMethodPart
 
@@ -129,4 +133,13 @@ def load_test_data(json_data, db):
             unit=unit_get,
         )
         db.session.add(new_input)
+        db.session.commit()
+
+    for discipline in json_data["Disciplines"]:
+        new_discipline = Discipline(
+            code=discipline["code"],
+            name=discipline["name"],
+            description=discipline["description"],
+        )
+        db.session.add(new_discipline)
         db.session.commit()
