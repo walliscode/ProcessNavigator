@@ -61,18 +61,20 @@
                                         {{ parameter.parameter.label }}
                                         {{ parameter.parameter }}
                                     </fieldset>
-                                    {% for value in parameter.values %}
-                                        <fieldset>
-                                            {{ value.value.label }}
-                                            {{ value.value }}
-                                        </fieldset>
-                                    {% endfor %}
+                                    <h3>Values</h3>
+                                    <fieldset>
+                                        {% for value in parameter.values %}{{ value.value (class = "decimal-box") }}{% endfor %}
+                                        {{ parameter.add_value(class = "add_button") }}
+                                        {% if parameter.values|length > 1 %}{{ parameter.delete_value(class = "delete_button") }}{% endif %}
+                                    </fieldset>
+                                    <hr>
                                 {% endfor %}
                                 <fieldset>
                                     {{ step.add_parameter(class = "add_button") }}
+                                    {{ step.remove_parameter(class = "delete_button") }}
                                 </fieldset>
                             </details>
-                            <details>
+                            <details {% if step.open_input_details %}open{% endif %}>
                                 <summary>
                                     <h3>Step {{ loop.index }} Inputs</h3>
                                 </summary>
@@ -81,6 +83,13 @@
                                         {{ input.input.label }}
                                         {{ input.input }}
                                     </fieldset>
+                                    <h3>Values</h3>
+                                    <fieldset>
+                                        {% for value in input.values %}{{ value.value (class = "decimal-box") }}{% endfor %}
+                                        {{ input.add_value(class = "add_button") }}
+                                        {% if input.values|length > 1 %}{{ input.delete_value(class = "delete_button") }}{% endif %}
+                                    </fieldset>
+                                    <hr>
                                 {% endfor %}
                                 <fieldset>
                                     {{ step.add_input(class = "add_button") }}
@@ -103,6 +112,11 @@
             {% endfor %}
             <fieldset>
                 {{ form.add_process(class = "add_button") }}
+            </fieldset>
+            <hr>
+            <hr>
+            <fieldset>
+                {{ form.submit_path (class = "add_button") }}
             </fieldset>
         </form>
     </div>

@@ -91,4 +91,54 @@ def process_path():
                     process_step.open_details = True
                     process_step.open_parameter_details = True
 
+                if process_step.remove_parameter.data:
+                    process_step.parameters.pop_entry()
+                    process.open_details = True
+                    process_step.open_details = True
+
+                # deal with parameter values
+                for parameter_index, parameter in enumerate(process_step.parameters):
+                    if parameter.add_value.data:
+                        parameter.values.append_entry()
+                        # set the open details to true
+                        process.open_details = True
+                        process_step.open_details = True
+                        process_step.open_parameter_details = True
+
+                    if parameter.delete_value.data:
+                        parameter.values.pop_entry()
+                        # set the open details to true
+                        process.open_details = True
+                        process_step.open_details = True
+                        process_step.open_parameter_details = True
+
+                # deal with inputs
+                if process_step.add_input.data:
+                    process_step.inputs.append_entry()
+                    # set the open details to true
+                    process.open_details = True
+                    process_step.open_details = True
+                    process_step.open_input_details = True
+
+                if process_step.remove_input.data:
+                    process_step.inputs.pop_entry()
+
+                # deal with input values
+                for input_index, input in enumerate(process_step.inputs):
+                    if input.add_value.data:
+                        input.values.append_entry()
+                        # set the open details to true
+                        process.open_details = True
+                        process_step.open_details = True
+                        process_step.open_input_details = True
+
+                    if input.delete_value.data:
+                        input.values.pop_entry()
+                        # set the open details to true
+                        process.open_details = True
+                        process_step.open_details = True
+                        process_step.open_input_details = True
+
+        # provide current information about the length of the paths and the number of different paths
+        #  we expect different paths if the user is using design of experiments
     return render_template("cauldron/process_path.html", form=form)

@@ -259,3 +259,7 @@ input {
   column-gap: 40px;
   justify-content: start;
 }
+
+.process-form .decimal-box{
+  width: 50px;
+}

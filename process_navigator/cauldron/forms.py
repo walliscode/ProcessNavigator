@@ -53,6 +53,9 @@ class ValueForm(FlaskForm):
 class InputsForm(FlaskForm):
     input = QuerySelectField("Input", query_factory=input_query, allow_blank=False)
     values = FieldList(FormField(ValueForm), min_entries=1)
+
+    add_value = SubmitField("Add Value")
+    delete_value = SubmitField("Remove Value")
     hold_input = SubmitField("Hold")
 
 
@@ -61,6 +64,8 @@ class ParametersForm(FlaskForm):
         "Parameter", query_factory=parameter_query, allow_blank=False
     )
     values = FieldList(FormField(ValueForm), min_entries=1)
+    add_value = SubmitField("Add Value")
+    delete_value = SubmitField("Remove Value")
     hold_parameter = SubmitField("Hold")
 
 
