@@ -5,6 +5,7 @@ from .forms import (
     IndexForm,
     ProcessPathForm,
 )
+from .models import PathData
 
 from process_navigator.extensions.database import db
 from process_navigator.models.process import ProcessMethodPart
@@ -128,7 +129,7 @@ def process_path():
                     if input.add_value.data:
                         input.values.append_entry()
                         # set the open details to true
-                        process.open_details = True
+                        process.open_details = True  # type: ignore
                         process_step.open_details = True
                         process_step.open_input_details = True
 
@@ -139,6 +140,9 @@ def process_path():
                         process_step.open_details = True
                         process_step.open_input_details = True
 
-        # provide current information about the length of the paths and the number of different paths
-        #  we expect different paths if the user is using design of experiments
-    return render_template("cauldron/process_path.html", form=form)
+    # provide current information about the length of the paths and the number of different paths
+    #  we expect different paths if the user is using design of experiments
+
+    path_data = PathData(form)
+
+    return render_template("cauldron/process_path.html", form=form, path_data=path_data)

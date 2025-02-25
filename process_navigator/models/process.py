@@ -99,7 +99,7 @@ class Process(Base):
     process_date: Mapped[datetime] = mapped_column(nullable=False)
 
     process_steps: Mapped[List["ProcessStep"]] = relationship(
-        "ProcessStep", back_populates="process"
+        "ProcessStep", back_populates="process", init=False
     )
 
     entities: Mapped[List["Entity"]] = relationship(

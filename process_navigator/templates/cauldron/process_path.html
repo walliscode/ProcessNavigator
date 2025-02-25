@@ -121,4 +121,17 @@
         </form>
     </div>
 {% endblock %}
-{% block form_3 %}<div class="form-container"></div>{% endblock %}
+{% block form_3 %}
+    <div class="form-container">
+        <form>
+            <h2>Number of Paths</h2>
+            <fieldset>
+                {{ path_data.number_of_paths }}
+            </fieldset>
+            <h2>Number of Processes:</h2>
+            <fieldset>
+                {{ path_data.number_of_processes }}
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

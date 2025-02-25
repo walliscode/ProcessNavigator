@@ -136,3 +136,9 @@ class ProcessPathForm(FlaskForm):
     hold_parent_entity = SubmitField("Hold Parent Entities")
 
     submit_path = SubmitField("Submit Path")
+
+
+class PathCalculator:
+    def __init__(self, form: ProcessPathForm):
+        self.form = form
+        self.process_number = form.processes.__len__()
