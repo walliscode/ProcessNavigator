@@ -460,5 +460,52 @@
     "route": "/cauldron/",
     "method": "GET",
     "data": {}
+  },
+  {
+    "name": "cauldron_index_post_start",
+    "route": "/cauldron/",
+    "method": "POST",
+    "data": {
+      "start": true
+    }
+  },
+  {
+    "name": "cauldron_process_path_get",
+    "route": "/cauldron/process_path",
+    "method": "GET",
+    "data": {}
+  },
+  {
+    "name": "cauldron_process_path_post_process_date",
+    "route": "/cauldron/process_path",
+    "method": "POST",
+    "data": {
+      "processes-0-process_date": "2020-01-01"
+    }
+  },
+  {
+    "name": "cauldron_process_path_post_select_method",
+    "route": "/cauldron/process_path",
+    "method": "POST",
+    "data": {
+      "select_method": true,
+      "processes-0-process_steps-0-process_method": 1
+    }
+  },
+  {
+    "name": "cauldron_process_path_commit_path_one",
+    "route": "/cauldron/process_path",
+    "method": "POST",
+    "data": {
+      "commit_path": true,
+      "processes-0-process_date": "2020-01-01",
+      "processes-0-process_steps-0-process_method": 1,
+      "processes-0-process_steps-0-select_method": true,
+      "processes-0-process_steps-0-process_method_part": 1,
+      "processes-0-process_steps-0-parameters-0-parameter": 1,
+      "processes-0-process_steps-0-parameters-0-values-0-value": 6.7,
+      "processes-0-process_steps-0-inputs-0-input": 1,
+      "processes-0-process_steps-0-inputs-0-values-0-value": 5.6
+    }
   }
 ]

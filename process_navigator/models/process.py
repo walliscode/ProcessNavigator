@@ -92,7 +92,7 @@ class StepParam(Base):
         return f"<Step Param {self.id}>"
 
 
-# A Process describes a process, broken up into a minimum of 1 step. A Process can be considered a recipie, this recipie is instanced for each time a Process is run. Technically we could run a Process without Entities.
+# A Process describes a process, biroken up into a minimum of 1 step. A Process can be considered a recipie, this recipie is instanced for each time a Process is run. Technically we could run a Process without Entities.
 class Process(Base):
     __tablename__ = "process"
     id: Mapped[int] = mapped_column(primary_key=True, init=False)

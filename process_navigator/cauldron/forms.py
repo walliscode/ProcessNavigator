@@ -135,7 +135,7 @@ class ProcessPathForm(FlaskForm):
     add_parent_entity = SubmitField("Add Parent Entity")
     hold_parent_entity = SubmitField("Hold Parent Entities")
 
-    submit_path = SubmitField("Submit Path")
+    commit_path = SubmitField("Submit Path")
 
 
 class PathCalculator:
