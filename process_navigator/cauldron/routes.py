@@ -5,7 +5,7 @@ from .forms import (
     IndexForm,
     ProcessPathForm,
 )
-from .models import PathData
+from .models import PathCommit, PathData
 
 from process_navigator.extensions.database import db
 from process_navigator.models.process import ProcessMethodPart
@@ -41,7 +41,6 @@ def process_path():
 
         # add Parent Entity
         if form.add_parent_entity.data:
-            print("Adding a parent entity")
             form.parent_entities.append_entry()
         # add another process
         if form.add_process.data:
@@ -56,16 +55,17 @@ def process_path():
 
             # add another process step
             if process.add_process_step.data:
-                print("Adding a process step")
-                process.process_steps.append_entry()
-                process.open_details = True
+                process.process_steps.append_entry()  # type: ignore
+                process.open_details = True  # type: ignore
 
             # deal with ProcessStepForm
             for process_step_index, process_step in enumerate(
-                process.process_steps, start=1
+                process.process_steps,  # type: ignore
+                start=1,  # type: ignore
             ):
                 # select Process Method, this will give choice of process method parts
                 # the process method parts wil only appear when a Process Method is selected
+
                 if process_step.select_method.data:
                     process_step.process_method_part.query = db.session.execute(
                         db.select(ProcessMethodPart).filter(
@@ -76,25 +76,25 @@ def process_path():
 
                     # set the open details to true
                     process_step.open_details = True
-                    process.open_details = True
+                    process.open_details = True  # type: ignore
 
                 # delete proccess step
                 if process_step_index > 1:
                     if process_step.delete_process_step.data:
-                        process.process_steps.pop_entry()
+                        process.process_steps.pop_entry()  # type: ignore
 
                 # deal with parameters
                 if process_step.add_parameter.data:
                     process_step.parameters.append_entry()
 
                     # set the open details to true
-                    process.open_details = True
+                    process.open_details = True  # type: ignore
                     process_step.open_details = True
                     process_step.open_parameter_details = True
 
                 if process_step.remove_parameter.data:
                     process_step.parameters.pop_entry()
-                    process.open_details = True
+                    process.open_details = True  # type: ignore
                     process_step.open_details = True
 
                 # deal with parameter values
@@ -117,7 +117,7 @@ def process_path():
                 if process_step.add_input.data:
                     process_step.inputs.append_entry()
                     # set the open details to true
-                    process.open_details = True
+                    process.open_details = True  # type: ignore
                     process_step.open_details = True
                     process_step.open_input_details = True
 
@@ -136,7 +136,7 @@ def process_path():
                     if input.delete_value.data:
                         input.values.pop_entry()
                         # set the open details to true
-                        process.open_details = True
+                        process.open_details = True  # type: ignore
                         process_step.open_details = True
                         process_step.open_input_details = True
 
@@ -144,5 +144,11 @@ def process_path():
     #  we expect different paths if the user is using design of experiments
 
     path_data = PathData(form)
+
+    # commit the data to the database
+    if form.commit_path.data:
+        # generate object that will handle add data to the database
+        path_factory = PathCommit(form=form)
+        path_factory.generate_db_objects()
 
     return render_template("cauldron/process_path.html", form=form, path_data=path_data)

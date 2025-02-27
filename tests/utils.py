@@ -9,6 +9,7 @@ from pathlib import Path
 def provide_stacked_response(client, paths, route_options):
     response = client.get("/")
     for path in paths:
+        print("stacking path: ", path)
         # find the relevenat path in the route_options
         route_info = {}
         for route in route_options:
@@ -28,11 +29,13 @@ def provide_stacked_response(client, paths, route_options):
             data[new_key] = (test_files / data["file"]["file_name"]).open("rb")
 
         if method == "GET":
+            print("GET: ", route)
             if "follow_redirects" in route_info:
                 response = client.get(route, follow_redirects=True)
             else:
                 response = client.get(route)
         elif method == "POST":
+            print("POST: ", route)
             if "follow_redirects" in route_info:
                 response = client.post(route, data=data, follow_redirects=True)
             else:
