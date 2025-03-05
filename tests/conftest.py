@@ -16,6 +16,9 @@ def test_app():
     test_app = create_app(test_config=True)
 
     with test_app.app_context():
+        # there was a problem with left over data from previous tests, so we drop all tables and recreate them
+        # potentially some kind of cache problem? this is an overkill solution but we dont' have critical performance issues
+        db.drop_all()
         db.create_all()
 
         # upload test data to the database

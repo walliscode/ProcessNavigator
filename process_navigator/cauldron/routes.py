@@ -102,14 +102,14 @@ def process_path():
                     if parameter.add_value.data:
                         parameter.values.append_entry()
                         # set the open details to true
-                        process.open_details = True
+                        process.open_details = True  # type: ignore
                         process_step.open_details = True
                         process_step.open_parameter_details = True
 
                     if parameter.delete_value.data:
                         parameter.values.pop_entry()
                         # set the open details to true
-                        process.open_details = True
+                        process.open_details = True  # type: ignore
                         process_step.open_details = True
                         process_step.open_parameter_details = True
 
