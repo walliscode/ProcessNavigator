@@ -507,5 +507,77 @@
       "processes-0-process_steps-0-inputs-0-input": 1,
       "processes-0-process_steps-0-inputs-0-values-0-value": 5.6
     }
+  },
+  {
+    "name": "cauldron_process_path_commit_path_two",
+    "route": "/cauldron/process_path",
+    "method": "POST",
+    "data": {
+      "commit_path": true,
+      "processes-0-process_date": "2020-01-01",
+      "processes-0-process_steps-0-process_method": 1,
+      "processes-0-process_steps-0-select_method": true,
+      "processes-0-process_steps-0-process_method_part": 1,
+      "processes-0-process_steps-0-parameters-0-parameter": 1,
+      "processes-0-process_steps-0-parameters-0-values-0-value": 6.7,
+      "processes-0-process_steps-0-inputs-0-input": 1,
+      "processes-0-process_steps-0-inputs-0-values-0-value": 5.6,
+      "processes-1-process_date": "2020-01-02",
+      "processes-1-process_steps-0-process_method": 1,
+      "processes-1-process_steps-0-select_method": true,
+      "processes-1-process_steps-0-process_method_part": 1,
+      "processes-1-process_steps-0-parameters-0-parameter": 1,
+      "processes-1-process_steps-0-parameters-0-values-0-value": 3.45,
+      "processes-1-process_steps-0-inputs-0-input": 1,
+      "processes-1-process_steps-0-inputs-0-values-0-value": 2.34
+    }
+  },
+  {
+    "name": "cauldron_process_path_commit_path_three",
+    "route": "/cauldron/process_path",
+    "method": "POST",
+    "data": {
+      "commit_path": true,
+      "processes-0-process_date": "2020-01-01",
+      "processes-0-process_steps-0-process_method": 1,
+      "processes-0-process_steps-0-select_method": true,
+      "processes-0-process_steps-0-process_method_part": 1,
+      "processes-0-process_steps-0-parameters-0-parameter": 1,
+      "processes-0-process_steps-0-parameters-0-values-0-value": 6.7,
+      "processes-0-process_steps-0-parameters-0-values-1-value": 1,
+      "processes-0-process_steps-0-parameters-0-values-2-value": 1.84,
+      "processes-0-process_steps-0-parameters-1-parameter": 1,
+      "processes-0-process_steps-0-parameters-1-values-0-value": 3.45,
+      "processes-0-process_steps-0-inputs-0-input": 1,
+      "processes-0-process_steps-0-inputs-0-values-0-value": 5.6
+    }
+  },
+  {
+    "name": "cauldron_process_path_commit_path_four",
+    "route": "/cauldron/process_path",
+    "method": "POST",
+    "data": {
+      "commit_path": true,
+      "processes-0-process_date": "2020-01-01",
+      "processes-0-process_steps-0-process_method": 1,
+      "processes-0-process_steps-0-select_method": true,
+      "processes-0-process_steps-0-process_method_part": 1,
+      "processes-0-process_steps-0-parameters-0-parameter": 1,
+      "processes-0-process_steps-0-parameters-0-values-0-value": 6.7,
+      "processes-0-process_steps-0-parameters-0-values-1-value": 1,
+      "processes-0-process_steps-0-parameters-0-values-2-value": 1.84,
+      "processes-0-process_steps-0-parameters-1-parameter": 1,
+      "processes-0-process_steps-0-parameters-1-values-0-value": 3.45,
+      "processes-0-process_steps-0-inputs-0-input": 1,
+      "processes-0-process_steps-0-inputs-0-values-0-value": 5.6,
+      "processes-1-process_date": "2020-01-02",
+      "processes-1-process_steps-0-process_method": 1,
+      "processes-1-process_steps-0-select_method": true,
+      "processes-1-process_steps-0-process_method_part": 1,
+      "processes-1-process_steps-0-parameters-0-parameter": 1,
+      "processes-1-process_steps-0-parameters-0-values-0-value": 11.5,
+      "processes-1-process_steps-0-parameters-0-values-1-value": 22.3,
+      "processes-1-process_steps-0-parameters-0-values-2-value": 33.6
+    }
   }
 ]
