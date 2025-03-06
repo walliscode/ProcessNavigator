@@ -5,8 +5,8 @@ from .forms import (
     IndexForm,
     ProcessPathForm,
 )
-from .models import PathCommit, PathData
-
+from .models import HoldingPath, PathCommit, PathData
+import pprint
 from process_navigator.extensions.database import db
 from process_navigator.models.process import ProcessMethodPart
 
@@ -147,8 +147,16 @@ def process_path():
 
     # commit the data to the database
     if form.commit_path.data:
+        # generate current state of the form
+        holding_data = HoldingPath(form=form)
+
+        # pretty print all the holding_data
+        # pprint.pprint(holding_data.to_dict())
         # generate object that will handle add data to the database
-        path_factory = PathCommit(form=form)
-        path_factory.generate_db_objects()
+        path_factory = PathCommit(
+            paths=holding_data,
+        )
+
+        path_factory.commit_data()
 
     return render_template("cauldron/process_path.html", form=form, path_data=path_data)

@@ -118,7 +118,8 @@ class ProcessStep(Base):
     process: Mapped["Process"] = relationship("Process", back_populates="process_steps")
 
     process_method_part: Mapped["ProcessMethodPart"] = relationship(
-        "ProcessMethodPart", back_populates="process_steps"
+        "ProcessMethodPart",
+        back_populates="process_steps",
     )
     step_inputs: Mapped[List["StepInput"]] = relationship(
         "StepInput", back_populates="process_step", init=False
