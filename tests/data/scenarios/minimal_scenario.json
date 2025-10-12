@@ -1,0 +1,51 @@
+{
+  "description": "Minimal test scenario for fast unit tests",
+  "ProcessMethods": [
+    {
+      "name": "Simple Process",
+      "description": "Minimal process for testing",
+      "file_name": "simple.txt",
+      "parts": [
+        {"name": "Part 1"},
+        {"name": "Part 2"}
+      ]
+    }
+  ],
+  "BaseUnits": [
+    {"name": "Meter", "symbol": "m"},
+    {"name": "Second", "symbol": "s"}
+  ],
+  "UnitModifiers": [
+    {"name": "Kilo", "symbol": "K", "multiplier": 1000}
+  ],
+  "Units": [
+    {
+      "name": "Velocity",
+      "symbol": "m/s",
+      "combinations": [
+        {"base_unit_id": 1, "power": 1, "unit_modifier_id": null},
+        {"base_unit_id": 2, "power": -1, "unit_modifier_id": null}
+      ]
+    }
+  ],
+  "Inputs": [
+    {
+      "name": "Water",
+      "CAS": "7732-18-5",
+      "unit_id": 1
+    }
+  ],
+  "Parameters": [
+    {
+      "name": "Temperature",
+      "unit_id": 1
+    }
+  ],
+  "Disciplines": [
+    {
+      "code": "TEST",
+      "name": "Test Discipline",
+      "description": "For testing purposes"
+    }
+  ]
+}
