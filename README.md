@@ -40,4 +40,7 @@ You could also use this to run the app with multiple databases depending on what
 ## formatting
 There is package called ```black``` installed which can be run from terminal ```black _directory_``` and it will automatically format your files to a pep8 standard
 
+## Future Features
+- Database diagram visualization will be added at a later stage of the project
+
 
