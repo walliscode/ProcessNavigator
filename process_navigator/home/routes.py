@@ -1,5 +1,3 @@
-import eralchemy2
-
 # import flask functionality
 from flask import current_app, flash, redirect, render_template, session, url_for
 
@@ -113,27 +111,3 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for("home.login"))
-
-
-@bp.route("/erdiagram")
-def erdiagram():
-    try:
-        db_path = "postgresql://postgres:test@localhost/processnavigator"
-        output_path = "process_navigator/static/images/erdiagram.png"
-
-        # Log the paths being used
-        current_app.logger.debug(f"Database path: {db_path}")
-        current_app.logger.debug(f"Output path: {output_path}")
-
-        # Render the ER diagram
-        eralchemy2.render_er(db_path, output_path)
-
-        # Log success
-        current_app.logger.debug("ER diagram rendered successfully.")
-
-    except Exception as e:
-        # Log any exceptions with detailed information
-        current_app.logger.error(f"Error rendering ER diagram: {e}", exc_info=True)
-        return "An error occurred while generating the ER diagram.", 500
-
-    return render_template("home/erdiagram.html")
