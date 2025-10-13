@@ -1,0 +1,152 @@
+{
+  "description": "Edge case test data for boundary and validation testing",
+  "empty_values": {
+    "process_method": {
+      "name": "",
+      "description": "",
+      "file_name": ""
+    },
+    "input": {
+      "name": "",
+      "CAS": "",
+      "unit_id": null
+    }
+  },
+  "long_values": {
+    "process_method": {
+      "name": "This is a very long process method name that exceeds normal expectations and should test the upper boundaries of field length validation if any such validation exists in the system",
+      "description": "A".repeat(1000),
+      "file_name": "very_long_filename_that_might_cause_issues_with_file_systems.txt"
+    }
+  },
+  "special_characters": {
+    "xss_attempt": {
+      "name": "Test<script>alert('xss')</script>",
+      "description": "<img src=x onerror=alert('xss')>"
+    },
+    "sql_injection_attempt": {
+      "name": "Test'; DROP TABLE process_method; --",
+      "description": "1' OR '1'='1"
+    },
+    "unicode": {
+      "name": "Test 测试 テスト",
+      "description": "Testing with Arabic: مرحبا and Emoji: 🔬"
+    },
+    "whitespace": {
+      "name": "  Leading and trailing spaces  ",
+      "description": "Line\nbreaks\rand\ttabs"
+    },
+    "special_chars": {
+      "name": "Name with !@#$%^&*()_+-=[]{}|;':\",./<>?",
+      "CAS": "12345-67-8",
+      "description": "Testing special characters"
+    }
+  },
+  "boundary_values": {
+    "numeric": {
+      "multipliers": [0, 0.000001, 1, 1000, 1000000, 999999999, -1, -1000]
+    },
+    "string_lengths": {
+      "empty": "",
+      "single_char": "A",
+      "max_varchar_255": "A".repeat(255),
+      "over_max": "A".repeat(1000)
+    }
+  },
+  "null_values": {
+    "process_method": {
+      "name": null,
+      "description": null,
+      "file_name": null
+    }
+  },
+  "duplicate_values": {
+    "process_methods": [
+      {
+        "name": "Duplicate Method",
+        "description": "First instance",
+        "file_name": "duplicate1.txt"
+      },
+      {
+        "name": "Duplicate Method",
+        "description": "Second instance with same name",
+        "file_name": "duplicate2.txt"
+      }
+    ]
+  },
+  "invalid_references": {
+    "input_with_invalid_unit": {
+      "name": "Invalid Input",
+      "CAS": "123-45-6",
+      "unit_id": 99999
+    },
+    "parameter_with_invalid_unit": {
+      "name": "Invalid Parameter",
+      "unit_id": 99999
+    }
+  },
+  "invalid_formats": {
+    "cas_numbers": [
+      "invalid",
+      "12-34-5",
+      "123-456-78",
+      "abc-de-f",
+      "12345678",
+      ""
+    ],
+    "emails": [
+      "not-an-email",
+      "@example.com",
+      "test@",
+      "test@.com",
+      "test..user@example.com",
+      "test user@example.com"
+    ]
+  },
+  "realistic_edge_cases": {
+    "very_complex_unit": {
+      "name": "Complicated Unit",
+      "symbol": "kg*m^2*s^-3*K^-1",
+      "combinations": [
+        {"base_unit": "gram", "power": 1, "modifier": "kilo"},
+        {"base_unit": "meter", "power": 2, "modifier": null},
+        {"base_unit": "second", "power": -3, "modifier": null},
+        {"base_unit": "kelvin", "power": -1, "modifier": null}
+      ]
+    },
+    "process_with_many_parts": {
+      "name": "Complex Process",
+      "description": "Process with many parts",
+      "parts": [
+        {"name": "Part 1"},
+        {"name": "Part 2"},
+        {"name": "Part 3"},
+        {"name": "Part 4"},
+        {"name": "Part 5"},
+        {"name": "Part 6"},
+        {"name": "Part 7"},
+        {"name": "Part 8"},
+        {"name": "Part 9"},
+        {"name": "Part 10"}
+      ]
+    }
+  },
+  "concurrent_operations": {
+    "same_name_different_users": [
+      {
+        "user": "user1@example.com",
+        "process_method": {
+          "name": "Shared Name",
+          "description": "From user 1"
+        }
+      },
+      {
+        "user": "user2@example.com",
+        "process_method": {
+          "name": "Shared Name",
+          "description": "From user 2"
+        }
+      }
+    ]
+  }
+}
