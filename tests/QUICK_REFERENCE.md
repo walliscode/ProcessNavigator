@@ -355,22 +355,35 @@ pytest --cov=process_navigator --cov-report=term-missing
 pytest --cov=process_navigator --cov-fail-under=80
 ```
 
-## 🚦 CI/CD Integration (Future)
+## 🚦 CI/CD Integration
 
-```yaml
-# Example .github/workflows/tests.yml
-name: Tests
-on: [push, pull_request]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-      - run: pip install -r requirements.txt
-      - run: pytest --cov --cov-report=xml
-      - uses: codecov/codecov-action@v2
-```
+CI/CD is now implemented! Workflows run automatically on push and pull requests.
+
+### Active Workflows
+
+1. **Tests Workflow** (`.github/workflows/tests.yml`)
+   - Runs on every push/PR to main and develop branches
+   - Executes full test suite with coverage reporting
+   - Uploads coverage to Codecov
+   - Stores HTML coverage reports as artifacts
+
+2. **Code Quality Workflow** (`.github/workflows/code-quality.yml`)
+   - Checks code formatting with Black
+   - Ensures consistent code style
+
+### View Results
+
+- Go to repository → Actions tab
+- Download coverage reports from workflow artifacts
+- Coverage badge available for README
+
+### Configuration
+
+See `.github/workflows/CI_CD_README.md` for detailed documentation on:
+- Setting up Codecov token
+- Adding status badges
+- Running workflows locally
+- Troubleshooting
 
 ## 📞 Getting Help
 

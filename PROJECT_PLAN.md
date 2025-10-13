@@ -197,8 +197,8 @@ ProcessNavigator is a Flask-based web application designed to provide a database
    - [ ] Add health checks to containers
 
 2. **CI/CD Pipeline**
-   - [ ] Set up GitHub Actions workflow
-   - [ ] Implement automated testing on PR
+   - [x] Set up GitHub Actions workflow
+   - [x] Implement automated testing on PR
    - [ ] Add automated deployment to staging
    - [ ] Create production deployment pipeline
    - [ ] Implement rollback procedures
