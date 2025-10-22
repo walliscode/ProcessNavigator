@@ -1,5 +1,7 @@
 # ProcessNavigator
 
+![Tests](https://github.com/walliscode/ProcessNavigator/workflows/Tests/badge.svg)
+![Code Quality](https://github.com/walliscode/ProcessNavigator/workflows/Code%20Quality/badge.svg)
 
 ## First time operations/updating operations
 1. update packages
@@ -39,6 +41,29 @@ You could also use this to run the app with multiple databases depending on what
 
 ## formatting
 There is package called ```black``` installed which can be run from terminal ```black _directory_``` and it will automatically format your files to a pep8 standard
+
+## CI/CD and Testing
+This project has automated CI/CD pipelines that run on every push and pull request:
+
+- **Tests Workflow**: Runs the full test suite with coverage reporting
+- **Code Quality Workflow**: Checks code formatting with Black
+
+See `.github/workflows/CI_CD_README.md` for detailed documentation.
+
+### Running Tests Locally
+```bash
+# Install test dependencies
+pip install -r requirements.txt
+
+# Run all tests
+pytest
+
+# Run tests with coverage
+pytest --cov=process_navigator --cov-report=html --cov-report=term
+
+# Check code formatting
+black --check process_navigator/ tests/
+```
 
 ## Future Features
 - Database diagram visualization will be added at a later stage of the project
