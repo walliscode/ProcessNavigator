@@ -11,6 +11,7 @@ Runs automated tests on every push and pull request to `main` and `develop` bran
 **What it does:**
 - Sets up Python 3.12 environment
 - Installs all project dependencies
+- Automatically formats code with Black before testing
 - Runs pytest with coverage reporting
 - Generates coverage reports in XML, HTML, and terminal formats
 - Uploads coverage to Codecov (requires `CODECOV_TOKEN` secret)

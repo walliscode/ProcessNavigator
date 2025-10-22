@@ -26,6 +26,10 @@ jobs:
           pip install -r requirements.txt
           pip install pytest-cov
       
+      - name: Format code with Black
+        run: |
+          black process_navigator/ tests/
+      
       - name: Run tests with coverage
         run: |
           pytest --cov=process_navigator --cov-report=xml --cov-report=term --cov-report=html -v

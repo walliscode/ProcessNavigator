@@ -47,12 +47,13 @@ Comprehensive guide covering:
 
 Added to `requirements.txt`:
 ```
-Flask-WTF==1.2.1          # Web form handling
-WTForms==3.1.2            # Form validation
-WTForms-SQLAlchemy==0.4.1 # SQLAlchemy integration for forms
-psycopg2-binary==2.9.9    # PostgreSQL database adapter
-jsonschema==4.23.0        # JSON schema validation for tests
-pytest-cov==5.0.0         # Coverage plugin for pytest
+Flask-WTF==1.2.1            # Web form handling
+WTForms==3.1.2              # Form validation
+WTForms-SQLAlchemy==0.4.1   # SQLAlchemy integration for forms
+psycopg==3.2.3              # PostgreSQL database adapter (psycopg3)
+psycopg-binary==3.2.3       # Binary package for psycopg3
+jsonschema==4.23.0          # JSON schema validation for tests
+pytest-cov==5.0.0           # Coverage plugin for pytest
 ```
 
 ### 4. Status Badges
