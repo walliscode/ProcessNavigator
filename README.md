@@ -5,6 +5,8 @@
 
 A Flask-based web application for managing, tracking, and analyzing physical processes with database-driven design-of-experiments capabilities.
 
+> **🚀 New to ProcessNavigator?** Check out the [Quick Start Guide (QUICKSTART.md)](QUICKSTART.md) for a streamlined setup in 5 minutes!
+
 ## Table of Contents
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
@@ -13,6 +15,8 @@ A Flask-based web application for managing, tracking, and analyzing physical pro
 - [Running the Application](#running-the-application)
 - [Development](#development)
 - [CI/CD and Testing](#cicd-and-testing)
+- [Troubleshooting](#troubleshooting)
+- [Additional Resources](#additional-resources)
 
 ## Prerequisites
 
